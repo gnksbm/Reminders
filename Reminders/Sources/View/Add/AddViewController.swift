@@ -95,7 +95,7 @@ final class AddViewController: BaseViewController {
                 [weak self] _ in
                 guard let self else { return }
                 guard let title = titleTextField.text,
-                      let memo = memoTextView.text else {
+                      let memoText = memoTextView.text else {
                     Logger.error(ViewComponentError.textIsNil)
                     return
                 }
@@ -104,15 +104,14 @@ final class AddViewController: BaseViewController {
                     titleTextField.becomeFirstResponder()
                     return
                 }
-                guard selectedDate != nil else {
-                    showToast(message: "마감일을 선택해주세요")
-                    return
-                }
+                let memo = memoText.isNotEmpty ?
+                memoText != textViewPlaceholder.string ? memoText : nil :
+                nil
                 do {
                     try RealmStorage.shared.create(
                         TodoItem(
                             title: title,
-                            memo: memo.isNotEmpty ? memo : nil,
+                            memo: memo,
                             priority: .none
                         )
                     )

@@ -9,7 +9,7 @@ import Foundation
 
 import RealmSwift
 
-final class TodoItem: Object {
+final class TodoItem: Object, Identifiable {
     @Persisted(primaryKey: true) var id: ObjectId
     @Persisted var title: String
     @Persisted var memo: String?
@@ -40,10 +40,23 @@ final class TodoItem: Object {
 }
 
 extension TodoItem {
-    enum Priority: String, PersistableEnum {
-        case low = "낮음"
-        case mid = "중간"
-        case high = "높음"
-        case none = "없음"
+    enum Priority: Int, PersistableEnum {
+        case none
+        case low
+        case mid
+        case high
+        
+        var title: String {
+            switch self {
+            case .low:
+                "낮음"
+            case .mid:
+                "중간"
+            case .high:
+                "높음"
+            case .none:
+                "없음"
+            }
+        }
     }
 }
