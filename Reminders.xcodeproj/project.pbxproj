@@ -10,9 +10,12 @@
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* ViewController.swift */; };
-		BEF6E07D2C33E4D100FA435D /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E07C2C33E4D100FA435D /* Base */; };
 		BEF6E07F2C33E4D300FA435D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E07E2C33E4D300FA435D /* Assets.xcassets */; };
 		BEF6E0822C33E4D300FA435D /* Base in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E0812C33E4D300FA435D /* Base */; };
+		BEF6E08D2C33E56700FA435D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = BEF6E08C2C33E56700FA435D /* SnapKit */; };
+		BEF6E08F2C33E57D00FA435D /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E08E2C33E57D00FA435D /* .gitignore */; };
+		BEF6E0912C33E5CD00FA435D /* .gitmessage in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E0902C33E5CD00FA435D /* .gitmessage */; };
+		BEF6E0942C33E61600FA435D /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = BEF6E0932C33E61600FA435D /* RealmSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -20,10 +23,11 @@
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0792C33E4D100FA435D /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
-		BEF6E07C2C33E4D100FA435D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		BEF6E07E2C33E4D300FA435D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		BEF6E0812C33E4D300FA435D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		BEF6E0832C33E4D300FA435D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		BEF6E08E2C33E57D00FA435D /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		BEF6E0902C33E5CD00FA435D /* .gitmessage */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmessage; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +35,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BEF6E0942C33E61600FA435D /* RealmSwift in Frameworks */,
+				BEF6E08D2C33E56700FA435D /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -40,6 +46,8 @@
 		BEF6E0692C33E4D100FA435D = {
 			isa = PBXGroup;
 			children = (
+				BEF6E0902C33E5CD00FA435D /* .gitmessage */,
+				BEF6E08E2C33E57D00FA435D /* .gitignore */,
 				BEF6E0742C33E4D100FA435D /* Reminders */,
 				BEF6E0732C33E4D100FA435D /* Products */,
 			);
@@ -56,15 +64,46 @@
 		BEF6E0742C33E4D100FA435D /* Reminders */ = {
 			isa = PBXGroup;
 			children = (
-				BEF6E0752C33E4D100FA435D /* AppDelegate.swift */,
-				BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */,
-				BEF6E0792C33E4D100FA435D /* ViewController.swift */,
-				BEF6E07B2C33E4D100FA435D /* Main.storyboard */,
+				BEF6E0892C33E4E700FA435D /* Sources */,
+				BEF6E08A2C33E4EC00FA435D /* Resources */,
+			);
+			path = Reminders;
+			sourceTree = "<group>";
+		};
+		BEF6E0892C33E4E700FA435D /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				BEF6E0952C33E71F00FA435D /* App */,
+				BEF6E0962C33E72600FA435D /* View */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		BEF6E08A2C33E4EC00FA435D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
 				BEF6E07E2C33E4D300FA435D /* Assets.xcassets */,
 				BEF6E0802C33E4D300FA435D /* LaunchScreen.storyboard */,
 				BEF6E0832C33E4D300FA435D /* Info.plist */,
 			);
-			path = Reminders;
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		BEF6E0952C33E71F00FA435D /* App */ = {
+			isa = PBXGroup;
+			children = (
+				BEF6E0752C33E4D100FA435D /* AppDelegate.swift */,
+				BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		BEF6E0962C33E72600FA435D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				BEF6E0792C33E4D100FA435D /* ViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +122,10 @@
 			dependencies = (
 			);
 			name = Reminders;
+			packageProductDependencies = (
+				BEF6E08C2C33E56700FA435D /* SnapKit */,
+				BEF6E0932C33E61600FA435D /* RealmSwift */,
+			);
 			productName = Reminders;
 			productReference = BEF6E0722C33E4D100FA435D /* Reminders.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +154,10 @@
 				Base,
 			);
 			mainGroup = BEF6E0692C33E4D100FA435D;
+			packageReferences = (
+				BEF6E08B2C33E56700FA435D /* XCRemoteSwiftPackageReference "SnapKit" */,
+				BEF6E0922C33E61600FA435D /* XCRemoteSwiftPackageReference "realm-swift" */,
+			);
 			productRefGroup = BEF6E0732C33E4D100FA435D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -126,8 +173,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				BEF6E07F2C33E4D300FA435D /* Assets.xcassets in Resources */,
+				BEF6E08F2C33E57D00FA435D /* .gitignore in Resources */,
+				BEF6E0912C33E5CD00FA435D /* .gitmessage in Resources */,
 				BEF6E0822C33E4D300FA435D /* Base in Resources */,
-				BEF6E07D2C33E4D100FA435D /* Base in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -147,14 +195,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		BEF6E07B2C33E4D100FA435D /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				BEF6E07C2C33E4D100FA435D /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		BEF6E0802C33E4D300FA435D /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -294,22 +334,25 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ASU4PNB5MG;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Reminders/Info.plist;
+				INFOPLIST_FILE = Reminders/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geonseobkim.Reminders;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -322,22 +365,25 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = ASU4PNB5MG;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = Reminders/Info.plist;
+				INFOPLIST_FILE = Reminders/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
+				MARKETING_VERSION = 0.1;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geonseobkim.Reminders;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -363,6 +409,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		BEF6E08B2C33E56700FA435D /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+		BEF6E0922C33E61600FA435D /* XCRemoteSwiftPackageReference "realm-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/realm-swift.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		BEF6E08C2C33E56700FA435D /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEF6E08B2C33E56700FA435D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		BEF6E0932C33E61600FA435D /* RealmSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = BEF6E0922C33E61600FA435D /* XCRemoteSwiftPackageReference "realm-swift" */;
+			productName = RealmSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = BEF6E06A2C33E4D100FA435D /* Project object */;
 }
