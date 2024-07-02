@@ -1,5 +1,5 @@
 {
-  "originHash" : "d5faa50f001ab73f737fb43bcf0bd16184b6c47caed86b9c93a48144dfdd0b42",
+  "originHash" : "a7a13aa1d81282fd834a1a8cabe626e28091654113eb7ae68c999fc7a74bace0",
   "pins" : [
     {
       "identity" : "realm-core",
@@ -13,16 +13,16 @@
     {
       "identity" : "realm-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/realm/realm-swift.git",
+      "location" : "https://github.com/realm/realm-swift",
       "state" : {
-        "branch" : "master",
-        "revision" : "9f850cb56f90ea14e840b051b7e2318ac5d7b16d"
+        "revision" : "ae827eabf45ba64562c75b6e99038da6ce12d427",
+        "version" : "10.52.1"
       }
     },
     {
       "identity" : "snapkit",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/SnapKit/SnapKit.git",
+      "location" : "https://github.com/SnapKit/SnapKit",
       "state" : {
         "revision" : "2842e6e84e82eb9a8dac0100ca90d9444b0307f4",
         "version" : "5.7.1"

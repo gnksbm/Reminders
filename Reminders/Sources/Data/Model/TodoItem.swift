@@ -25,7 +25,7 @@ final class TodoItem: Object {
         deadline: Date? = nil,
         hashTag: HashTag? = nil,
         priority: Priority,
-        imageData: List<Data>
+        imageData: List<Data> = List<Data>()
     ) {
         self.init()
         self.id = id
