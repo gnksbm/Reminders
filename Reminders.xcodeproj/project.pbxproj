@@ -28,6 +28,10 @@
 		BEF6E0B42C33EA6F00FA435D /* ToastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0B32C33EA6F00FA435D /* ToastView.swift */; };
 		BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0B52C33EA8B00FA435D /* BaseView.swift */; };
 		BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0B72C33EC0900FA435D /* Collection+.swift */; };
+		BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */; };
+		BEF6E0BD2C33EEB800FA435D /* HashTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BC2C33EEB800FA435D /* HashTag.swift */; };
+		BEF6E0C02C33F53300FA435D /* PersistenceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */; };
+		BEF6E0C22C33F57B00FA435D /* RealmStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +56,10 @@
 		BEF6E0B32C33EA6F00FA435D /* ToastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToastView.swift; sourceTree = "<group>"; };
 		BEF6E0B52C33EA8B00FA435D /* BaseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseView.swift; sourceTree = "<group>"; };
 		BEF6E0B72C33EC0900FA435D /* Collection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+.swift"; sourceTree = "<group>"; };
+		BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
+		BEF6E0BC2C33EEB800FA435D /* HashTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTag.swift; sourceTree = "<group>"; };
+		BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStorage.swift; sourceTree = "<group>"; };
+		BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmStorage.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,6 +106,7 @@
 			isa = PBXGroup;
 			children = (
 				BEF6E0962C33E72600FA435D /* View */,
+				BEF6E0B92C33EE3600FA435D /* Data */,
 				BEF6E0972C33E77900FA435D /* Foundation */,
 				BEF6E0952C33E71F00FA435D /* App */,
 			);
@@ -190,6 +199,25 @@
 			path = Common;
 			sourceTree = "<group>";
 		};
+		BEF6E0B92C33EE3600FA435D /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				BEF6E0BE2C33F50F00FA435D /* Storage */,
+				BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */,
+				BEF6E0BC2C33EEB800FA435D /* HashTag.swift */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		BEF6E0BE2C33F50F00FA435D /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */,
+				BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -280,11 +308,15 @@
 				BEF6E0B42C33EA6F00FA435D /* ToastView.swift in Sources */,
 				BEF6E0A02C33E80F00FA435D /* BaseCollectionViewCell.swift in Sources */,
 				BEF6E0AC2C33E9AE00FA435D /* ReuseIdentifiable.swift in Sources */,
+				BEF6E0C22C33F57B00FA435D /* RealmStorage.swift in Sources */,
 				BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */,
+				BEF6E0BD2C33EEB800FA435D /* HashTag.swift in Sources */,
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
 				BEF6E0A22C33E87900FA435D /* Builder.swift in Sources */,
+				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */,
+				BEF6E0C02C33F53300FA435D /* PersistenceStorage.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
