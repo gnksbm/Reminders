@@ -102,4 +102,15 @@ extension TodoListViewController: UITableViewDelegate {
             }
         }
     }
+    
+    func tableView(
+        _ tableView: UITableView,
+        didSelectRowAt indexPath: IndexPath
+    ) {
+        let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
+        navigationController?.pushViewController(
+            TodoDetailViewController(item: item),
+            animated: true
+        )
+    }
 }

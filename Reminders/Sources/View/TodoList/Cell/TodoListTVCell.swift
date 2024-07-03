@@ -52,6 +52,10 @@ final class TodoListTVCell: BaseTableViewCell {
         }
     }
     
+    override func configureUI() {
+        selectionStyle = .none
+    }
+    
     override func configureLayout() {
         [
             checkButton,

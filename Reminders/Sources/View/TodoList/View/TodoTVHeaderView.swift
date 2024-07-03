@@ -19,6 +19,10 @@ final class TodoTVHeaderView: BaseView {
         titleLabel.text = title
     }
     
+    override func configureUI() {
+        backgroundColor = .systemBackground
+    }
+    
     override func configureLayout() {
         [titleLabel].forEach { addSubview($0) }
         
