@@ -8,8 +8,9 @@
 import Foundation
 
 extension NSNotification.Name {
-    static let all = [deadline, hashTag, priority]
+    static let allTodoItems = [deadline, hashTag, priority]
     static let deadline = NSNotification.Name("deadline")
     static let hashTag = NSNotification.Name("hashTag")
     static let priority = NSNotification.Name("priority")
+    static let newTodoAdded = NSNotification.Name("newTodoAdded")
 }

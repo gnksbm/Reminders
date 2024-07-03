@@ -153,6 +153,10 @@ final class AddViewController: BaseViewController {
                         )
                     )
                     dismiss(animated: true)
+                    NotificationCenter.default.post(
+                        name: .newTodoAdded,
+                        object: nil
+                    )
                 } catch {
                     Logger.error(error)
                 }
@@ -247,7 +251,7 @@ final class AddViewController: BaseViewController {
     }
     
     private func removeObserver() {
-        NSNotification.Name.all.forEach {
+        NSNotification.Name.allTodoItems.forEach {
             NotificationCenter.default.removeObserver(
                 self,
                 name: $0,

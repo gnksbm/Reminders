@@ -21,11 +21,12 @@ final class SummaryViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
+        updateSnapshot(items: CollectionViewItem.allCases)
+        addObserver()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        updateSnapshot(items: CollectionViewItem.allCases)
+    deinit {
+        removeObserver()
     }
     
     override func configureNavigation() {
@@ -50,6 +51,27 @@ final class SummaryViewController: BaseViewController {
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
         }
+    }
+    
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(newTodoAdded),
+            name: .newTodoAdded,
+            object: nil
+        )
+    }
+    
+    private func removeObserver() {
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .newTodoAdded,
+            object: nil
+        )
+    }
+    
+    @objc private func newTodoAdded() {
+        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
     }
 }
 
@@ -186,11 +208,24 @@ extension SummaryViewController {
         }
         
         func getItemCount() -> Int {
-            switch self {
+            let items = RealmStorage.shared.read(TodoItem.self)
+            return switch self {
+            case .today:
+                items.filter { item in
+                    guard let deadline = item.deadline else { return false }
+                    return deadline.isToday
+                }.count
+            case .schedule:
+                items.filter { item in
+                    guard let deadline = item.deadline else { return false }
+                    return !deadline.isToday
+                }.count
             case .all:
-                RealmStorage.shared.read(TodoItem.self).count
-            default:
-                0
+                items.count
+            case .flag:
+                items.filter { $0.isDone }.count
+            case .done:
+                items.filter { $0.isDone }.count
             }
         }
     }
