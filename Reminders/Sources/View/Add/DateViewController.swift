@@ -31,7 +31,7 @@ final class DateViewController: BaseViewController {
     
     @objc private func datePickerChanged() {
         NotificationCenter.default.post(
-            name: NSNotification.Name("deadline"),
+            name: .deadline,
             object: nil,
             userInfo: ["date": datePicker.date]
         )

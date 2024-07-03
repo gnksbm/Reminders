@@ -11,6 +11,7 @@ import SnapKit
 
 final class AddViewController: BaseViewController {
     private var selectedDate: Date?
+    private var hashTagStr: String?
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -48,8 +49,13 @@ final class AddViewController: BaseViewController {
             )
     }
     
-    private let hashTagButton = UIButton().nt.configure { 
+    private lazy var hashTagButton = UIButton().nt.configure { 
         $0.configuration(.rounded(title: "태그"))
+            .addTarget(
+                self,
+                action: #selector(hashTagButtonTapped),
+                for: .touchUpInside
+            )
     }
     
     private let priorityButton = UIButton().nt.configure { 
@@ -62,12 +68,7 @@ final class AddViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(deadlineChanged),
-            name: NSNotification.Name("deadline"),
-            object: nil
-        )
+        addObserver()
     }
     
     override func viewDidLayoutSubviews() {
@@ -118,10 +119,17 @@ final class AddViewController: BaseViewController {
                 memoText != textViewPlaceholder.string ? memoText : nil :
                 nil
                 do {
+                    var hashTag: HashTag?
+                    if let hashTagStr {
+                        hashTag = RealmStorage.shared.read(HashTag.self)
+                            .first { $0.name == hashTagStr } ??
+                        HashTag(name: hashTagStr)
+                    }
                     try RealmStorage.shared.create(
                         TodoItem(
                             title: title,
                             memo: memo,
+                            hashTag: hashTag,
                             priority: .none
                         )
                     )
@@ -198,6 +206,21 @@ final class AddViewController: BaseViewController {
         ]
     }
     
+    private func addObserver() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deadlineChanged),
+            name: .deadline,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(hashTagChanged),
+            name: .hashTag,
+            object: nil
+        )
+    }
+    
     private func showDateModal() {
         let alertVC = UIAlertController(
             title: "마감일을 선택해주세요",
@@ -232,6 +255,13 @@ final class AddViewController: BaseViewController {
         )
     }
     
+    @objc private func hashTagButtonTapped() {
+        navigationController?.pushViewController(
+            TagViewController(hashTag: hashTagStr),
+            animated: true
+        )
+    }
+    
     @objc private func deadlineChanged(_ notification: NSNotification) { 
         guard let date = notification.userInfo?["date"] as? Date else {
             Logger.debug("""
@@ -241,6 +271,17 @@ final class AddViewController: BaseViewController {
             return
         }
         selectedDate = date
+    }
+    
+    @objc private func hashTagChanged(_ notification: NSNotification) {
+        guard let hashTag = notification.userInfo?["hashTag"] as? String else {
+            Logger.debug("""
+                String 변환 실패
+                Value: \(String(describing: notification.userInfo?["date"]))
+            """)
+            return
+        }
+        hashTagStr = hashTag
     }
 }
 

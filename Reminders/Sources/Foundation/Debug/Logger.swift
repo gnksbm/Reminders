@@ -89,5 +89,32 @@ enum Logger {
             file, line, function, String(describing: target), retainCount
         )
     }
+    
+    static func nilObject<T: AnyObject, U>(
+        _ target: T,
+        keyPath: KeyPath<T, U>,
+        file: String = #fileID,
+        line: Int = #line,
+        function: String = #function
+    ) {
+        let parentType = removingOptionalDescription(type: T.self)
+        let propertyType = removingOptionalDescription(type: U.self)
+        
+        os_log(
+            """
+            Location: %{public}@ at line %{public}d.
+            %{public}@'s %{public}@ is nil.
+            """,
+            log: logger,
+            type: .error,
+            file, line, parentType, propertyType
+        )
+    }
+    
+    private static func removingOptionalDescription(type: Any.Type) -> String {
+        String(describing: type)
+            .replacingOccurrences(of: "Optional<", with: "")
+            .replacingOccurrences(of: ">", with: "")
+    }
 }
 

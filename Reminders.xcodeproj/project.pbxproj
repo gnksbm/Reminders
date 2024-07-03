@@ -10,6 +10,8 @@
 		8E013E122C34475B00557FC0 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8E013E112C34475B00557FC0 /* RealmSwift */; };
 		8E013E132C34476300557FC0 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 8E013E112C34475B00557FC0 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8E0E58D42C357BAE008CA109 /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58D32C357BAE008CA109 /* DateViewController.swift */; };
+		8E0E58DC2C358DCE008CA109 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DB2C358DCE008CA109 /* TagViewController.swift */; };
+		8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */; };
 		8E5A43282C3461E20045D77A /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43272C3461E20045D77A /* BaseTableViewCell.swift */; };
 		8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A432A2C34624B0045D77A /* TodoListViewController.swift */; };
 		8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A432D2C3466220045D77A /* TodoListTVCell.swift */; };
@@ -63,6 +65,8 @@
 
 /* Begin PBXFileReference section */
 		8E0E58D32C357BAE008CA109 /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
+		8E0E58DB2C358DCE008CA109 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
+		8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
 		8E5A43272C3461E20045D77A /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		8E5A432A2C34624B0045D77A /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
 		8E5A432D2C3466220045D77A /* TodoListTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListTVCell.swift; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 				BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */,
 				8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */,
 				BEF6E0CB2C340A9900FA435D /* UIButton+.swift */,
+				8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 			children = (
 				BEF6E0C82C34099800FA435D /* AddViewController.swift */,
 				8E0E58D32C357BAE008CA109 /* DateViewController.swift */,
+				8E0E58DB2C358DCE008CA109 /* TagViewController.swift */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -416,6 +422,7 @@
 			files = (
 				8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */,
 				BEF6E0A52C33E88D00FA435D /* NeatCompatible.swift in Sources */,
+				8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */,
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,
@@ -427,6 +434,7 @@
 				BEF6E0992C33E78F00FA435D /* BaseViewController.swift in Sources */,
 				BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */,
 				BEF6E0B42C33EA6F00FA435D /* ToastView.swift in Sources */,
+				8E0E58DC2C358DCE008CA109 /* TagViewController.swift in Sources */,
 				BEF6E0A02C33E80F00FA435D /* BaseCollectionViewCell.swift in Sources */,
 				BEF6E0AC2C33E9AE00FA435D /* ReuseIdentifiable.swift in Sources */,
 				BEF6E0C22C33F57B00FA435D /* RealmStorage.swift in Sources */,
