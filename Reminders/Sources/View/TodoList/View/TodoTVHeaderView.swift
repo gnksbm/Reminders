@@ -10,8 +10,8 @@ import UIKit
 import SnapKit
 
 final class TodoTVHeaderView: BaseView {
-    private let titleLabel = UILabel().build { builder in
-        builder.font(.boldSystemFont(ofSize: 40))
+    private let titleLabel = UILabel().nt.configure { 
+        $0.font(.boldSystemFont(ofSize: 40))
             .textColor(.tintColor)
     }
     

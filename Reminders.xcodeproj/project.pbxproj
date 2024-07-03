@@ -25,8 +25,8 @@
 		BEF6E0912C33E5CD00FA435D /* .gitmessage in Resources */ = {isa = PBXBuildFile; fileRef = BEF6E0902C33E5CD00FA435D /* .gitmessage */; };
 		BEF6E0992C33E78F00FA435D /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0982C33E78F00FA435D /* BaseViewController.swift */; };
 		BEF6E0A02C33E80F00FA435D /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E09F2C33E80F00FA435D /* BaseCollectionViewCell.swift */; };
-		BEF6E0A22C33E87900FA435D /* Builder.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A12C33E87900FA435D /* Builder.swift */; };
-		BEF6E0A52C33E88D00FA435D /* Buildable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A42C33E88D00FA435D /* Buildable.swift */; };
+		BEF6E0A22C33E87900FA435D /* Neat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A12C33E87900FA435D /* Neat.swift */; };
+		BEF6E0A52C33E88D00FA435D /* NeatCompatible.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A42C33E88D00FA435D /* NeatCompatible.swift */; };
 		BEF6E0A72C33E8B800FA435D /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A62C33E8B800FA435D /* String+.swift */; };
 		BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0A92C33E92D00FA435D /* DateFormat.swift */; };
 		BEF6E0AC2C33E9AE00FA435D /* ReuseIdentifiable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0AB2C33E9AE00FA435D /* ReuseIdentifiable.swift */; };
@@ -78,8 +78,8 @@
 		BEF6E0902C33E5CD00FA435D /* .gitmessage */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitmessage; sourceTree = "<group>"; };
 		BEF6E0982C33E78F00FA435D /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		BEF6E09F2C33E80F00FA435D /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
-		BEF6E0A12C33E87900FA435D /* Builder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Builder.swift; sourceTree = "<group>"; };
-		BEF6E0A42C33E88D00FA435D /* Buildable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Buildable.swift; sourceTree = "<group>"; };
+		BEF6E0A12C33E87900FA435D /* Neat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Neat.swift; sourceTree = "<group>"; };
+		BEF6E0A42C33E88D00FA435D /* NeatCompatible.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NeatCompatible.swift; sourceTree = "<group>"; };
 		BEF6E0A62C33E8B800FA435D /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		BEF6E0A92C33E92D00FA435D /* DateFormat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateFormat.swift; sourceTree = "<group>"; };
 		BEF6E0AB2C33E9AE00FA435D /* ReuseIdentifiable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReuseIdentifiable.swift; sourceTree = "<group>"; };
@@ -250,8 +250,8 @@
 		BEF6E0A32C33E88400FA435D /* Builder */ = {
 			isa = PBXGroup;
 			children = (
-				BEF6E0A12C33E87900FA435D /* Builder.swift */,
-				BEF6E0A42C33E88D00FA435D /* Buildable.swift */,
+				BEF6E0A12C33E87900FA435D /* Neat.swift */,
+				BEF6E0A42C33E88D00FA435D /* NeatCompatible.swift */,
 			);
 			path = Builder;
 			sourceTree = "<group>";
@@ -412,7 +412,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */,
-				BEF6E0A52C33E88D00FA435D /* Buildable.swift in Sources */,
+				BEF6E0A52C33E88D00FA435D /* NeatCompatible.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */,
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,
@@ -435,7 +435,7 @@
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
 				BEF6E0CF2C34101100FA435D /* ViewComponentError.swift in Sources */,
-				BEF6E0A22C33E87900FA435D /* Builder.swift in Sources */,
+				BEF6E0A22C33E87900FA435D /* Neat.swift in Sources */,
 				8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */,
 				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,

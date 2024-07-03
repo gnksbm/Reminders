@@ -13,8 +13,8 @@ final class SummaryViewController: BaseViewController {
     private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: makeLayout()
-    ).build { builder in
-        builder.delegate(self)
+    ).nt.configure {
+        $0.delegate(self)
             .register(SummaryCVCell.self)
     }
     

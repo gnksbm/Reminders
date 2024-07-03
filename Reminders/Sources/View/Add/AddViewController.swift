@@ -20,27 +20,27 @@ final class AddViewController: BaseViewController {
         ]
     )
     
-    private let textBackgroundView = UIView().build { builder in
-        builder.backgroundColor(.secondarySystemBackground)
+    private let textBackgroundView = UIView().nt.configure { 
+        $0.backgroundColor(.secondarySystemBackground)
             .layer.cornerRadius(12)
     }
     
-    private let dividerView = UIView().build { builder in
-        builder.backgroundColor(.tertiarySystemBackground)
+    private let dividerView = UIView().nt.configure { 
+        $0.backgroundColor(.tertiarySystemBackground)
     }
     
-    private let titleTextField = UITextField().build { builder in
-        builder.placeholder("제목")
+    private let titleTextField = UITextField().nt.configure { 
+        $0.placeholder("제목")
     }
     
-    private lazy var memoTextView = UITextView().build { builder in
-        builder.backgroundColor(.clear)
+    private lazy var memoTextView = UITextView().nt.configure { 
+        $0.backgroundColor(.clear)
             .delegate(self)
             .attributedText(textViewPlaceholder)
     }
     
-    private lazy var deadlineButton = UIButton().build { builder in
-        builder.configuration(.rounded(title: "마감일"))
+    private lazy var deadlineButton = UIButton().nt.configure { 
+        $0.configuration(.rounded(title: "마감일"))
             .addTarget(
                 self,
                 action: #selector(deadlineButtonTapped),
@@ -48,16 +48,16 @@ final class AddViewController: BaseViewController {
             )
     }
     
-    private let hashTagButton = UIButton().build { builder in
-        builder.configuration(.rounded(title: "태그"))
+    private let hashTagButton = UIButton().nt.configure { 
+        $0.configuration(.rounded(title: "태그"))
     }
     
-    private let priorityButton = UIButton().build { builder in
-        builder.configuration(.rounded(title: "우선순위"))
+    private let priorityButton = UIButton().nt.configure { 
+        $0.configuration(.rounded(title: "우선순위"))
     }
     
-    private let addImageButton = UIButton().build { builder in
-        builder.configuration(.rounded(title: "이미지 추가"))
+    private let addImageButton = UIButton().nt.configure { 
+        $0.configuration(.rounded(title: "이미지 추가"))
     }
     
     override func viewDidLayoutSubviews() {
@@ -194,8 +194,8 @@ final class AddViewController: BaseViewController {
             message: nil,
             preferredStyle: .actionSheet
         )
-        let datePicker = UIDatePicker().build { builder in
-            builder.preferredDatePickerStyle(.inline)
+        let datePicker = UIDatePicker().nt.configure { 
+            $0.preferredDatePickerStyle(.inline)
         }
         if let selectedDate {
             datePicker.date = selectedDate

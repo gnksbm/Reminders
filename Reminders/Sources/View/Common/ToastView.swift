@@ -10,8 +10,8 @@ import UIKit
 import SnapKit
 
 final class ToastView: BaseView {
-    private let messageLabel = UILabel().build { builder in
-        builder.font(.boldSystemFont(ofSize: 15))
+    private let messageLabel = UILabel().nt.configure { 
+        $0.font(.boldSystemFont(ofSize: 15))
             .backgroundColor(.systemBackground)
             .clipsToBounds(true)
     }

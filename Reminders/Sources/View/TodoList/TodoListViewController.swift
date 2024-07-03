@@ -10,8 +10,8 @@ import UIKit
 final class TodoListViewController: BaseViewController {
     private var dataSource: DataSource!
     
-    private lazy var tableView = UITableView().build { builder in
-        builder.register(TodoListTVCell.self)
+    private lazy var tableView = UITableView().nt.configure { 
+        $0.register(TodoListTVCell.self)
             .delegate(self)
     }
     
@@ -46,8 +46,8 @@ extension TodoListViewController {
                 tableView.dequeueReusableCell(
                     cellType: TodoListTVCell.self,
                     for: indexPath
-                ).build { builder in
-                    builder.action { base in
+                ).nt.configure { 
+                    $0.perform { base in
                         base.configureCell(item: item)
                     }
                 }
@@ -94,8 +94,8 @@ extension TodoListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         viewForHeaderInSection section: Int
     ) -> UIView? {
-        TodoTVHeaderView().build { builder in
-            builder.action { base in
+        TodoTVHeaderView().nt.configure { 
+            $0.perform { base in
                 base.configureView(
                     title: TableViewSection.allCases[section].title
                 )

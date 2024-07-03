@@ -1,5 +1,5 @@
 //
-//  Builder.swift
+//  Neat.swift
 //  Reminders
 //
 //  Created by gnksbm on 7/2/24.
@@ -8,37 +8,9 @@
 import UIKit
 import OSLog
 
-extension Buildable where Self: AnyObject {
-    /**
-     클로저 구문 안에서 Builder로 객체의 프로퍼티 값을 변경하거나 함수 실행
-     - Parameter block: Builder를 반환하는 subscript나 action 메서드를 체이닝 형태로 사용,
-     클로저 내부에서 Builder<객체> 타입을 반환해야함
-     - Returns: Builder<객체>가 언래핑되어 블록 안에서 설정한 객체 반환
-     */
-    func build(
-        _ block: (_ builder: Builder<Self>) -> Builder<Self>,
-        fileID: String = #fileID,
-        line: Int = #line
-    ) -> Self {
-        block(
-            Builder(
-                self,
-                fileID: fileID,
-                line: line
-            )
-        ).build()
-    }
-}
-
-/**
- 객체의 설정을 메서드 체이닝 형태로 구현할 수 있는 래핑 객체
- - 변수 선언과 호출, return문 등의 반복을 줄여 간결한 코드 작성 가능
- - dynamicMemberLookup을 사용한 구현으로 View, Controller 객체의 프로퍼티에 접근이 가능하며
- subscript의 반환형을 클로저 형태로 구현하여 SwiftUI의 Modifier처럼 프로퍼티 값 할당 가능
- */
 @dynamicMemberLookup
-struct Builder<Base: AnyObject> {
-    private let _base: Base
+struct Neat<Base: AnyObject> {
+    private let base: Base
     private let fileID: String
     private let line: Int
     
@@ -47,53 +19,57 @@ struct Builder<Base: AnyObject> {
         fileID: String = #fileID,
         line: Int = #line
     ) {
-        self._base = base
+        self.base = base
         self.fileID = fileID
         self.line = line
     }
     
-    var base: Base {
-        _base
-    }
-    
     subscript<Property>(
         dynamicMember keyPath: ReferenceWritableKeyPath<Base, Property>
-    ) -> (Property) -> Builder<Base> {
+    ) -> (Property) -> Neat<Base> {
         { newValue in
-            _base[keyPath: keyPath] = newValue
+            base[keyPath: keyPath] = newValue
             return self
         }
     }
     
     subscript<Property>(
         dynamicMember keyPath: KeyPath<Base, Property>
-    ) -> PropertyBuilder<Base, Property> {
-        PropertyBuilder(_base, keyPath: keyPath)
+    ) -> PropertyNeat<Base, Property> {
+        PropertyNeat(base, keyPath: keyPath)
     }
     
     subscript<Property>(
         dynamicMember keyPath: ReferenceWritableKeyPath<Base, Property?>
-    ) -> OptionalPropertyBuilder<Base, Property> {
-        OptionalPropertyBuilder(
-            _base,
+    ) -> OptionalPropertyNeat<Base, Property> {
+        OptionalPropertyNeat(
+            base,
             keyPath: keyPath,
             fileID: fileID,
             line: line
         )
     }
     
-    func action(_ block: (_ base: Base) -> Void) -> Builder<Base> {
-        block(_base)
+    func configure(
+        _ block: (Neat<Base>) -> Neat<Base>,
+        fileID: @autoclosure @escaping () -> String = #fileID,
+        line: @autoclosure @escaping () -> Int = #line
+    ) -> Base {
+        block(Neat(base, fileID: fileID(), line: line())).build()
+    }
+    
+    func perform(_ block: (_ base: Base) -> Void) -> Neat<Base> {
+        block(base)
         return self
     }
     
-    fileprivate func build() -> Base {
-        _base
+    private func build() -> Base {
+        base
     }
 }
 
 @dynamicMemberLookup
-struct PropertyBuilder<Parent: AnyObject, Property> {
+struct PropertyNeat<Parent: AnyObject, Property> {
     private var parent: Parent
     private var keyPath: KeyPath<Parent, Property>
     
@@ -105,16 +81,16 @@ struct PropertyBuilder<Parent: AnyObject, Property> {
     subscript<NestedProperty>(
         dynamicMember nestedKeyPath:
         ReferenceWritableKeyPath<Property, NestedProperty>
-    ) -> (NestedProperty) -> Builder<Parent> {
+    ) -> (NestedProperty) -> Neat<Parent> {
         { newValue in
             parent[keyPath: keyPath.appending(path: nestedKeyPath)] = newValue
-            return Builder(parent)
+            return Neat(parent)
         }
     }
 }
 
 @dynamicMemberLookup
-struct OptionalPropertyBuilder<Parent: AnyObject, Property> {
+struct OptionalPropertyNeat<Parent: AnyObject, Property> {
     private var parent: Parent
     private var keyPath: ReferenceWritableKeyPath<Parent, Property?>
     
@@ -124,7 +100,7 @@ struct OptionalPropertyBuilder<Parent: AnyObject, Property> {
     private var logger: OSLog {
         OSLog(
             subsystem: .bundleIdentifier,
-            category: "Builder"
+            category: "Neat"
         )
     }
     
@@ -143,15 +119,15 @@ struct OptionalPropertyBuilder<Parent: AnyObject, Property> {
     subscript<NestedProperty>(
         dynamicMember nestedKeyPath:
         WritableKeyPath<Property, NestedProperty>
-    ) -> (NestedProperty) -> Builder<Parent> {
+    ) -> (NestedProperty) -> Neat<Parent> {
         { newValue in
             guard var copy = parent[keyPath: keyPath] else {
                 failureLog(nestedKeyPath: nestedKeyPath)
-                return Builder(parent)
+                return Neat(parent, fileID: fileID, line: line)
             }
             copy[keyPath: nestedKeyPath] = newValue
             parent[keyPath: keyPath] = copy
-            return Builder(parent)
+            return Neat(parent, fileID: fileID, line: line)
         }
     }
     
@@ -167,7 +143,7 @@ struct OptionalPropertyBuilder<Parent: AnyObject, Property> {
         )
         os_log(
             """
-            [Builder: Failed to Update %{public}@]
+            [Neat: Failed to Update %{public}@]
             Location: %{public}@ at line %{public}d.
             %{public}@'s %{public}@ is nil.
             """,
@@ -184,36 +160,36 @@ struct OptionalPropertyBuilder<Parent: AnyObject, Property> {
     }
 }
 
-extension Builder where Base: UIView {
-    func addSubview(view: UIView) -> Builder<Base> {
-        _base.addSubview(view)
+extension Neat where Base: UIView {
+    func addSubview(view: UIView) -> Neat<Base> {
+        base.addSubview(view)
         return self
     }
     
     func setContentHuggingPriority(
         _ priority: UILayoutPriority,
         for axis: NSLayoutConstraint.Axis
-    ) -> Builder<Base> {
-        _base.setContentHuggingPriority(priority, for: axis)
+    ) -> Neat<Base> {
+        base.setContentHuggingPriority(priority, for: axis)
         return self
     }
     
     func setContentCompressionResistancePriority(
         _ priority: UILayoutPriority,
         for axis: NSLayoutConstraint.Axis
-    ) -> Builder<Base> {
-        _base.setContentCompressionResistancePriority(priority, for: axis)
+    ) -> Neat<Base> {
+        base.setContentCompressionResistancePriority(priority, for: axis)
         return self
     }
 }
 
-extension Builder where Base: UIControl {
+extension Neat where Base: UIControl {
     func addTarget(
         _ target: Any?,
         action: Selector,
         for controlEvents: UIControl.Event
-    ) -> Builder<Base> {
-        _base.addTarget(target, action: action, for: controlEvents)
+    ) -> Neat<Base> {
+        base.addTarget(target, action: action, for: controlEvents)
         return self
     }
     
@@ -221,41 +197,41 @@ extension Builder where Base: UIControl {
         _ target: Any?,
         action: Selector?,
         for controlEvents: UIControl.Event
-    ) -> Builder<Base> {
-        _base.removeTarget(target, action: action, for: controlEvents)
+    ) -> Neat<Base> {
+        base.removeTarget(target, action: action, for: controlEvents)
         return self
     }
 }
 
-extension Builder where Base: UIButton {
+extension Neat where Base: UIButton {
     func setImage(
         _ image: UIImage?,
         for state: UIControl.State
-    ) -> Builder<Base> {
-        _base.setImage(image, for: state)
+    ) -> Neat<Base> {
+        base.setImage(image, for: state)
         return self
     }
     
     func setTitle(
         _ title: String?,
         for state: UIControl.State
-    ) -> Builder<Base> {
-        _base.setTitle(title, for: state)
+    ) -> Neat<Base> {
+        base.setTitle(title, for: state)
         return self
     }
     
     func setTitleColor(
         _ color: UIColor?,
         for state: UIControl.State
-    ) -> Builder<Base> {
-        _base.setTitleColor(color, for: state)
+    ) -> Neat<Base> {
+        base.setTitleColor(color, for: state)
         return self
     }
 }
 
-extension Builder where Base: UITableView {
-    func register<T: UITableViewCell>(_ cellClass: T.Type) -> Builder<Base> {
-        _base.register(
+extension Neat where Base: UITableView {
+    func register<T: UITableViewCell>(_ cellClass: T.Type) -> Neat<Base> {
+        base.register(
             cellClass,
             forCellReuseIdentifier: String(describing: T.self)
         )
@@ -263,11 +239,11 @@ extension Builder where Base: UITableView {
     }
 }
 
-extension Builder where Base: UICollectionView {
+extension Neat where Base: UICollectionView {
     func register<T: UICollectionViewCell>(
         _ cellClass: T.Type
-    ) -> Builder<Base> {
-        _base.register(
+    ) -> Neat<Base> {
+        base.register(
             cellClass,
             forCellWithReuseIdentifier: String(describing: T.self)
         )
@@ -275,38 +251,37 @@ extension Builder where Base: UICollectionView {
     }
 }
 
-extension Builder where Base: UIAlertController {
-    func addAction(_ action: UIAlertAction) -> Builder<Base> {
-        _base.addAction(action)
+extension Neat where Base: UIAlertController {
+    func addAction(_ action: UIAlertAction) -> Neat<Base> {
+        base.addAction(action)
         return self
     }
 }
 
-extension Builder where Base: UIActivityIndicatorView {
-    func startAnimating() -> Builder<Base> {
-        _base.startAnimating()
+extension Neat where Base: UIActivityIndicatorView {
+    func startAnimating() -> Neat<Base> {
+        base.startAnimating()
         return self
     }
 }
 
-extension Builder where Base: NSMutableAttributedString {
-    func append(_ attrString: NSAttributedString) -> Builder<Base> {
-        _base.append(attrString)
+extension Neat where Base: NSMutableAttributedString {
+    func append(_ attrString: NSAttributedString) -> Neat<Base> {
+        base.append(attrString)
         return self
     }
 }
 
-extension Builder where Base: UINavigationBarAppearance {
-    func configureWithOpaqueBackground() -> Builder<Base> {
-        _base.configureWithOpaqueBackground()
+extension Neat where Base: UINavigationBarAppearance {
+    func configureWithOpaqueBackground() -> Neat<Base> {
+        base.configureWithOpaqueBackground()
         return self
     }
 }
 
-extension Builder where Base: UITabBarAppearance {
-    func configureWithOpaqueBackground() -> Builder<Base> {
-        _base.configureWithOpaqueBackground()
+extension Neat where Base: UITabBarAppearance {
+    func configureWithOpaqueBackground() -> Neat<Base> {
+        base.configureWithOpaqueBackground()
         return self
     }
 }
-

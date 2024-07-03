@@ -8,8 +8,8 @@
 import UIKit
 
 final class SummaryCVCell: BaseCollectionViewCell {
-    private let iconImageView = UIImageView().build { builder in
-        builder.contentMode(.scaleAspectFill)
+    private let iconImageView = UIImageView().nt.configure { 
+        $0.contentMode(.scaleAspectFill)
             .backgroundColor(.label)
             .clipsToBounds(true)
             .preferredSymbolConfiguration(
@@ -17,13 +17,13 @@ final class SummaryCVCell: BaseCollectionViewCell {
             )
     }
     
-    private let titleLabel = UILabel().build { builder in
-        builder.textColor(.secondaryLabel)
+    private let titleLabel = UILabel().nt.configure { 
+        $0.textColor(.secondaryLabel)
             .font(.systemFont(ofSize: 17, weight: .semibold))
     }
     
-    private let countLabel = UILabel().build { builder in
-        builder.textColor(.label)
+    private let countLabel = UILabel().nt.configure { 
+        $0.textColor(.label)
             .font(.boldSystemFont(ofSize: 28))
     }
     

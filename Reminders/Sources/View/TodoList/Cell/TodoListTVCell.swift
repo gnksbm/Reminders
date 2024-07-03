@@ -10,14 +10,14 @@ import UIKit
 import SnapKit
 
 final class TodoListTVCell: BaseTableViewCell {
-    private let checkButton = UIButton().build { builder in
-        builder.configuration(.plain())
+    private let checkButton = UIButton().nt.configure { 
+        $0.configuration(.plain())
             .configuration.image(UIImage(systemName: "circle"))
             .configuration.baseForegroundColor(.secondaryLabel)
     }
     
-    private let priorityLabel = UILabel().build { builder in
-        builder.textColor(.tintColor)
+    private let priorityLabel = UILabel().nt.configure { 
+        $0.textColor(.tintColor)
     }
     
     private let titleLabel = UILabel()

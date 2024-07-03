@@ -19,8 +19,8 @@ extension UIViewController {
         guard !OverlayHelper.isToastShowing else { return }
         OverlayHelper.isToastShowing = true
         
-        let toastView = ToastView().build { builder in
-            builder.action { $0.updateMessage(message) }
+        let toastView = ToastView().nt.configure { 
+            $0.perform { $0.updateMessage(message) }
         }
         
         view.addSubview(toastView)
@@ -66,8 +66,8 @@ extension UIViewController {
     
     func showActivityIndicator() {
         guard OverlayHelper.activityView == nil else { return }
-        let activityView = UIActivityIndicatorView().build { builder in
-            builder.color(.tintColor)
+        let activityView = UIActivityIndicatorView().nt.configure {
+            $0.color(.tintColor)
                 .translatesAutoresizingMaskIntoConstraints(false)
                 .startAnimating()
         }
@@ -93,8 +93,8 @@ extension UIViewController {
     
     func showProgressView() {
         guard OverlayHelper.progressView == nil else { return }
-        let progressView = UIProgressView().build { builder in
-            builder.trackTintColor(.separator)
+        let progressView = UIProgressView().nt.configure { 
+            $0.trackTintColor(.separator)
                 .progressTintColor(.red)
         }
         
