@@ -22,7 +22,7 @@ final class AddViewController: BaseViewController {
         ]
     )
     
-    private let textBackgroundView = UIView().nt.configure { 
+    private let textBackgroundView = UIView().nt.configure {
         $0.backgroundColor(.secondarySystemBackground)
             .layer.cornerRadius(12)
     }
@@ -68,30 +68,22 @@ final class AddViewController: BaseViewController {
     
     private lazy var priorityButton = UIButton().nt.configure {
         $0.configuration(.rounded(title: "우선순위"))
-            .menu(
-                UIMenu(
-                    title: "",
-                    children: TodoItem.Priority.allCases
-                        .map { [weak self] priority in
-                            var image: UIImage?
-                            if priority == self?.priority {
-                                image = UIImage(systemName: "checkmark")
-                            }
-                            return UIAction(
-                                title: priority.title,
-                                image: image
-                            ) { _ in
-                                self?.priority = priority
-                            }
-                        }
-                )
+            .addTarget(
+                self,
+                action: #selector(priorityButtonTapped),
+                for: .touchUpInside
             )
+            .menu(makePriorityMenu())
     }
     
     private let addImageButton = UIButton().nt.configure { 
         $0.configuration(.rounded(title: "이미지 추가"))
     }
     
+    deinit {
+        removeObserver()
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         addObserver()
@@ -155,6 +147,7 @@ final class AddViewController: BaseViewController {
                         TodoItem(
                             title: title,
                             memo: memo,
+                            deadline: selectedDate,
                             hashTag: hashTag,
                             priority: priority
                         )
@@ -245,6 +238,22 @@ final class AddViewController: BaseViewController {
             name: .hashTag,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(priorityChanged),
+            name: .priority,
+            object: nil
+        )
+    }
+    
+    private func removeObserver() {
+        NSNotification.Name.all.forEach {
+            NotificationCenter.default.removeObserver(
+                self,
+                name: $0,
+                object: nil
+            )
+        }
     }
     
     private func showDateModal() {
@@ -274,6 +283,25 @@ final class AddViewController: BaseViewController {
         present(alertVC, animated: true)
     }
     
+    private func makePriorityMenu() -> UIMenu {
+        UIMenu(
+            title: "",
+            children: TodoItem.Priority.allCases.map { priority in
+                var image: UIImage?
+                if self.priority == priority {
+                    image = UIImage(systemName: "checkmark")
+                }
+                return UIAction(
+                    title: priority.title,
+                    image: image
+                ) { _ in
+                    self.priority = priority
+                }
+            }
+        )
+        
+    }
+    
     @objc private func deadlineButtonTapped() {
         navigationController?.pushViewController(
             DateViewController(selectedDate: selectedDate),
@@ -288,6 +316,13 @@ final class AddViewController: BaseViewController {
     @objc private func hashTagButtonTapped() {
         navigationController?.pushViewController(
             TagViewController(hashTag: hashTagStr),
+            animated: true
+        )
+    }
+    
+    @objc private func priorityButtonTapped() {
+        navigationController?.pushViewController(
+            PriorityViewController(index: priority.rawValue),
             animated: true
         )
     }
@@ -312,6 +347,19 @@ final class AddViewController: BaseViewController {
             return
         }
         hashTagStr = hashTag
+    }
+    
+    @objc private func priorityChanged(_ notification: NSNotification) {
+        guard let priorityIndex =
+                notification.userInfo?["priorityIndex"] as? Int else {
+            Logger.debug("""
+                Int 변환 실패
+                Value: \(String(describing: notification.userInfo?["date"]))
+            """)
+            return
+        }
+        priority = TodoItem.Priority.allCases[priorityIndex]
+        priorityButton.menu = makePriorityMenu()
     }
 }
 
