@@ -62,6 +62,11 @@ final class AddViewController: BaseViewController {
         infoColor: .tintColor
     ).nt.configure {
         $0.perform { base in
+            let longGesture = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(hashTagButtonLongPressed)
+            )
+            base.addGestureRecognizer(longGesture)
             base.addTarget(
                 self,
                 action: #selector(hashTagButtonTapped)
@@ -73,6 +78,11 @@ final class AddViewController: BaseViewController {
         title: "우선순위"
     ).nt.configure {
         $0.perform { base in
+            let longGesture = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(priorityButtonLongPressed)
+            )
+            base.addGestureRecognizer(longGesture)
             base.addTarget(
                 self,
                 action: #selector(priorityButtonTapped)
@@ -242,50 +252,23 @@ final class AddViewController: BaseViewController {
         }
     }
     
-    private func showDateModal() {
-        let alertVC = UIAlertController(
-            title: "마감일을 선택해주세요",
-            message: nil,
-            preferredStyle: .actionSheet
+    private func updateDeadline(date: Date) {
+        selectedDate = date
+        deadlineButton.updateSubInfo(
+            text: date.formatted(dateFormat: .todoOutput)
         )
-        let datePicker = UIDatePicker().nt.configure {
-            $0.preferredDatePickerStyle(.inline)
-        }
-        if let selectedDate {
-            datePicker.date = selectedDate
-        }
-        alertVC.addAction(
-            UIAlertAction(title: "설정하기", style: .default) { [weak self] _ in
-                guard let self else { return }
-                selectedDate = datePicker.date
-            }
-        )
-        alertVC.addAction(
-            UIAlertAction(title: "취소", style: .cancel)
-        )
-        let contentViewController = UIViewController()
-        contentViewController.view = datePicker
-        alertVC.setValue(contentViewController, forKey: "contentViewController")
-        present(alertVC, animated: true)
     }
     
-    private func makePriorityMenu() -> UIMenu {
-        UIMenu(
-            title: "",
-            children: TodoItem.Priority.allCases.map { priority in
-                var image: UIImage?
-                if self.priority == priority {
-                    image = UIImage(systemName: "checkmark")
-                }
-                return UIAction(
-                    title: priority.title,
-                    image: image
-                ) { _ in
-                    self.priority = priority
-                }
-            }
+    private func updateHashTag(name: String) {
+        hashTagStr = name.isNotEmpty ? name : nil
+        hashTagButton.updateSubInfo(
+            text: name.isNotEmpty ? "#\(name)" : ""
         )
-        
+    }
+    
+    private func updatePriority(index: Int) {
+        priority = TodoItem.Priority.allCases[index]
+        priorityButton.updateSubInfo(text: priority.title)
     }
     
     @objc private func deadlineButtonTapped() {
@@ -296,13 +279,53 @@ final class AddViewController: BaseViewController {
     }
     
     @objc private func deadlineButtonLongPressed() {
-        showDateModal()
+        let datePicker = UIDatePicker().nt.configure {
+            $0.preferredDatePickerStyle(.inline)
+        }
+        if let selectedDate {
+            datePicker.date = selectedDate
+        }
+        showActionSheet(
+            title: "마감일을 선택해주세요",
+            view: datePicker,
+            action: UIAlertAction(
+                title: "설정하기",
+                style: .default
+            ) {
+                [weak self] _ in
+                guard let self else { return }
+                updateDeadline(date: datePicker.date)
+            }
+        )
     }
     
     @objc private func hashTagButtonTapped() {
         navigationController?.pushViewController(
             TagViewController(hashTag: hashTagStr),
             animated: true
+        )
+    }
+    
+    @objc private func hashTagButtonLongPressed() {
+        let textField = UITextField().nt.configure {
+            $0.borderStyle(.roundedRect)
+                .backgroundColor(.secondarySystemBackground)
+        }
+        showActionSheet(
+            title: "해시태그를 입력해주세요",
+            view: textField,
+            action: UIAlertAction(
+                title: "설정하기",
+                style: .default
+            ) {
+                [weak self] _ in
+                guard let self else { return }
+                guard let name = textField.text else {
+                    Logger.nilObject(textField, keyPath: \.text)
+                    return
+                }
+                updateHashTag(name: name)
+            }
         )
     }
     
@@ -313,7 +336,27 @@ final class AddViewController: BaseViewController {
         )
     }
     
-    @objc private func deadlineChanged(_ notification: NSNotification) { 
+    @objc private func priorityButtonLongPressed() {
+        lazy var segmentControl = UISegmentedControl(
+            items: TodoItem.Priority.allCases.map { $0.title }
+        ).nt.configure {
+            $0.selectedSegmentIndex(priority.rawValue)
+        }
+        showActionSheet(
+            title: "우선순위를 선택해주세요",
+            view: segmentControl,
+            action: UIAlertAction(
+                title: "설정하기",
+                style: .default
+            ) {
+                [weak self] _ in
+                guard let self else { return }
+                updatePriority(index: segmentControl.selectedSegmentIndex)
+            }
+        )
+    }
+    
+    @objc private func deadlineChanged(_ notification: NSNotification) {
         guard let date = notification.userInfo?["date"] as? Date else {
             Logger.debug("""
                 Date 변환 실패
@@ -321,10 +364,7 @@ final class AddViewController: BaseViewController {
             """)
             return
         }
-        selectedDate = date
-        deadlineButton.updateSubInfo(
-            text: date.formatted(dateFormat: .todoOutput)
-        )
+        updateDeadline(date: date)
     }
     
     @objc private func hashTagChanged(_ notification: NSNotification) {
@@ -335,10 +375,7 @@ final class AddViewController: BaseViewController {
             """)
             return
         }
-        hashTagStr = hashTag.isNotEmpty ? hashTag : nil
-        hashTagButton.updateSubInfo(
-            text: hashTag.isNotEmpty ? "#\(hashTag)" : ""
-        )
+        updateHashTag(name: hashTag)
     }
     
     @objc private func priorityChanged(_ notification: NSNotification) {
@@ -350,8 +387,7 @@ final class AddViewController: BaseViewController {
             """)
             return
         }
-        priority = TodoItem.Priority.allCases[priorityIndex]
-        priorityButton.updateSubInfo(text: priority.title)
+        updatePriority(index: priorityIndex)
     }
 }
 

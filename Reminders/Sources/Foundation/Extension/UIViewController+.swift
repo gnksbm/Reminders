@@ -7,6 +7,31 @@
 
 import UIKit
 
+extension UIViewController {
+    func showActionSheet(
+        title: String? = nil,
+        view: UIView,
+        action: UIAlertAction,
+        hasCancelAction: Bool = true
+    ) {
+        let alertVC = UIAlertController(
+            title: title,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        alertVC.addAction(action)
+        if hasCancelAction {
+            alertVC.addAction(
+                UIAlertAction(title: "취소", style: .cancel)
+            )
+        }
+        let contentViewController = UIViewController()
+        contentViewController.view = view
+        alertVC.setValue(contentViewController, forKey: "contentViewController")
+        present(alertVC, animated: true)
+    }
+}
+
 // MARK: OverlayView
 extension UIViewController {
     private enum OverlayHelper {

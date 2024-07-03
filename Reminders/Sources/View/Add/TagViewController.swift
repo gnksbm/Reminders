@@ -10,7 +10,7 @@ import UIKit
 final class TagViewController: BaseViewController {
     private lazy var textField = UITextField().nt.configure {
         $0.borderStyle(.roundedRect)
-            .placeholder("해시태그를 입력하세요")
+            .placeholder("해시태그를 입력해주세요")
             .backgroundColor(.secondarySystemBackground)
             .addTarget(
                 self,
