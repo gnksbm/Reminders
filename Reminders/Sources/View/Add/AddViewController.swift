@@ -41,44 +41,47 @@ final class AddViewController: BaseViewController {
             .attributedText(textViewPlaceholder)
     }
     
-    private lazy var deadlineButton = UIButton().nt.configure { 
-        $0.configuration(.rounded(title: "마감일"))
-            .addTarget(
-                self,
-                action: #selector(deadlineButtonTapped),
-                for: .touchUpInside
+    private lazy var deadlineButton = AddSelectButton(
+        title: "마감일"
+    ).nt.configure {
+        $0.perform { base in
+            let longGesture = UILongPressGestureRecognizer(
+                target: self,
+                action: #selector(deadlineButtonLongPressed)
             )
-            .perform { base in
-                let longGesture = UILongPressGestureRecognizer(
-                    target: self,
-                    action: #selector(deadlineButtonLongPressed)
-                )
-                base.addGestureRecognizer(longGesture)
-            }
+            base.addGestureRecognizer(longGesture)
+            base.addTarget(
+                self,
+                action: #selector(deadlineButtonTapped)
+            )
+        }
     }
     
-    private lazy var hashTagButton = UIButton().nt.configure { 
-        $0.configuration(.rounded(title: "태그"))
-            .addTarget(
+    private lazy var hashTagButton = AddSelectButton(
+        title: "태그",
+        infoColor: .tintColor
+    ).nt.configure {
+        $0.perform { base in
+            base.addTarget(
                 self,
-                action: #selector(hashTagButtonTapped),
-                for: .touchUpInside
+                action: #selector(hashTagButtonTapped)
             )
+        }
     }
     
-    private lazy var priorityButton = UIButton().nt.configure {
-        $0.configuration(.rounded(title: "우선순위"))
-            .addTarget(
+    private lazy var priorityButton = AddSelectButton(
+        title: "우선순위"
+    ).nt.configure {
+        $0.perform { base in
+            base.addTarget(
                 self,
-                action: #selector(priorityButtonTapped),
-                for: .touchUpInside
+                action: #selector(priorityButtonTapped)
             )
-            .menu(makePriorityMenu())
+            base.updateSubInfo(text: priority.title)
+        }
     }
     
-    private let addImageButton = UIButton().nt.configure { 
-        $0.configuration(.rounded(title: "이미지 추가"))
-    }
+    private let addImageButton = AddSelectButton(title: "이미지 추가")
     
     deinit {
         removeObserver()
@@ -87,27 +90,6 @@ final class AddViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addObserver()
-    }
-    
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        [
-            deadlineButton,
-            hashTagButton,
-            priorityButton,
-            addImageButton
-        ].forEach { button in
-            guard let titleWidth = button.titleLabel?.bounds.width,
-                  let imageWidth = button.imageView?.bounds.width,
-                  let contentInsets = button.configuration?.contentInsets
-            else { return }
-            button.configuration?.imagePadding =
-            button.bounds.width -
-            imageWidth -
-            contentInsets.leading -
-            contentInsets.trailing -
-            titleWidth
-        }
     }
     
     override func configureNavigation() {
@@ -340,6 +322,9 @@ final class AddViewController: BaseViewController {
             return
         }
         selectedDate = date
+        deadlineButton.updateSubInfo(
+            text: date.formatted(dateFormat: .todoOutput)
+        )
     }
     
     @objc private func hashTagChanged(_ notification: NSNotification) {
@@ -350,7 +335,10 @@ final class AddViewController: BaseViewController {
             """)
             return
         }
-        hashTagStr = hashTag
+        hashTagStr = hashTag.isNotEmpty ? hashTag : nil
+        hashTagButton.updateSubInfo(
+            text: hashTag.isNotEmpty ? "#\(hashTag)" : ""
+        )
     }
     
     @objc private func priorityChanged(_ notification: NSNotification) {
@@ -363,7 +351,7 @@ final class AddViewController: BaseViewController {
             return
         }
         priority = TodoItem.Priority.allCases[priorityIndex]
-        priorityButton.menu = makePriorityMenu()
+        priorityButton.updateSubInfo(text: priority.title)
     }
 }
 

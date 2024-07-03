@@ -15,7 +15,7 @@ import Foundation
 enum DateFormat: String {
     private static var cachedStorage = [DateFormat: DateFormatter]()
     
-    case todoOutput = "yyyy.MM.dd"
+    case todoOutput = "yyyy.MM.dd EEEE"
     
     var formatter: DateFormatter {
         if let formatter = Self.cachedStorage[self] {

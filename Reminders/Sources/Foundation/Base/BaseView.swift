@@ -8,8 +8,8 @@
 import UIKit
 
 class BaseView: UIView {
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        super.init(frame: .zero)
         configureUI()
         configureLayout()
     }

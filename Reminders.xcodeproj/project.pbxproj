@@ -14,6 +14,7 @@
 		8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */; };
 		8E0E58E22C35958C008CA109 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E12C35958C008CA109 /* PriorityViewController.swift */; };
 		8E0E58E42C359DFD008CA109 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E32C359DFD008CA109 /* Date+.swift */; };
+		8E0E58E82C35A4E9008CA109 /* AddSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E72C35A4E9008CA109 /* AddSelectButton.swift */; };
 		8E5A43282C3461E20045D77A /* BaseTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43272C3461E20045D77A /* BaseTableViewCell.swift */; };
 		8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A432A2C34624B0045D77A /* TodoListViewController.swift */; };
 		8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A432D2C3466220045D77A /* TodoListTVCell.swift */; };
@@ -71,6 +72,7 @@
 		8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
 		8E0E58E12C35958C008CA109 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
 		8E0E58E32C359DFD008CA109 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
+		8E0E58E72C35A4E9008CA109 /* AddSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelectButton.swift; sourceTree = "<group>"; };
 		8E5A43272C3461E20045D77A /* BaseTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewCell.swift; sourceTree = "<group>"; };
 		8E5A432A2C34624B0045D77A /* TodoListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewController.swift; sourceTree = "<group>"; };
 		8E5A432D2C3466220045D77A /* TodoListTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListTVCell.swift; sourceTree = "<group>"; };
@@ -122,6 +124,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8E0E58E62C35A4D1008CA109 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				8E0E58E72C35A4E9008CA109 /* AddSelectButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		8E5A43292C3462330045D77A /* TodoList */ = {
 			isa = PBXGroup;
 			children = (
@@ -324,6 +334,7 @@
 				8E0E58D32C357BAE008CA109 /* DateViewController.swift */,
 				8E0E58DB2C358DCE008CA109 /* TagViewController.swift */,
 				8E0E58E12C35958C008CA109 /* PriorityViewController.swift */,
+				8E0E58E62C35A4D1008CA109 /* View */,
 			);
 			path = Add;
 			sourceTree = "<group>";
@@ -431,6 +442,7 @@
 				BEF6E0A52C33E88D00FA435D /* NeatCompatible.swift in Sources */,
 				8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
+				8E0E58E82C35A4E9008CA109 /* AddSelectButton.swift in Sources */,
 				8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */,
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,
 				8E0E58E42C359DFD008CA109 /* Date+.swift in Sources */,
