@@ -23,7 +23,7 @@ enum Logger {
         category: "Default"
     )
     
-    static func debugging(
+    static func debug(
         _ content: Any,
         file: String = #fileID,
         line: Int = #line,

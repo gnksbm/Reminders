@@ -60,6 +60,16 @@ final class AddViewController: BaseViewController {
         $0.configuration(.rounded(title: "이미지 추가"))
     }
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(deadlineChanged),
+            name: NSNotification.Name("deadline"),
+            object: nil
+        )
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         [
@@ -188,13 +198,13 @@ final class AddViewController: BaseViewController {
         ]
     }
     
-    @objc private func deadlineButtonTapped() {
+    private func showDateModal() {
         let alertVC = UIAlertController(
             title: "마감일을 선택해주세요",
             message: nil,
             preferredStyle: .actionSheet
         )
-        let datePicker = UIDatePicker().nt.configure { 
+        let datePicker = UIDatePicker().nt.configure {
             $0.preferredDatePickerStyle(.inline)
         }
         if let selectedDate {
@@ -213,6 +223,24 @@ final class AddViewController: BaseViewController {
         contentViewController.view = datePicker
         alertVC.setValue(contentViewController, forKey: "contentViewController")
         present(alertVC, animated: true)
+    }
+    
+    @objc private func deadlineButtonTapped() {
+        navigationController?.pushViewController(
+            DateViewController(selectedDate: selectedDate),
+            animated: true
+        )
+    }
+    
+    @objc private func deadlineChanged(_ notification: NSNotification) { 
+        guard let date = notification.userInfo?["date"] as? Date else {
+            Logger.debug("""
+                Date 변환 실패
+                Value: \(String(describing: notification.userInfo?["date"]))
+            """)
+            return
+        }
+        selectedDate = date
     }
 }
 
