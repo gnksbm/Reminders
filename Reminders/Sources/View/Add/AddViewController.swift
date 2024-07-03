@@ -12,6 +12,7 @@ import SnapKit
 final class AddViewController: BaseViewController {
     private var selectedDate: Date?
     private var hashTagStr: String?
+    private var priority = TodoItem.Priority.none
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -47,6 +48,13 @@ final class AddViewController: BaseViewController {
                 action: #selector(deadlineButtonTapped),
                 for: .touchUpInside
             )
+            .perform { base in
+                let longGesture = UILongPressGestureRecognizer(
+                    target: self,
+                    action: #selector(deadlineButtonLongPressed)
+                )
+                base.addGestureRecognizer(longGesture)
+            }
     }
     
     private lazy var hashTagButton = UIButton().nt.configure { 
@@ -58,8 +66,26 @@ final class AddViewController: BaseViewController {
             )
     }
     
-    private let priorityButton = UIButton().nt.configure { 
+    private lazy var priorityButton = UIButton().nt.configure {
         $0.configuration(.rounded(title: "우선순위"))
+            .menu(
+                UIMenu(
+                    title: "",
+                    children: TodoItem.Priority.allCases
+                        .map { [weak self] priority in
+                            var image: UIImage?
+                            if priority == self?.priority {
+                                image = UIImage(systemName: "checkmark")
+                            }
+                            return UIAction(
+                                title: priority.title,
+                                image: image
+                            ) { _ in
+                                self?.priority = priority
+                            }
+                        }
+                )
+            )
     }
     
     private let addImageButton = UIButton().nt.configure { 
@@ -130,7 +156,7 @@ final class AddViewController: BaseViewController {
                             title: title,
                             memo: memo,
                             hashTag: hashTag,
-                            priority: .none
+                            priority: priority
                         )
                     )
                     dismiss(animated: true)
@@ -253,6 +279,10 @@ final class AddViewController: BaseViewController {
             DateViewController(selectedDate: selectedDate),
             animated: true
         )
+    }
+    
+    @objc private func deadlineButtonLongPressed() {
+        showDateModal()
     }
     
     @objc private func hashTagButtonTapped() {
