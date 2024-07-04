@@ -9,6 +9,7 @@ import Foundation
 
 import RealmSwift
 
+// MARK: CRUD
 final class RealmStorage {
     private let realm = try! Realm()
     
@@ -30,6 +31,41 @@ final class RealmStorage {
         try realm.write {
             realm.delete(object)
         }
+    }
+}
+
+// MARK: 마이그레이션
+extension RealmStorage {
+    enum RealmVersion: Int, CaseIterable {
+        static let latestVersion = RealmVersion.allCases.count - 1
+        
+        case origin
+    }
+    
+    static func migrationIfNeeded() {
+        if let url = try! Realm().configuration.fileURL {
+            do {
+                let version = try schemaVersionAtURL(url)
+                if version == RealmVersion.latestVersion {
+                    migration(currentVersion: Int(version))
+                }
+            } catch {
+                Logger.error(error)
+            }
+        }
+    }
+    
+    private static func migration(currentVersion: Int) {
+        let config = Realm.Configuration(
+            schemaVersion: UInt64(RealmVersion.latestVersion)
+        ) { migration, oldSchemaVersion in
+            let currentVersion = RealmVersion.allCases[Int(oldSchemaVersion)]
+            switch currentVersion {
+            case .origin:
+                break
+            }
+        }
+        Realm.Configuration.defaultConfiguration = config
     }
 }
 
