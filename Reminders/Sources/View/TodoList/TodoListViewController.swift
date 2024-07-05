@@ -43,10 +43,37 @@ final class TodoListViewController: BaseViewController {
         updateSnapshot(items: savedItems)
     }
     
-    private func removeItem(indexPath: IndexPath) {
+    private func starItem(indexPath: IndexPath) throws { }
+    
+    private func flagItem(indexPath: IndexPath) throws { }
+    
+    private func removeItem(indexPath: IndexPath) throws {
         let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
-        try? todoRepository.removeTodo(item: item)
+        try todoRepository.removeTodo(item: item)
         fetchItems()
+    }
+    
+    private func makeContextualAction(
+        image: UIImage?,
+        color: UIColor,
+        indexPath: IndexPath,
+        completion: @escaping () throws -> Void
+    ) -> UIContextualAction {
+        let removeAction = UIContextualAction(
+            style: .normal,
+            title: nil
+        ) { [weak self] action, view, handler in
+            do {
+                try completion()
+            } catch {
+                self?.showToast(message: "잠시후 다시 시도해주세요")
+                Logger.error(error)
+            }
+            handler(true)
+        }
+        removeAction.image = image
+        removeAction.backgroundColor = color
+        return removeAction
     }
 }
 
@@ -132,14 +159,34 @@ extension TodoListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
-        let removeAction = UIContextualAction(
-            style: .normal,
-            title: nil
-        ) { [weak self] action, view, handler in
-            self?.removeItem(indexPath: indexPath)
+        let starAction = makeContextualAction(
+            image: UIImage(systemName: "star"),
+            color: .secondaryLabel,
+            indexPath: indexPath
+        ) { [weak self] in
+            try self?.starItem(indexPath: indexPath)
         }
-        removeAction.image = UIImage(systemName: "trash")
-        removeAction.backgroundColor = .red
-        return UISwipeActionsConfiguration(actions: [removeAction])
+        let flagAction = makeContextualAction(
+            image: UIImage(systemName: "flag"),
+            color: .orange,
+            indexPath: indexPath
+        ) { [weak self] in
+            try self?.flagItem(indexPath: indexPath)
+        }
+        let removeAction = makeContextualAction(
+            image: UIImage(systemName: "trash"),
+            color: .red,
+            indexPath: indexPath
+        ) { [weak self] in
+            try self?.removeItem(indexPath: indexPath)
+        }
+        
+        return UISwipeActionsConfiguration(
+            actions: [
+                removeAction,
+                flagAction,
+                starAction
+            ]
+        )
     }
 }

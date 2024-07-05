@@ -261,6 +261,7 @@ final class AddViewController: BaseViewController {
                 object: nil
             )
         } catch {
+            showToast(message: "잠시후 다시 시도해주세요")
             Logger.error(error)
         }
     }

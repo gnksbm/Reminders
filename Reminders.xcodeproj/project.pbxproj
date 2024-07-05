@@ -23,6 +23,7 @@
 		8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */; };
 		8E5A43372C3476870045D77A /* TodoTVHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */; };
 		8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218762C3821D400C1E548 /* TodoRepository.swift */; };
+		8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218782C38344800C1E548 /* ImageStorage.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -83,6 +84,7 @@
 		8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+.swift"; sourceTree = "<group>"; };
 		8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTVHeaderView.swift; sourceTree = "<group>"; };
 		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
+		8EC218782C38344800C1E548 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -337,6 +339,7 @@
 			children = (
 				BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */,
 				BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */,
+				8EC218782C38344800C1E548 /* ImageStorage.swift */,
 			);
 			path = Storage;
 			sourceTree = "<group>";
@@ -485,6 +488,7 @@
 				BEF6E0CF2C34101100FA435D /* ViewComponentError.swift in Sources */,
 				BEF6E0A22C33E87900FA435D /* Neat.swift in Sources */,
 				8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */,
+				8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */,
 				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,
 				BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */,
