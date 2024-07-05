@@ -16,7 +16,7 @@ final class TodoItem: Object, Identifiable {
     @Persisted var deadline: Date?
     @Persisted var hashTag: HashTag?
     @Persisted var priority: Priority
-    @Persisted var imageData: List<Data>
+    @Persisted var imageFileName: List<String>
     @Persisted var isDone: Bool
     
     convenience init(
@@ -24,8 +24,7 @@ final class TodoItem: Object, Identifiable {
         memo: String? = nil,
         deadline: Date? = nil,
         hashTag: HashTag? = nil,
-        priority: Priority,
-        imageData: List<Data> = List<Data>()
+        priority: Priority
     ) {
         self.init()
         self.id = id
@@ -34,7 +33,6 @@ final class TodoItem: Object, Identifiable {
         self.deadline = deadline
         self.hashTag = hashTag
         self.priority = priority
-        self.imageData = imageData
         self.isDone = false
     }
 }

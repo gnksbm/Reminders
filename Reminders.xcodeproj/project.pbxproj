@@ -22,6 +22,7 @@
 		8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43312C346A3F0045D77A /* SummaryCVCell.swift */; };
 		8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */; };
 		8E5A43372C3476870045D77A /* TodoTVHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */; };
+		8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218762C3821D400C1E548 /* TodoRepository.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -81,6 +82,7 @@
 		8E5A43312C346A3F0045D77A /* SummaryCVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryCVCell.swift; sourceTree = "<group>"; };
 		8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+.swift"; sourceTree = "<group>"; };
 		8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTVHeaderView.swift; sourceTree = "<group>"; };
+		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -176,6 +178,14 @@
 				8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		8EC218752C3821C600C1E548 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				8EC218762C3821D400C1E548 /* TodoRepository.swift */,
+			);
+			path = Repository;
 			sourceTree = "<group>";
 		};
 		BEF6E0692C33E4D100FA435D = {
@@ -314,6 +324,7 @@
 		BEF6E0B92C33EE3600FA435D /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				8EC218752C3821C600C1E548 /* Repository */,
 				BEF6E0BE2C33F50F00FA435D /* Storage */,
 				BEF6E0CA2C340A6D00FA435D /* Model */,
 				BEF6E0CD2C34100000FA435D /* Error */,
@@ -469,6 +480,7 @@
 				BEF6E0C92C34099800FA435D /* AddViewController.swift in Sources */,
 				BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */,
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
+				8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
 				BEF6E0CF2C34101100FA435D /* ViewComponentError.swift in Sources */,
 				BEF6E0A22C33E87900FA435D /* Neat.swift in Sources */,

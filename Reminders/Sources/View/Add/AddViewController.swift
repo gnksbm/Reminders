@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 import SnapKit
 
@@ -13,6 +14,7 @@ final class AddViewController: BaseViewController {
     private var selectedDate: Date?
     private var hashTagStr: String?
     private var priority = TodoItem.Priority.none
+    private var selectedImage = [UIImage]()
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -27,15 +29,15 @@ final class AddViewController: BaseViewController {
             .layer.cornerRadius(12)
     }
     
-    private let dividerView = UIView().nt.configure { 
+    private let dividerView = UIView().nt.configure {
         $0.backgroundColor(.tertiarySystemBackground)
     }
     
-    private let titleTextField = UITextField().nt.configure { 
+    private let titleTextField = UITextField().nt.configure {
         $0.placeholder("제목")
     }
     
-    private lazy var memoTextView = UITextView().nt.configure { 
+    private lazy var memoTextView = UITextView().nt.configure {
         $0.backgroundColor(.clear)
             .delegate(self)
             .attributedText(textViewPlaceholder)
@@ -91,7 +93,16 @@ final class AddViewController: BaseViewController {
         }
     }
     
-    private let addImageButton = AddSelectButton(title: "이미지 추가")
+    private lazy var addImageButton = AddSelectButton(
+        title: "이미지 추가"
+    ).nt.configure {
+        $0.perform { base in
+            base.addTarget(
+                self,
+                action: #selector(addImageButtonTapped)
+            )
+        }
+    }
     
     deinit {
         removeObserver()
@@ -109,49 +120,10 @@ final class AddViewController: BaseViewController {
                 self?.dismiss(animated: true)
             }
         )
-        
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "추가",
-            primaryAction: UIAction {
-                [weak self] _ in
-                guard let self else { return }
-                guard let title = titleTextField.text,
-                      let memoText = memoTextView.text else {
-                    Logger.error(ViewComponentError.textIsNil)
-                    return
-                }
-                guard title.isNotEmpty else {
-                    showToast(message: "제목을 입력해주세요")
-                    titleTextField.becomeFirstResponder()
-                    return
-                }
-                let memo = memoText.isNotEmpty ?
-                memoText != textViewPlaceholder.string ? memoText : nil :
-                nil
-                do {
-                    var hashTag: HashTag?
-                    if let hashTagStr {
-                        hashTag = RealmStorage.shared.read(HashTag.self)
-                            .first { $0.name == hashTagStr } ??
-                        HashTag(name: hashTagStr)
-                    }
-                    try RealmStorage.shared.create(
-                        TodoItem(
-                            title: title,
-                            memo: memo,
-                            deadline: selectedDate,
-                            hashTag: hashTag,
-                            priority: priority
-                        )
-                    )
-                    dismiss(animated: true)
-                    NotificationCenter.default.post(
-                        name: .newTodoAdded,
-                        object: nil
-                    )
-                } catch {
-                    Logger.error(error)
-                }
+            primaryAction: UIAction { [weak self] _ in
+                self?.validateUserInput()
             }
         )
     }
@@ -252,6 +224,47 @@ final class AddViewController: BaseViewController {
         }
     }
     
+    private func validateUserInput() {
+        guard let title = titleTextField.text,
+              let memoText = memoTextView.text else {
+            Logger.error(ViewComponentError.textIsNil)
+            return
+        }
+        guard title.isNotEmpty else {
+            showToast(message: "제목을 입력해주세요")
+            titleTextField.becomeFirstResponder()
+            return
+        }
+        let memo = memoText.isNotEmpty ?
+        memoText != textViewPlaceholder.string ? memoText : nil :
+        nil
+        do {
+            var hashTag: HashTag?
+            if let hashTagStr {
+                hashTag = RealmStorage.shared.read(HashTag.self)
+                    .first { $0.name == hashTagStr } ??
+                HashTag(name: hashTagStr)
+            }
+            try TodoRepository.shared.addNewTodo(
+                item: TodoItem(
+                    title: title,
+                    memo: memo,
+                    deadline: selectedDate,
+                    hashTag: hashTag,
+                    priority: priority
+                ),
+                images: selectedImage
+            )
+            dismiss(animated: true)
+            NotificationCenter.default.post(
+                name: .newTodoAdded,
+                object: nil
+            )
+        } catch {
+            Logger.error(error)
+        }
+    }
+    
     private func updateDeadline(date: Date) {
         selectedDate = date
         deadlineButton.updateSubInfo(
@@ -348,12 +361,18 @@ final class AddViewController: BaseViewController {
             action: UIAlertAction(
                 title: "설정하기",
                 style: .default
-            ) {
-                [weak self] _ in
-                guard let self else { return }
-                updatePriority(index: segmentControl.selectedSegmentIndex)
+            ) { [weak self] _ in
+                self?.updatePriority(index: segmentControl.selectedSegmentIndex)
             }
         )
+    }
+    
+    @objc private func addImageButtonTapped() {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 0
+        let phPicker = PHPickerViewController(configuration: config)
+        phPicker.delegate = self
+        present(phPicker, animated: true)
     }
     
     @objc private func deadlineChanged(_ notification: NSNotification) {
@@ -403,5 +422,29 @@ extension AddViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.attributedText = textViewPlaceholder
         }
+    }
+}
+
+extension AddViewController: PHPickerViewControllerDelegate {
+    func picker(
+        _ picker: PHPickerViewController,
+        didFinishPicking results: [PHPickerResult]
+    ) {
+        results.map { $0.itemProvider }
+            .filter { $0.canLoadObject(ofClass: UIImage.self) }
+            .forEach {
+                $0.loadObject(
+                    ofClass: UIImage.self
+                ) { [weak self] item, error in
+                    if let error {
+                        Logger.error(error)
+                        return
+                    }
+                    if let image = item as? UIImage {
+                        self?.selectedImage.append(image)
+                    }
+                }
+            }
+        dismiss(animated: true)
     }
 }

@@ -8,6 +8,8 @@
 import UIKit
 
 final class TodoListViewController: BaseViewController {
+    private var todoRepository = TodoRepository.shared
+    
     private var dataSource: DataSource!
     
     private lazy var tableView = UITableView().nt.configure { 
@@ -22,9 +24,7 @@ final class TodoListViewController: BaseViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        let savedItems: [TodoItem] = RealmStorage.shared.read(TodoItem.self)
-            .map { $0 }
-        updateSnapshot(items: savedItems)
+        fetchItems()
     }
     
     override func configureLayout() {
@@ -35,6 +35,18 @@ final class TodoListViewController: BaseViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
         }
+    }
+    
+    private func fetchItems() {
+        let savedItems: [TodoItem] = 
+        Array(RealmStorage.shared.read(TodoItem.self))
+        updateSnapshot(items: savedItems)
+    }
+    
+    private func removeItem(indexPath: IndexPath) {
+        let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
+        try? todoRepository.removeTodo(item: item)
+        fetchItems()
     }
 }
 
@@ -89,6 +101,8 @@ extension TodoListViewController {
     NSDiffableDataSourceSnapshot<TableViewSection, TodoItem>
 }
 
+
+
 extension TodoListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,
@@ -112,5 +126,20 @@ extension TodoListViewController: UITableViewDelegate {
             TodoDetailViewController(item: item),
             animated: true
         )
+    }
+    
+    func tableView(
+        _ tableView: UITableView,
+        trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
+    ) -> UISwipeActionsConfiguration? {
+        let removeAction = UIContextualAction(
+            style: .normal,
+            title: nil
+        ) { [weak self] action, view, handler in
+            self?.removeItem(indexPath: indexPath)
+        }
+        removeAction.image = UIImage(systemName: "trash")
+        removeAction.backgroundColor = .red
+        return UISwipeActionsConfiguration(actions: [removeAction])
     }
 }
