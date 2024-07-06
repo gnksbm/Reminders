@@ -216,7 +216,7 @@
 		BEF6E0892C33E4E700FA435D /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				BEF6E0962C33E72600FA435D /* View */,
+				BEF6E0962C33E72600FA435D /* Presentation */,
 				BEF6E0B92C33EE3600FA435D /* Data */,
 				BEF6E0972C33E77900FA435D /* Foundation */,
 				BEF6E0952C33E71F00FA435D /* App */,
@@ -243,7 +243,7 @@
 			path = App;
 			sourceTree = "<group>";
 		};
-		BEF6E0962C33E72600FA435D /* View */ = {
+		BEF6E0962C33E72600FA435D /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
 				8E5A432F2C346A320045D77A /* Summary */,
@@ -251,7 +251,7 @@
 				8E5A43292C3462330045D77A /* TodoList */,
 				BEF6E0B22C33EA6900FA435D /* Common */,
 			);
-			path = View;
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 		BEF6E0972C33E77900FA435D /* Foundation */ = {
