@@ -39,12 +39,15 @@ final class SummaryCVCell: BaseCollectionViewCell {
         titleLabel.text = nil
     }
     
-    func configureCell(item: SummaryViewController.CollectionViewItem) {
+    func configureCell(
+        item: SummaryViewController.CollectionViewItem,
+        count: Int
+    ) {
         iconImageView.image = item.icon?
             .resizableImage(withCapInsets: .same(equal: -2))
         iconImageView.tintColor = item.iconColor
         titleLabel.text = item.title
-        countLabel.text = item.getItemCount().formatted()
+        countLabel.text = count.formatted()
     }
     
     override func configureUI() {

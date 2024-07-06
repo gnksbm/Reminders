@@ -22,6 +22,10 @@ final class TodoRepository {
         try RealmStorage.shared.create(item)
     }
     
+    func fetchItems() -> [TodoItem] {
+        Array(RealmStorage.shared.read(TodoItem.self))
+    }
+    
     func removeTodo(item: TodoItem) throws {
         try imageStorage.removeImages(fileNames: Array(item.imageFileName))
         try RealmStorage.shared.delete(item)

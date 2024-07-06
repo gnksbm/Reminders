@@ -11,11 +11,17 @@ import Neat
 final class TodoListViewController: BaseViewController {
     private var todoRepository = TodoRepository.shared
     
+    private var filter: (TodoItem) -> Bool
     private var dataSource: DataSource!
     
     private lazy var tableView = UITableView().nt.configure { 
         $0.register(TodoListTVCell.self)
             .delegate(self)
+    }
+    
+    init(filter: @escaping (TodoItem) -> Bool) {
+        self.filter = filter
+        super.init()
     }
     
     override func viewDidLoad() {
@@ -40,7 +46,7 @@ final class TodoListViewController: BaseViewController {
     
     private func fetchItems() {
         let savedItems: [TodoItem] = 
-        Array(RealmStorage.shared.read(TodoItem.self))
+        Array(RealmStorage.shared.read(TodoItem.self).filter(filter))
         updateSnapshot(items: savedItems)
     }
     

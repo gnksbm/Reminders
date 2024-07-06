@@ -12,6 +12,8 @@ import Neat
 final class SummaryViewController: BaseViewController {
     private var dataSource: DataSource!
     
+    private var todoItems = [TodoItem]()
+    
     private lazy var addTodoButton = UIButton().nt.configure {
         $0.configuration(.plain())
             .configuration.title("새로운 할 일")
@@ -144,6 +146,7 @@ extension SummaryViewController {
     }
     
     private func updateSnapshot(items: [CollectionViewItem]) {
+        todoItems = TodoRepository.shared.fetchItems()
         var snapshot = Snapshot()
         let allSection = CollectionViewSection.allCases
         snapshot.appendSections(allSection)
@@ -160,8 +163,11 @@ extension SummaryViewController {
     }
     
     private func makeAllCellRegistration() -> AllCellRegistration {
-        AllCellRegistration { cell, indexPath, item in
-            cell.configureCell(item: item)
+        AllCellRegistration { [weak self] cell, indexPath, item in
+            guard let self else { return }
+            let filter = CollectionViewItem.allCases[indexPath.row].filter
+            let count = todoItems.filter(filter).count
+            cell.configureCell(item: item, count: count)
         }
     }
     
@@ -224,25 +230,24 @@ extension SummaryViewController {
             }
         }
         
-        func getItemCount() -> Int {
-            let items = RealmStorage.shared.read(TodoItem.self)
-            return switch self {
+        var filter: (TodoItem) -> Bool {
+            switch self {
             case .today:
-                items.filter { item in
+                { item in
                     guard let deadline = item.deadline else { return false }
                     return deadline.isToday
-                }.count
+                }
             case .schedule:
-                items.filter { item in
+                { item in
                     guard let deadline = item.deadline else { return false }
                     return !deadline.isToday
-                }.count
+                }
             case .all:
-                items.count
+                { _ in true }
             case .flag:
-                items.filter { $0.isDone }.count
+                { $0.isDone }
             case .done:
-                items.filter { $0.isDone }.count
+                { $0.isDone }
             }
         }
     }
@@ -264,14 +269,10 @@ extension SummaryViewController: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        switch CollectionViewItem.allCases[indexPath.row] {
-        case .all:
-            navigationController?.pushViewController(
-                TodoListViewController(),
-                animated: true
-            )
-        default:
-            break
-        }
+        let filter = CollectionViewItem.allCases[indexPath.row].filter
+        navigationController?.pushViewController(
+            TodoListViewController(filter: filter),
+            animated: true
+        )
     }
 }
