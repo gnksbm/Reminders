@@ -225,9 +225,12 @@ final class AddViewController: BaseViewController {
     }
     
     private func validateUserInput() {
-        guard let title = titleTextField.text,
-              let memoText = memoTextView.text else {
-            Logger.error(ViewComponentError.textIsNil)
+        guard let title = titleTextField.text else {
+            Logger.nilObject(titleTextField, keyPath: \.text)
+            return
+        }
+        guard let memoText = memoTextView.text else {
+            Logger.nilObject(memoTextView, keyPath: \.text)
             return
         }
         guard title.isNotEmpty else {

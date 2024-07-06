@@ -52,7 +52,6 @@
 		BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */; };
 		BEF6E0C92C34099800FA435D /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C82C34099800FA435D /* AddViewController.swift */; };
 		BEF6E0CC2C340A9900FA435D /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0CB2C340A9900FA435D /* UIButton+.swift */; };
-		BEF6E0CF2C34101100FA435D /* ViewComponentError.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0CE2C34101100FA435D /* ViewComponentError.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -114,7 +113,6 @@
 		BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDirectionalEdgeInsets+.swift"; sourceTree = "<group>"; };
 		BEF6E0C82C34099800FA435D /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		BEF6E0CB2C340A9900FA435D /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
-		BEF6E0CE2C34101100FA435D /* ViewComponentError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewComponentError.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -329,7 +327,6 @@
 				8EC218752C3821C600C1E548 /* Repository */,
 				BEF6E0BE2C33F50F00FA435D /* Storage */,
 				BEF6E0CA2C340A6D00FA435D /* Model */,
-				BEF6E0CD2C34100000FA435D /* Error */,
 			);
 			path = Data;
 			sourceTree = "<group>";
@@ -363,14 +360,6 @@
 				BEF6E0BC2C33EEB800FA435D /* HashTag.swift */,
 			);
 			path = Model;
-			sourceTree = "<group>";
-		};
-		BEF6E0CD2C34100000FA435D /* Error */ = {
-			isa = PBXGroup;
-			children = (
-				BEF6E0CE2C34101100FA435D /* ViewComponentError.swift */,
-			);
-			path = Error;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -485,7 +474,6 @@
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
 				8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
-				BEF6E0CF2C34101100FA435D /* ViewComponentError.swift in Sources */,
 				BEF6E0A22C33E87900FA435D /* Neat.swift in Sources */,
 				8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */,
 				8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */,
