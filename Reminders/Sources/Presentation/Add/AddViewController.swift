@@ -289,11 +289,61 @@ final class AddViewController: BaseViewController {
         priorityButton.updateSubInfo(text: priority.title)
     }
     
+    private func loadSelectedImage(results: [PHPickerResult]) {
+        let group = DispatchGroup()
+        selectedImage.removeAll()
+        results.map(\.itemProvider)
+            .filter { $0.canLoadObject(ofClass: UIImage.self) }
+            .forEach {
+                group.enter()
+                $0.loadObject(
+                    ofClass: UIImage.self
+                ) { [weak self] item, error in
+                    if let error {
+                        Logger.error(error)
+                        return
+                    }
+                    if let image = item as? UIImage {
+                        self?.selectedImage.append(image)
+                    }
+                    group.leave()
+                }
+            }
+        group.notify(queue: .main) { [weak self] in
+            guard let self else { return }
+            addImageButton.updateSubInfo(
+                text: "선택된 이미지 \(selectedImage.count)개"
+            )
+        }
+    }
+    
     @objc private func deadlineButtonTapped() {
         navigationController?.pushViewController(
             DateViewController(selectedDate: selectedDate),
             animated: true
         )
+    }
+    
+    @objc private func hashTagButtonTapped() {
+        navigationController?.pushViewController(
+            TagViewController(hashTag: hashTagStr),
+            animated: true
+        )
+    }
+    
+    @objc private func priorityButtonTapped() {
+        navigationController?.pushViewController(
+            PriorityViewController(index: priority.rawValue),
+            animated: true
+        )
+    }
+    
+    @objc private func addImageButtonTapped() {
+        var config = PHPickerConfiguration()
+        config.selectionLimit = 0
+        let phPicker = PHPickerViewController(configuration: config)
+        phPicker.delegate = self
+        present(phPicker, animated: true)
     }
     
     @objc private func deadlineButtonLongPressed() {
@@ -314,13 +364,6 @@ final class AddViewController: BaseViewController {
                 guard let self else { return }
                 updateDeadline(date: datePicker.date)
             }
-        )
-    }
-    
-    @objc private func hashTagButtonTapped() {
-        navigationController?.pushViewController(
-            TagViewController(hashTag: hashTagStr),
-            animated: true
         )
     }
     
@@ -347,13 +390,6 @@ final class AddViewController: BaseViewController {
         )
     }
     
-    @objc private func priorityButtonTapped() {
-        navigationController?.pushViewController(
-            PriorityViewController(index: priority.rawValue),
-            animated: true
-        )
-    }
-    
     @objc private func priorityButtonLongPressed() {
         lazy var segmentControl = UISegmentedControl(
             items: TodoItem.Priority.allCases.map { $0.title }
@@ -370,14 +406,6 @@ final class AddViewController: BaseViewController {
                 self?.updatePriority(index: segmentControl.selectedSegmentIndex)
             }
         )
-    }
-    
-    @objc private func addImageButtonTapped() {
-        var config = PHPickerConfiguration()
-        config.selectionLimit = 0
-        let phPicker = PHPickerViewController(configuration: config)
-        phPicker.delegate = self
-        present(phPicker, animated: true)
     }
     
     @objc private func deadlineChanged(_ notification: NSNotification) {
@@ -435,21 +463,7 @@ extension AddViewController: PHPickerViewControllerDelegate {
         _ picker: PHPickerViewController,
         didFinishPicking results: [PHPickerResult]
     ) {
-        results.map { $0.itemProvider }
-            .filter { $0.canLoadObject(ofClass: UIImage.self) }
-            .forEach {
-                $0.loadObject(
-                    ofClass: UIImage.self
-                ) { [weak self] item, error in
-                    if let error {
-                        Logger.error(error)
-                        return
-                    }
-                    if let image = item as? UIImage {
-                        self?.selectedImage.append(image)
-                    }
-                }
-            }
+        loadSelectedImage(results: results)
         dismiss(animated: true)
     }
 }
