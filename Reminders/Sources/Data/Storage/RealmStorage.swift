@@ -40,30 +40,40 @@ extension RealmStorage {
         static let latestVersion = RealmVersion.allCases.count - 1
         
         case origin
-    }
-    
-    static func migrationIfNeeded() {
-        if let url = try! Realm().configuration.fileURL {
-            do {
-                let version = try schemaVersionAtURL(url)
-                if version == RealmVersion.latestVersion {
-                    migration(currentVersion: Int(version))
+        
+        static func migrate(migration: Migration, version: Int) {
+            (version..<latestVersion).forEach { versionNum in
+                switch allCases[versionNum] {
+                case .origin:
+                    break
                 }
-            } catch {
-                Logger.error(error)
             }
         }
     }
     
-    private static func migration(currentVersion: Int) {
+    static func migrationIfNeeded() {
+        guard let url = Realm.Configuration.defaultConfiguration.fileURL else {
+            Logger.debug("Realm 파일 찾을 수 없음")
+            return
+        }
+        do {
+            let version = try schemaVersionAtURL(url)
+            if version < RealmVersion.latestVersion {
+                migrate(currentVersion: Int(version))
+            }
+        } catch {
+            Logger.error(error)
+        }
+    }
+    
+    private static func migrate(currentVersion: Int) {
         let config = Realm.Configuration(
             schemaVersion: UInt64(RealmVersion.latestVersion)
         ) { migration, oldSchemaVersion in
-            let currentVersion = RealmVersion.allCases[Int(oldSchemaVersion)]
-            switch currentVersion {
-            case .origin:
-                break
-            }
+            RealmVersion.migrate(
+                migration: migration,
+                version: Int(oldSchemaVersion)
+            )
         }
         Realm.Configuration.defaultConfiguration = config
     }
