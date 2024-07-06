@@ -40,6 +40,7 @@ final class SummaryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        todoItems = TodoRepository.shared.fetchItems()
         configureDataSource()
         updateSnapshot(items: CollectionViewItem.allCases)
         addObserver()
@@ -70,12 +71,23 @@ final class SummaryViewController: BaseViewController {
             name: .newTodoAdded,
             object: nil
         )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(todoChanged),
+            name: .todoChanged,
+            object: nil
+        )
     }
     
     private func removeObserver() {
         NotificationCenter.default.removeObserver(
             self,
             name: .newTodoAdded,
+            object: nil
+        )
+        NotificationCenter.default.removeObserver(
+            self,
+            name: .todoChanged,
             object: nil
         )
     }
@@ -90,6 +102,11 @@ final class SummaryViewController: BaseViewController {
     }
     
     @objc private func newTodoAdded() {
+        todoItems = TodoRepository.shared.fetchItems()
+        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+    }
+    
+    @objc private func todoChanged(_ notification: Notification) {
         dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
     }
 }
@@ -146,7 +163,6 @@ extension SummaryViewController {
     }
     
     private func updateSnapshot(items: [CollectionViewItem]) {
-        todoItems = TodoRepository.shared.fetchItems()
         var snapshot = Snapshot()
         let allSection = CollectionViewSection.allCases
         snapshot.appendSections(allSection)
@@ -240,12 +256,12 @@ extension SummaryViewController {
             case .schedule:
                 { item in
                     guard let deadline = item.deadline else { return false }
-                    return !deadline.isToday
+                    return !deadline.isToday && deadline.distance(to: .now) < 0
                 }
             case .all:
                 { _ in true }
             case .flag:
-                { $0.isDone }
+                { $0.isFlag }
             case .done:
                 { $0.isDone }
             }

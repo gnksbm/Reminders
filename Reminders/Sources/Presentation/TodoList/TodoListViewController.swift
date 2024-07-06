@@ -50,12 +50,23 @@ final class TodoListViewController: BaseViewController {
         updateSnapshot(items: savedItems)
     }
     
-    private func starItem(indexPath: IndexPath) throws { }
+    private func starItem(item: TodoItem) throws { }
     
-    private func flagItem(indexPath: IndexPath) throws { }
+    private func flagItem(item: TodoItem) throws {
+        try todoRepository.update(
+            item: item,
+            willChange: [
+                \.isFlag: !item.isFlag
+            ]
+        )
+        NotificationCenter.default.post(
+            name: .todoChanged,
+            object: nil
+        )
+        fetchItems()
+    }
     
-    private func removeItem(indexPath: IndexPath) throws {
-        let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
+    private func removeItem(item: TodoItem) throws {
         try todoRepository.removeTodo(item: item)
         fetchItems()
     }
@@ -103,7 +114,12 @@ extension TodoListViewController {
                             do {
                                 try todoRepository.update(
                                     item: item,
-                                    willChange: [\.isDone: !item.isDone])
+                                    willChange: [\.isDone: !item.isDone]
+                                )
+                                NotificationCenter.default.post(
+                                    name: .todoChanged,
+                                    object: nil
+                                )
                                 reloadTableView()
                             } catch {
                                 showToast(message: "잠시후 다시 시도해주세요")
@@ -184,26 +200,27 @@ extension TodoListViewController: UITableViewDelegate {
         _ tableView: UITableView,
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
+        let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
         let starAction = makeContextualAction(
             image: UIImage(systemName: "star"),
             color: .secondaryLabel,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.starItem(indexPath: indexPath)
+            try self?.starItem(item: item)
         }
         let flagAction = makeContextualAction(
             image: UIImage(systemName: "flag"),
             color: .orange,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.flagItem(indexPath: indexPath)
+            try self?.flagItem(item: item)
         }
         let removeAction = makeContextualAction(
             image: UIImage(systemName: "trash"),
             color: .red,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.removeItem(indexPath: indexPath)
+            try self?.removeItem(item: item)
         }
         
         return UISwipeActionsConfiguration(

@@ -51,12 +51,19 @@ extension RealmStorage {
     enum RealmVersion: Int, CaseIterable {
         static let latestVersion = RealmVersion.allCases.count - 1
         
-        case origin
+        case origin, flagAdded
         
         static func migrate(migration: Migration, version: Int) {
             (version..<latestVersion).forEach { versionNum in
                 switch allCases[versionNum] {
                 case .origin:
+                    migration.enumerateObjects(
+                        ofType: TodoItem.className()
+                    ) { oldObject, newObject in
+                        guard let newObject else { return }
+                        newObject["isFlag"] = false
+                    }
+                case .flagAdded:
                     break
                 }
             }
@@ -72,6 +79,8 @@ extension RealmStorage {
             let version = try schemaVersionAtURL(url)
             if version < RealmVersion.latestVersion {
                 migrate(currentVersion: Int(version))
+            } else {
+                Realm.Configuration.defaultConfiguration.schemaVersion = version
             }
         } catch {
             Logger.error(error)

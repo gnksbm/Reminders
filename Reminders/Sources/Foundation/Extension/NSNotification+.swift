@@ -13,4 +13,5 @@ extension NSNotification.Name {
     static let hashTag = NSNotification.Name("hashTag")
     static let priority = NSNotification.Name("priority")
     static let newTodoAdded = NSNotification.Name("newTodoAdded")
+    static let todoChanged = NSNotification.Name("todoChanged")
 }
