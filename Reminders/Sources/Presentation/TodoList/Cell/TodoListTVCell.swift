@@ -11,10 +11,17 @@ import SnapKit
 import Neat
 
 final class TodoListTVCell: BaseTableViewCell {
-    private let checkButton = UIButton().nt.configure { 
+    var checkButtonHandler: () -> Void = { }
+    
+    private lazy var checkButton = UIButton().nt.configure {
         $0.configuration(.plain())
             .configuration.image(UIImage(systemName: "circle"))
             .configuration.baseForegroundColor(.secondaryLabel)
+            .addTarget(
+                self,
+                action: #selector(checkButtonTapped),
+                for: .touchUpInside
+            )
     }
     
     private let priorityLabel = UILabel().nt.configure { 
@@ -31,6 +38,7 @@ final class TodoListTVCell: BaseTableViewCell {
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        checkButtonHandler = { }
         [
             priorityLabel,
             titleLabel,
@@ -41,6 +49,8 @@ final class TodoListTVCell: BaseTableViewCell {
     }
     
     func configureCell(item: TodoItem) {
+        checkButton.configuration?.image = item.isDone ?
+        UIImage(systemName: "circle.fill") : UIImage(systemName: "circle")
         priorityLabel.text = Array(
             repeating: "!",
             count: item.priority.rawValue
@@ -100,5 +110,9 @@ final class TodoListTVCell: BaseTableViewCell {
             make.trailing.lessThanOrEqualTo(contentView).inset(10)
             make.bottom.equalTo(contentView).inset(20)
         }
+    }
+    
+    @objc private func checkButtonTapped() {
+        checkButtonHandler()
     }
 }

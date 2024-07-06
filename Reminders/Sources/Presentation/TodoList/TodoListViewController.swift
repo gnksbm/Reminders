@@ -82,6 +82,10 @@ final class TodoListViewController: BaseViewController {
         removeAction.backgroundColor = color
         return removeAction
     }
+    
+    private func reloadTableView() {
+        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+    }
 }
 
 extension TodoListViewController {
@@ -92,8 +96,22 @@ extension TodoListViewController {
                 tableView.dequeueReusableCell(
                     cellType: TodoListTVCell.self,
                     for: indexPath
-                ).nt.configure { 
-                    $0.perform { base in
+                ).nt.configure {
+                    $0.checkButtonHandler(
+                        { [weak self] in
+                            guard let self else { return }
+                            do {
+                                try todoRepository.update(
+                                    item: item,
+                                    willChange: [\.isDone: !item.isDone])
+                                reloadTableView()
+                            } catch {
+                                showToast(message: "잠시후 다시 시도해주세요")
+                                Logger.error(error)
+                            }
+                        }
+                    )
+                    .perform { base in
                         base.configureCell(item: item)
                     }
                 }
