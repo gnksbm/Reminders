@@ -12,6 +12,22 @@ import Neat
 final class SummaryViewController: BaseViewController {
     private var dataSource: DataSource!
     
+    private lazy var addTodoButton = UIButton().nt.configure {
+        $0.configuration(.plain())
+            .configuration.title("새로운 할 일")
+            .configuration.image(UIImage(systemName: "plus.circle.fill"))
+            .configuration.imagePlacement(.leading)
+            .configuration.imagePadding(10)
+            .configuration.preferredSymbolConfigurationForImage(
+                UIImage.SymbolConfiguration(font: .boldSystemFont(ofSize: 20))
+            )
+            .addTarget(
+                self,
+                action: #selector(addTodoButtonTapped),
+                for: .touchUpInside
+            )
+    }
+    
     private lazy var collectionView = UICollectionView(
         frame: .zero,
         collectionViewLayout: makeLayout()
@@ -31,27 +47,17 @@ final class SummaryViewController: BaseViewController {
         removeObserver()
     }
     
-    override func configureNavigation() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            systemItem: .add,
-            primaryAction: UIAction { [weak self] _ in
-                self?.present(
-                    UINavigationController(
-                        rootViewController: AddViewController()
-                    ),
-                    animated: true
-                )
-            }
-        )
-    }
-    
     override func configureLayout() {
-        [collectionView].forEach { view.addSubview($0) }
+        [collectionView, addTodoButton].forEach { view.addSubview($0) }
         
         let safeArea = view.safeAreaLayoutGuide
         
         collectionView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
+        }
+        
+        addTodoButton.snp.makeConstraints { make in
+            make.leading.bottom.equalTo(safeArea).inset(10)
         }
     }
     
@@ -69,6 +75,15 @@ final class SummaryViewController: BaseViewController {
             self,
             name: .newTodoAdded,
             object: nil
+        )
+    }
+    
+    @objc private func addTodoButtonTapped() {
+        present(
+            UINavigationController(
+                rootViewController: AddViewController()
+            ),
+            animated: true
         )
     }
     
