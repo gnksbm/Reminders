@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Neat
 
 final class ToastView: BaseView {
     private let messageLabel = UILabel().nt.configure { 

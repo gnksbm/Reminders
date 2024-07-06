@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Neat
+
 final class SummaryCVCell: BaseCollectionViewCell {
     private let iconImageView = UIImageView().nt.configure { 
         $0.contentMode(.scaleAspectFill)

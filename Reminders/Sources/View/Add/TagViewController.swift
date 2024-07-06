@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Neat
+
 final class TagViewController: BaseViewController {
     private lazy var textField = UITextField().nt.configure {
         $0.borderStyle(.roundedRect)

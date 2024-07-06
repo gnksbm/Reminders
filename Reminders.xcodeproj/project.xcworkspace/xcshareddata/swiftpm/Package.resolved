@@ -1,6 +1,15 @@
 {
-  "originHash" : "475cae0364834caf57c67459380040aba8908de5455db5bfd3b98b9377408da6",
+  "originHash" : "48d0a44e19776fa875a7f83764df2a70860f4c3aea990a383f6b46c779c2854b",
   "pins" : [
+    {
+      "identity" : "neat",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/gnksbm/Neat.git",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7c219b3203afd05e2586871fae4c899dc52fd1e8"
+      }
+    },
     {
       "identity" : "realm-core",
       "kind" : "remoteSourceControl",
@@ -13,7 +22,7 @@
     {
       "identity" : "realm-swift",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/realm/realm-swift.git",
+      "location" : "https://github.com/realm/realm-swift",
       "state" : {
         "revision" : "ae827eabf45ba64562c75b6e99038da6ce12d427",
         "version" : "10.52.1"

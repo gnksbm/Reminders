@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Neat
 
 final class AddSelectButton: BaseView {
     private let titleLabel = UILabel().nt.configure {

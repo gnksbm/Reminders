@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Neat
+
 final class PriorityViewController: BaseViewController {
     private lazy var segmentControl = UISegmentedControl(
         items: TodoItem.Priority.allCases.map { $0.title }

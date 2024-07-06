@@ -7,6 +7,8 @@
 
 import UIKit
 
+import Neat
+
 extension UIViewController {
     func showActionSheet(
         title: String? = nil,

@@ -8,6 +8,7 @@
 import UIKit
 
 import SnapKit
+import Neat
 
 final class TodoListTVCell: BaseTableViewCell {
     private let checkButton = UIButton().nt.configure { 
