@@ -314,6 +314,7 @@ final class AddViewController: BaseViewController {
             addImageButton.updateSubInfo(
                 text: "선택된 이미지 \(selectedImage.count)개"
             )
+            addImageButton.updateImage(images: selectedImage)
         }
     }
     

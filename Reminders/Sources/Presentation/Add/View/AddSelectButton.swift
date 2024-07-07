@@ -28,6 +28,8 @@ final class AddSelectButton: BaseView {
                  
     }
     
+    private let multipleImageView = MultipleImageView()
+    
     init(title: String, infoColor: UIColor = .label) {
         super.init()
         titleLabel.text = title
@@ -46,6 +48,15 @@ final class AddSelectButton: BaseView {
         subInfoLabel.text = text
     }
     
+    func updateImage(images: [UIImage]) {
+        multipleImageView.snp.updateConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+                .offset(images.isEmpty ? 0 : 20)
+            make.height.equalTo(images.isEmpty ? 0 : bounds.width * 0.25)
+        }
+        multipleImageView.updateView(with: images)
+    }
+    
     override func configureUI() {
         layer.cornerRadius = 12
         clipsToBounds = true
@@ -53,25 +64,38 @@ final class AddSelectButton: BaseView {
     }
     
     override func configureLayout() {
-        [titleLabel, subInfoLabel, detailDisclosureImageView].forEach {
+        [
+            titleLabel,
+            subInfoLabel,
+            detailDisclosureImageView,
+            multipleImageView
+        ].forEach {
             addSubview($0)
         }
         
         let inset = 20.f
+        
         titleLabel.snp.makeConstraints { make in
-            make.verticalEdges.leading.equalTo(self).inset(inset)
+            make.top.leading.equalTo(self).inset(inset)
         }
         
         subInfoLabel.snp.makeConstraints { make in
             make.leading.equalTo(titleLabel.snp.trailing).offset(inset)
-            make.centerY.equalTo(self)
+            make.centerY.equalTo(titleLabel)
             make.trailing.equalTo(detailDisclosureImageView.snp.leading)
                 .offset(-inset)
         }
         
         detailDisclosureImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(self)
+            make.centerY.equalTo(titleLabel)
             make.trailing.equalTo(self).inset(inset)
+        }
+        
+        multipleImageView.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom)
+            make.horizontalEdges.equalTo(self)
+            make.height.equalTo(0)
+            make.bottom.equalTo(self.snp.bottom).inset(inset)
         }
     }
 }
