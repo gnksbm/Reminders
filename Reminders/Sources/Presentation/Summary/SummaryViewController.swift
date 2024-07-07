@@ -50,6 +50,18 @@ final class SummaryViewController: BaseViewController {
         removeObserver()
     }
     
+    override func configureNavigation() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "calendar"),
+            primaryAction: UIAction { [weak self] _ in
+                self?.navigationController?.pushViewController(
+                    CalendarViewController(),
+                    animated: true
+                )
+            }
+        )
+    }
+    
     override func configureLayout() {
         [collectionView, addTodoButton].forEach { view.addSubview($0) }
         
