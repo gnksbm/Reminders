@@ -34,6 +34,41 @@ final class TodoListViewController: BaseViewController {
         fetchItems()
     }
     
+    override func configureNavigation() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "ellipsis.circle"),
+            menu: UIMenu(children: [
+                UIAction(title: "마감일 순으로 보기") { [weak self] _ in
+                    guard let self else { return }
+                    fetchItems()
+                    let sortedItems = dataSource.snapshot().itemIdentifiers
+                        .sorted { lhs, rhs in
+                            guard let lhs = lhs.deadline,
+                                  let rhs = rhs.deadline else { return false }
+                            return lhs < rhs
+                    }
+                    updateSnapshot(items: sortedItems)
+                },
+                UIAction(title: "제목 순으로 보기") { [weak self] _ in
+                    guard let self else { return }
+                    fetchItems()
+                    let sortedItems = dataSource.snapshot().itemIdentifiers
+                        .sorted { lhs, rhs in
+                            return lhs.title < rhs.title
+                    }
+                    updateSnapshot(items: sortedItems)
+                },
+                UIAction(title: "우선순위 낮음 만 보기") { [weak self] _ in
+                    guard let self else { return }
+                    fetchItems()
+                    let filteredItems = dataSource.snapshot().itemIdentifiers
+                        .filter { $0.priority == .low }
+                    updateSnapshot(items: filteredItems)
+                }
+            ])
+        )
+    }
+    
     override func configureLayout() {
         [tableView].forEach { view.addSubview($0) }
         
