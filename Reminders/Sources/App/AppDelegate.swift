@@ -14,7 +14,7 @@ final class AppDelegate: UIResponder, UIApplicationDelegate {
         didFinishLaunchingWithOptions launchOptions
         : [UIApplication.LaunchOptionsKey: Any]?
     ) -> Bool {
-        RealmStorage.migrationIfNeeded()
+        RealmStorage.migrateIfNeeded()
         return true
     }
     

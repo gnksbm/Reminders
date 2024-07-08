@@ -70,7 +70,7 @@ extension RealmStorage {
         }
     }
     
-    static func migrationIfNeeded() {
+    static func migrateIfNeeded() {
         guard let url = Realm.Configuration.defaultConfiguration.fileURL else {
             Logger.debug("Realm 파일 찾을 수 없음")
             return
