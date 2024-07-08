@@ -200,8 +200,6 @@ extension TodoListViewController {
     NSDiffableDataSourceSnapshot<TableViewSection, TodoItem>
 }
 
-
-
 extension TodoListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,

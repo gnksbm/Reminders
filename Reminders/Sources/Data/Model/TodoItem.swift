@@ -20,7 +20,7 @@ final class TodoItem: Object, Identifiable {
     @Persisted var isDone: Bool
     @Persisted(originProperty: "items")
     var parentFolder: LinkingObjects<Folder>
-    /// RealmVersion.flagAdded 버전에서 추가
+    /// RealmVersion.todoFlagAdded 버전에서 추가
     @Persisted var isFlag: Bool
     
     convenience init(

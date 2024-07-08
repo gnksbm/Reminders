@@ -51,15 +51,26 @@ final class SummaryViewController: BaseViewController {
     }
     
     override func configureNavigation() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "calendar"),
-            primaryAction: UIAction { [weak self] _ in
-                self?.navigationController?.pushViewController(
-                    CalendarViewController(),
-                    animated: true
-                )
-            }
-        )
+        navigationItem.leftBarButtonItems = [
+            UIBarButtonItem(
+                image: UIImage(systemName: "calendar"),
+                primaryAction: UIAction { [weak self] _ in
+                    self?.navigationController?.pushViewController(
+                        CalendarViewController(),
+                        animated: true
+                    )
+                }
+            ),
+            UIBarButtonItem(
+                image: UIImage(systemName: "folder"),
+                primaryAction: UIAction { [weak self] _ in
+                    self?.navigationController?.pushViewController(
+                        FolderViewController(),
+                        animated: true
+                    )
+                }
+            )
+        ]
     }
     
     override func configureLayout() {
