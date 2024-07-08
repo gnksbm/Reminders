@@ -12,10 +12,14 @@ import SnapKit
 import Neat
 
 final class AddViewController: BaseViewController {
+    private let folderRepository = FolderRepository.shared
+    private let todoRepository = TodoRepository.shared
+    
     private var selectedDate: Date?
     private var hashTagStr: String?
     private var priority = TodoItem.Priority.none
     private var selectedImage = [UIImage]()
+    private var selectedFolder: Folder?
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -105,6 +109,17 @@ final class AddViewController: BaseViewController {
         }
     }
     
+    private lazy var selectFolderButton = AddSelectButton(
+        title: "저장할 폴더"
+    ).nt.configure {
+        $0.perform { base in
+            base.addTarget(
+                self,
+                action: #selector(selectFolderButtonTapped)
+            )
+        }
+    }
+    
     deinit {
         removeObserver()
     }
@@ -138,7 +153,8 @@ final class AddViewController: BaseViewController {
             deadlineButton,
             hashTagButton,
             priorityButton,
-            addImageButton
+            addImageButton,
+            selectFolderButton
         ].forEach { view.addSubview($0) }
         
         let safeArea = view.safeAreaLayoutGuide
@@ -183,6 +199,11 @@ final class AddViewController: BaseViewController {
         
         addImageButton.snp.makeConstraints { make in
             make.top.equalTo(priorityButton.snp.bottom).offset(inset)
+            make.horizontalEdges.equalTo(textBackgroundView)
+        }
+        
+        selectFolderButton.snp.makeConstraints { make in
+            make.top.equalTo(addImageButton.snp.bottom).offset(inset)
             make.horizontalEdges.equalTo(textBackgroundView)
         }
     }
@@ -242,6 +263,13 @@ final class AddViewController: BaseViewController {
         let memo = memoText.isNotEmpty ?
         memoText != textViewPlaceholder.string ? memoText : nil :
         nil
+        addNewItem(title: title, memo: memo)
+    }
+    
+    private func addNewItem(
+        title: String,
+        memo: String?
+    ) {
         do {
             var hashTag: HashTag?
             if let hashTagStr {
@@ -249,16 +277,24 @@ final class AddViewController: BaseViewController {
                     .first { $0.name == hashTagStr } ??
                 HashTag(name: hashTagStr)
             }
-            try TodoRepository.shared.addNewTodo(
-                item: TodoItem(
-                    title: title,
-                    memo: memo,
-                    deadline: selectedDate,
-                    hashTag: hashTag,
-                    priority: priority
-                ),
-                images: selectedImage
+            let todoItem = TodoItem(
+                title: title,
+                memo: memo,
+                deadline: selectedDate,
+                hashTag: hashTag,
+                priority: priority
             )
+            if let selectedFolder {
+                try folderRepository.addTodoInFolder(
+                    todoItem,
+                    folder: selectedFolder
+                )
+            } else {
+                try todoRepository.addNewTodo(
+                    item: todoItem,
+                    images: selectedImage
+                )
+            }
             dismiss(animated: true)
             NotificationCenter.default.post(
                 name: .newTodoAdded,
@@ -345,6 +381,21 @@ final class AddViewController: BaseViewController {
         let phPicker = PHPickerViewController(configuration: config)
         phPicker.delegate = self
         present(phPicker, animated: true)
+    }
+    
+    @objc private func selectFolderButtonTapped() {
+        let folderVC = FolderViewController(
+            viewType: .browse(
+                action: { [weak self] folder in
+                    guard let self else { return }
+                    selectedFolder = folder
+                    selectFolderButton.updateSubInfo(
+                        text: "경로: \(folder.name)"
+                    )
+                }
+            )
+        )
+        navigationController?.pushViewController(folderVC, animated: true)
     }
     
     @objc private func deadlineButtonLongPressed() {

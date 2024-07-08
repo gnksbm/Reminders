@@ -49,7 +49,7 @@ extension RealmStorage {
     enum RealmVersion: Int, CaseIterable {
         static let latestVersion = RealmVersion.allCases.count - 1
         
-        case origin, todoFlagAdded, folderNameAdded
+        case origin, todoFlagAdded, folderNameAdded, folderIDAdded
         
         static func migrate(migration: Migration, version: Int) {
             (version..<latestVersion).forEach { versionNum in
@@ -69,6 +69,15 @@ extension RealmStorage {
                         newObject["name"] = "이름 없음"
                     }
                 case .folderNameAdded:
+                    migration.enumerateObjects(
+                        ofType: Folder.className()
+                    ) {
+                        oldObject,
+                        newObject in
+                        guard let newObject else { return }
+                        newObject["id"] = ObjectId.generate()
+                    }
+                case .folderIDAdded:
                     break
                 }
             }

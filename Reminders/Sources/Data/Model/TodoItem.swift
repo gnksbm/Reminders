@@ -28,7 +28,8 @@ final class TodoItem: Object, Identifiable {
         memo: String? = nil,
         deadline: Date? = nil,
         hashTag: HashTag? = nil,
-        priority: Priority
+        priority: Priority,
+        folder: Folder? = nil
     ) {
         self.init()
         self.id = id

@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 
 final class FolderViewController: BaseViewController {
+    private let viewType: ViewType
     private let folderRepository = FolderRepository.shared
     
     private var dataSource: DataSource!
@@ -17,6 +18,11 @@ final class FolderViewController: BaseViewController {
     private lazy var tableView = UITableView().nt.configure {
         $0.register(FolderTVCell.self)
             .delegate(self)
+    }
+    
+    init(viewType: ViewType) {
+        self.viewType = viewType
+        super.init()
     }
     
     override func viewDidLoad() {
@@ -130,13 +136,26 @@ extension FolderViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
+        
         let folder = dataSource.snapshot().itemIdentifiers[indexPath.row]
-        let todoListVC = TodoListViewController { todo in
-            todo.parentFolder.contains(folder) 
+        switch viewType {
+        case .overview:
+            let todoListVC = TodoListViewController { todo in
+                todo.parentFolder.contains(folder)
+            }
+            navigationController?.pushViewController(
+                todoListVC,
+                animated: true
+            )
+        case .browse(let action):
+            action(folder)
+            navigationController?.popViewController(animated: true)
         }
-        navigationController?.pushViewController(
-            todoListVC,
-            animated: true
-        )
+    }
+}
+
+extension FolderViewController {
+    enum ViewType {
+        case overview, browse(action: (Folder) -> Void)
     }
 }

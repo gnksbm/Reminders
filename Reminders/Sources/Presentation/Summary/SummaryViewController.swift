@@ -65,7 +65,7 @@ final class SummaryViewController: BaseViewController {
                 image: UIImage(systemName: "folder"),
                 primaryAction: UIAction { [weak self] _ in
                     self?.navigationController?.pushViewController(
-                        FolderViewController(),
+                        FolderViewController(viewType: .overview),
                         animated: true
                     )
                 }

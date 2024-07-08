@@ -10,6 +10,8 @@ import Foundation
 import RealmSwift
 
 final class Folder: Object {
+    /// RealmVersion.folderIDAdded 버전에서 추가
+    @Persisted(primaryKey: true) var id: ObjectId
     /// RealmVersion.folderNameAdded 버전에서 추가
     @Persisted var name: String
     @Persisted var items: List<TodoItem>
