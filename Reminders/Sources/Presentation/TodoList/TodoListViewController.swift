@@ -88,12 +88,9 @@ final class TodoListViewController: BaseViewController {
     private func starItem(item: TodoItem) throws { }
     
     private func flagItem(item: TodoItem) throws {
-        try todoRepository.update(
-            item: item,
-            willChange: [
-                \.isFlag: !item.isFlag
-            ]
-        )
+        try todoRepository.update(item: item) {
+            $0.isFlag.toggle()
+        }
         NotificationCenter.default.post(
             name: .todoChanged,
             object: nil
@@ -147,10 +144,9 @@ extension TodoListViewController {
                         { [weak self] in
                             guard let self else { return }
                             do {
-                                try todoRepository.update(
-                                    item: item,
-                                    willChange: [\.isDone: !item.isDone]
-                                )
+                                try todoRepository.update(item: item) {
+                                    $0.isDone.toggle()
+                                }
                                 NotificationCenter.default.post(
                                     name: .todoChanged,
                                     object: nil

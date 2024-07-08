@@ -27,15 +27,13 @@ final class RealmStorage {
         realm.objects(type)
     }
     
-    func update<T: Object, U>(
+    func update<T: Object>(
         _ object: T,
-        willChange: [ReferenceWritableKeyPath<T, U>: U]
+        _ block: (T) -> Void
     ) throws {
         try realm.write {
-            willChange.forEach { keyPath, newValue in
-                object[keyPath: keyPath] = newValue
-                realm.add(object, update: .modified)
-            }
+            block(object)
+            realm.add(object, update: .modified)
         }
     }
     

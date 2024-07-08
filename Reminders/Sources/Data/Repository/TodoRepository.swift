@@ -11,9 +11,9 @@ import RealmSwift
 
 final class TodoRepository {
     private let realmStorage = RealmStorage.shared
-    static let shared = TodoRepository()
-    
     private let imageStorage = ImageStorage.shared
+    
+    static let shared = TodoRepository()
     
     private init() { }
     
@@ -27,11 +27,11 @@ final class TodoRepository {
         Array(realmStorage.read(TodoItem.self))
     }
     
-    func update<T>(
+    func update(
         item: TodoItem,
-        willChange: [ReferenceWritableKeyPath<TodoItem, T> : T]
+        _ block: (TodoItem) -> Void
     ) throws {
-        try realmStorage.update(item, willChange: willChange)
+        try realmStorage.update(item, block)
     }
     
     func removeTodo(item: TodoItem) throws {
