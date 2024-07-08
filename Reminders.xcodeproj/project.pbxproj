@@ -25,6 +25,7 @@
 		8EC0037F2C3A8949001271DF /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC0037E2C3A8949001271DF /* FSCalendar */; };
 		8EC003812C3A8A1D001271DF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003802C3A8A1D001271DF /* CalendarViewController.swift */; };
 		8EC003832C3A9CC1001271DF /* MultipleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003822C3A9CC1001271DF /* MultipleImageView.swift */; };
+		8EC003852C3C29FA001271DF /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003842C3C29FA001271DF /* Folder.swift */; };
 		8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218762C3821D400C1E548 /* TodoRepository.swift */; };
 		8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218782C38344800C1E548 /* ImageStorage.swift */; };
 		8EC2187E2C39134300C1E548 /* Neat in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC2187D2C39134300C1E548 /* Neat */; };
@@ -86,6 +87,7 @@
 		8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTVHeaderView.swift; sourceTree = "<group>"; };
 		8EC003802C3A8A1D001271DF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
 		8EC003822C3A9CC1001271DF /* MultipleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleImageView.swift; sourceTree = "<group>"; };
+		8EC003842C3C29FA001271DF /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		8EC218782C38344800C1E548 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -354,6 +356,7 @@
 			children = (
 				BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */,
 				BEF6E0BC2C33EEB800FA435D /* HashTag.swift */,
+				8EC003842C3C29FA001271DF /* Folder.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -448,6 +451,7 @@
 				8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8EC003832C3A9CC1001271DF /* MultipleImageView.swift in Sources */,
+				8EC003852C3C29FA001271DF /* Folder.swift in Sources */,
 				8E0E58E82C35A4E9008CA109 /* AddSelectButton.swift in Sources */,
 				8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */,
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,

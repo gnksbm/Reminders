@@ -18,6 +18,8 @@ final class TodoItem: Object, Identifiable {
     @Persisted var priority: Priority
     @Persisted var imageFileName: List<String>
     @Persisted var isDone: Bool
+    @Persisted(originProperty: "items")
+    var parentFolder: LinkingObjects<Folder>
     /// RealmVersion.flagAdded 버전에서 추가
     @Persisted var isFlag: Bool
     
