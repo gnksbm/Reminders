@@ -19,17 +19,19 @@ final class AddViewModel: ViewModel {
     let hashTagStr = Observable<String?>(nil)
     let priority = Observable<TodoItem.Priority>(.none)
     let images = Observable<[UIImage]>([])
+    let folder = Observable<Folder?>(nil)
     let imageSelectedEvent = Observable<Void>(())
     
     func transform(input: Input) -> Output {
         let output = Output(
-            selectedDate: date,
-            hashTagStr: hashTagStr,
+            deadline: date,
+            hashTag: hashTagStr,
             priority: priority,
-            selectedImages: images,
-            imageSelected: imageSelectedEvent,
-            folder: Observable(nil),
-            errorMessage: Observable(""),
+            images: images,
+            folder: folder,
+            imageDidSelected: imageSelectedEvent,
+            errorMessage: Observable(""), 
+            startFlow: Observable(nil),
             flowFinished: Observable(())
         )
         input.titleInputEvent.bind { [weak self] title in
@@ -51,19 +53,26 @@ final class AddViewModel: ViewModel {
         input.cancelButtonTapEvent.bind { _ in
             output.flowFinished.onNext(())
         }
+        input.navigationButtonTapEvent.bind { eventTpye in
+            output.startFlow.onNext(eventTpye)
+        }
         return output
     }
     
-    func createAndSave(output: Output) throws {
+    func folderSelected(folder: Folder) {
+        self.folder.onNext(folder)
+    }
+    
+    private func createAndSave(output: Output) throws {
         guard let title else { throw AddViewModelError.emptyTitle }
         var hashTag: HashTag?
-        if let hashTagStr = output.hashTagStr.value() {
+        if let hashTagStr = output.hashTag.value() {
             hashTag = hashTagRepository.findOrInitialize(tagName: hashTagStr)
         }
         let todoItem = TodoItem(
             title: title,
             memo: memo,
-            deadline: output.selectedDate.value(),
+            deadline: output.deadline.value(),
             hashTag: hashTag,
             priority: output.priority.value()
         )
@@ -71,12 +80,12 @@ final class AddViewModel: ViewModel {
             try folderRepository.addTodoInFolder(
                 todoItem,
                 folder: folder,
-                images: output.selectedImages.value()
+                images: output.images.value()
             )
         } else {
             try todoRepository.addNewTodo(
                 item: todoItem,
-                images: output.selectedImages.value()
+                images: output.images.value()
             )
         }
     }
@@ -150,16 +159,37 @@ extension AddViewModel {
         let memoInputEvent: Observable<String?>
         let saveButtonTapEvent: Observable<Void>
         let cancelButtonTapEvent: Observable<Void>
+        let navigationButtonTapEvent: Observable<NavigationEventType?>
     }
     
     struct Output {
-        let selectedDate: Observable<Date?>
-        let hashTagStr: Observable<String?>
+        let deadline: Observable<Date?>
+        let hashTag: Observable<String?>
         let priority: Observable<TodoItem.Priority>
-        let selectedImages: Observable<[UIImage]>
-        let imageSelected: Observable<Void>
+        let images: Observable<[UIImage]>
         let folder: Observable<Folder?>
+        let imageDidSelected: Observable<Void>
         let errorMessage: Observable<String>
+        let startFlow: Observable<NavigationEventType?>
         let flowFinished: Observable<Void>
+    }
+}
+
+enum NavigationEventType: Int, CaseIterable {
+    case deadline, hashTag, priority, image, folder
+    
+    var title: String {
+        switch self {
+        case .deadline:
+            "마감일"
+        case .hashTag:
+            "태그"
+        case .priority:
+            "우선순위"
+        case .image:
+            "이미지 추가"
+        case .folder:
+            "저장할 폴더"
+        }
     }
 }

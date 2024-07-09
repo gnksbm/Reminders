@@ -18,6 +18,8 @@ final class AddViewController: BaseViewController {
     private let memoInputEvent = Observable<String?>(nil)
     private let saveButtonTapEvent = Observable<Void>(())
     private let cancelButtonTapEvent = Observable<Void>(())
+    private let navigationButtonTapEvent =
+    Observable<NavigationEventType?>(nil)
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -46,60 +48,26 @@ final class AddViewController: BaseViewController {
             .attributedText(textViewPlaceholder)
     }
     
-    private lazy var deadlineButton = AddSelectButton(
-        title: "마감일"
-    ).nt.configure {
-        $0.perform { base in
-            base.addTarget(
-                self,
-                action: #selector(deadlineButtonTapped)
-            )
+    private lazy var navigationButtons = NavigationEventType.allCases
+        .map { eventType in
+            AddSelectButton(
+                title: eventType.title
+            ).nt.configure {
+                $0.tag(eventType.rawValue)
+                    .perform { base in
+                        base.addTarget(
+                            self,
+                            action: #selector(navigationButtonTapped)
+                        )
+                    }
+            }
         }
-    }
     
-    private lazy var hashTagButton = AddSelectButton(
-        title: "태그",
-        infoColor: .tintColor
+    private lazy var buttonStackView = UIStackView(
+        arrangedSubviews: navigationButtons
     ).nt.configure {
-        $0.perform { base in
-            base.addTarget(
-                self,
-                action: #selector(hashTagButtonTapped)
-            )
-        }
-    }
-    
-    private lazy var priorityButton = AddSelectButton(
-        title: "우선순위"
-    ).nt.configure {
-        $0.perform { base in
-            base.addTarget(
-                self,
-                action: #selector(priorityButtonTapped)
-            )
-        }
-    }
-    
-    private lazy var addImageButton = AddSelectButton(
-        title: "이미지 추가"
-    ).nt.configure {
-        $0.perform { base in
-            base.addTarget(
-                self,
-                action: #selector(addImageButtonTapped)
-            )
-        }
-    }
-    
-    private lazy var selectFolderButton = AddSelectButton(
-        title: "저장할 폴더"
-    ).nt.configure {
-        $0.perform { base in
-            base.addTarget(
-                self,
-                action: #selector(selectFolderButtonTapped)
-            )
-        }
+        $0.axis(.vertical)
+            .spacing(20)
     }
     
     override func viewDidLoad() {
@@ -128,11 +96,7 @@ final class AddViewController: BaseViewController {
             dividerView,
             titleTextField,
             memoTextView,
-            deadlineButton,
-            hashTagButton,
-            priorityButton,
-            addImageButton,
-            selectFolderButton
+            buttonStackView
         ].forEach { view.addSubview($0) }
         
         let safeArea = view.safeAreaLayoutGuide
@@ -160,28 +124,8 @@ final class AddViewController: BaseViewController {
                 .inset(inset * 0.75)
         }
         
-        deadlineButton.snp.makeConstraints { make in
+        buttonStackView.snp.makeConstraints { make in
             make.top.equalTo(textBackgroundView.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(textBackgroundView)
-        }
-        
-        hashTagButton.snp.makeConstraints { make in
-            make.top.equalTo(deadlineButton.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(textBackgroundView)
-        }
-        
-        priorityButton.snp.makeConstraints { make in
-            make.top.equalTo(hashTagButton.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(textBackgroundView)
-        }
-        
-        addImageButton.snp.makeConstraints { make in
-            make.top.equalTo(priorityButton.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(textBackgroundView)
-        }
-        
-        selectFolderButton.snp.makeConstraints { make in
-            make.top.equalTo(addImageButton.snp.bottom).offset(inset)
             make.horizontalEdges.equalTo(textBackgroundView)
         }
     }
@@ -199,231 +143,113 @@ final class AddViewController: BaseViewController {
                 titleInputEvent: titleInputEvent,
                 memoInputEvent: memoInputEvent,
                 saveButtonTapEvent: saveButtonTapEvent,
-                cancelButtonTapEvent: cancelButtonTapEvent
+                cancelButtonTapEvent: cancelButtonTapEvent,
+                navigationButtonTapEvent: navigationButtonTapEvent
             )
         )
-        output.selectedDate.bind { [weak self] date in
+        
+        output.deadline.bind { [weak self] date in
             if let date {
-                self?.deadlineButton.updateSubInfo(
+                self?.navigationButtons.first(
+                    where: { $0.tag == NavigationEventType.deadline.rawValue }
+                )?.updateSubInfo(
                     text: date.formatted(dateFormat: .todoOutput)
                 )
             }
         }
-        output.hashTagStr.bind { [weak self] hashTag in
+        
+        output.hashTag.bind { [weak self] hashTag in
             if let hashTag {
-                self?.hashTagButton.updateSubInfo(text: "#\(hashTag)")
+                self?.navigationButtons.first(
+                    where: { $0.tag == NavigationEventType.hashTag.rawValue }
+                )?.updateSubInfo(text: "#\(hashTag)")
             }
         }
+        
         output.priority.bind { [weak self] priority in
-            self?.priorityButton.updateSubInfo(text: priority.title)
+            self?.navigationButtons.first(
+                where: { $0.tag == NavigationEventType.priority.rawValue }
+            )?.updateSubInfo(text: priority.title)
         }
-        output.selectedImages.bind { [weak self] selectedImage in
-            guard let self else { return }
-            addImageButton.updateSubInfo(
+        
+        output.images.bind { [weak self] selectedImage in
+            let addImageButton = self?.navigationButtons.first(
+                where: { $0.tag == NavigationEventType.image.rawValue }
+            )
+            addImageButton?.updateSubInfo(
                 text: "선택된 이미지 \(selectedImage.count)개"
             )
-            addImageButton.updateImage(images: selectedImage)
+            addImageButton?.updateImage(images: selectedImage)
         }
-        output.imageSelected.bind { [weak self] in
+        
+        output.imageDidSelected.bind { [weak self] in
             self?.dismiss(animated: true)
         }
+        
+        output.folder.bind { [weak self] folder in
+            if let folder {
+                self?.navigationButtons.first(
+                    where: { $0.tag == NavigationEventType.folder.rawValue }
+                )?.updateSubInfo(text: "경로: \(folder.name)")
+            }
+        }
+        
         output.errorMessage.bind { [weak self] message in
             self?.showToast(message: message)
         }
+        
         output.flowFinished.bind { [weak self] _ in
             self?.dismiss(animated: true)
         }
+        
+        output.startFlow.bind { [weak self] eventType in
+            guard let self,
+                  let eventType else { return }
+            switch eventType {
+            case .deadline:
+                navigationController?.pushViewController(
+                    DeadlineViewController(vmDelegate: viewModel),
+                    animated: true
+                )
+            case .hashTag:
+                navigationController?.pushViewController(
+                    TagViewController(vmDelegate: viewModel),
+                    animated: true
+                )
+            case .priority:
+                navigationController?.pushViewController(
+                    PriorityViewController(vmDelegate: viewModel),
+                    animated: true
+                )
+            case .image:
+                var config = PHPickerConfiguration()
+                config.selectionLimit = 0
+                let phPicker = PHPickerViewController(configuration: config)
+                phPicker.delegate = viewModel
+                present(phPicker, animated: true)
+            case .folder:
+                navigationController?.pushViewController(
+                    FolderViewController(
+                        viewType: .browse(
+                            action: { [weak self] folder in
+                                self?.viewModel.folderSelected(folder: folder)
+                            }
+                        )
+                    ), 
+                    animated: true
+                )
+            }
+        }
     }
     
-//    private func addObserver() {
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(deadlineChanged),
-//            name: .deadline,
-//            object: nil
-//        )
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(hashTagChanged),
-//            name: .hashTag,
-//            object: nil
-//        )
-//        NotificationCenter.default.addObserver(
-//            self,
-//            selector: #selector(priorityChanged),
-//            name: .priority,
-//            object: nil
-//        )
-//    }
-//    
-//    private func removeObserver() {
-//        NSNotification.Name.allTodoItems.forEach {
-//            NotificationCenter.default.removeObserver(
-//                self,
-//                name: $0,
-//                object: nil
-//            )
-//        }
-//    }
-    
-//    private func updateDeadline(date: Date) {
-//        selectedDate = date
-//        deadlineButton.updateSubInfo(
-//            text: date.formatted(dateFormat: .todoOutput)
-//        )
-//    }
-//    
-//    private func updateHashTag(name: String) {
-//        hashTagStr = name.isNotEmpty ? name : nil
-//        hashTagButton.updateSubInfo(
-//            text: name.isNotEmpty ? "#\(name)" : ""
-//        )
-//    }
-//    
-//    private func updatePriority(index: Int) {
-//        priority = TodoItem.Priority.allCases[index]
-//        priorityButton.updateSubInfo(text: priority.title)
-//    }
-//
-    @objc private func deadlineButtonTapped() {
-        navigationController?.pushViewController(
-            DeadlineViewController(vmDelegate: viewModel),
-            animated: true
+    @objc private func navigationButtonTapped(
+        _ sender: UITapGestureRecognizer
+    ) {
+        guard let tag = sender.view?.tag else { return }
+        navigationButtonTapEvent.onNext(
+            NavigationEventType.allCases[tag]
         )
     }
-    
-    @objc private func hashTagButtonTapped() {
-        navigationController?.pushViewController(
-            TagViewController(vmDelegate: viewModel),
-            animated: true
-        )
-    }
-    
-    @objc private func priorityButtonTapped() {
-        navigationController?.pushViewController(
-            PriorityViewController(vmDelegate: viewModel),
-            animated: true
-        )
-    }
-    
-    @objc private func addImageButtonTapped() {
-        var config = PHPickerConfiguration()
-        config.selectionLimit = 0
-        let phPicker = PHPickerViewController(configuration: config)
-        phPicker.delegate = viewModel
-        present(phPicker, animated: true)
-    }
-    
-    @objc private func selectFolderButtonTapped() {
-//        let folderVC = FolderViewController(
-//            viewType: .browse(
-//                action: { [weak self] folder in
-//                    guard let self else { return }
-//                    selectedFolder = folder
-//                    selectFolderButton.updateSubInfo(
-//                        text: "경로: \(folder.name)"
-//                    )
-//                }
-//            )
-//        )
-//        navigationController?.pushViewController(folderVC, animated: true)
-    }
-//    
-//    @objc private func deadlineButtonLongPressed() {
-//        let datePicker = UIDatePicker().nt.configure {
-//            $0.preferredDatePickerStyle(.inline)
-//        }
-//        if let selectedDate {
-//            datePicker.date = selectedDate
-//        }
-//        showActionSheet(
-//            title: "마감일을 선택해주세요",
-//            view: datePicker,
-//            action: UIAlertAction(
-//                title: "설정하기",
-//                style: .default
-//            ) {
-//                [weak self] _ in
-//                guard let self else { return }
-//                updateDeadline(date: datePicker.date)
-//            }
-//        )
-//    }
-//    
-//    @objc private func hashTagButtonLongPressed() {
-//        let textField = UITextField().nt.configure {
-//            $0.borderStyle(.roundedRect)
-//                .backgroundColor(.secondarySystemBackground)
-//        }
-//        showActionSheet(
-//            title: "해시태그를 입력해주세요",
-//            view: textField,
-//            action: UIAlertAction(
-//                title: "설정하기",
-//                style: .default
-//            ) {
-//                [weak self] _ in
-//                guard let self else { return }
-//                guard let name = textField.text else {
-//                    Logger.nilObject(textField, keyPath: \.text)
-//                    return
-//                }
-//                updateHashTag(name: name)
-//            }
-//        )
-//    }
-//    
-//    @objc private func priorityButtonLongPressed() {
-//        lazy var segmentControl = UISegmentedControl(
-//            items: TodoItem.Priority.allCases.map { $0.title }
-//        ).nt.configure {
-//            $0.selectedSegmentIndex(priority.rawValue)
-//        }
-//        showActionSheet(
-//            title: "우선순위를 선택해주세요",
-//            view: segmentControl,
-//            action: UIAlertAction(
-//                title: "설정하기",
-//                style: .default
-//            ) { [weak self] _ in
-//                self?.updatePriority(index: segmentControl.selectedSegmentIndex)
-//            }
-//        )
-//    }
-    
-//    @objc private func deadlineChanged(_ notification: NSNotification) {
-//        guard let date = notification.userInfo?["date"] as? Date else {
-//            Logger.debug("""
-//                Date 변환 실패
-//                Value: \(String(describing: notification.userInfo?["date"]))
-//            """)
-//            return
-//        }
-//        updateDeadline(date: date)
-//    }
-//    
-//    @objc private func hashTagChanged(_ notification: NSNotification) {
-//        guard let hashTag = notification.userInfo?["hashTag"] as? String else {
-//            Logger.debug("""
-//                String 변환 실패
-//                Value: \(String(describing: notification.userInfo?["date"]))
-//            """)
-//            return
-//        }
-//        updateHashTag(name: hashTag)
-//    }
-//    
-//    @objc private func priorityChanged(_ notification: NSNotification) {
-//        guard let priorityIndex =
-//                notification.userInfo?["priorityIndex"] as? Int else {
-//            Logger.debug("""
-//                Int 변환 실패
-//                Value: \(String(describing: notification.userInfo?["date"]))
-//            """)
-//            return
-//        }
-//        updatePriority(index: priorityIndex)
-//    }
 }
 
 extension AddViewController: UITextViewDelegate {
