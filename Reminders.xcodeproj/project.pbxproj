@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		8E013E122C34475B00557FC0 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8E013E112C34475B00557FC0 /* RealmSwift */; };
 		8E013E132C34476300557FC0 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 8E013E112C34475B00557FC0 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
-		8E0E58D42C357BAE008CA109 /* DateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58D32C357BAE008CA109 /* DateViewController.swift */; };
+		8E0E58D42C357BAE008CA109 /* DeadlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58D32C357BAE008CA109 /* DeadlineViewController.swift */; };
 		8E0E58DC2C358DCE008CA109 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DB2C358DCE008CA109 /* TagViewController.swift */; };
 		8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */; };
 		8E0E58E22C35958C008CA109 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E12C35958C008CA109 /* PriorityViewController.swift */; };
@@ -29,6 +29,9 @@
 		8EC003872C3C2D33001271DF /* FolderRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003862C3C2D33001271DF /* FolderRepository.swift */; };
 		8EC003892C3C2F46001271DF /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003882C3C2F46001271DF /* FolderViewController.swift */; };
 		8EC0038B2C3C3051001271DF /* FolderTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC0038A2C3C3051001271DF /* FolderTVCell.swift */; };
+		8EC0038D2C3D6E00001271DF /* HashTagRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC0038C2C3D6E00001271DF /* HashTagRepository.swift */; };
+		8EC003902C3D7200001271DF /* DeadlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC0038F2C3D7200001271DF /* DeadlineViewModel.swift */; };
+		8EC003922C3D7677001271DF /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003912C3D7677001271DF /* AddViewModel.swift */; };
 		8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218762C3821D400C1E548 /* TodoRepository.swift */; };
 		8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218782C38344800C1E548 /* ImageStorage.swift */; };
 		8EC2187E2C39134300C1E548 /* Neat in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC2187D2C39134300C1E548 /* Neat */; };
@@ -77,7 +80,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		8E0E58D32C357BAE008CA109 /* DateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateViewController.swift; sourceTree = "<group>"; };
+		8E0E58D32C357BAE008CA109 /* DeadlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineViewController.swift; sourceTree = "<group>"; };
 		8E0E58DB2C358DCE008CA109 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
 		8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
 		8E0E58E12C35958C008CA109 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
@@ -96,6 +99,9 @@
 		8EC003862C3C2D33001271DF /* FolderRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRepository.swift; sourceTree = "<group>"; };
 		8EC003882C3C2F46001271DF /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
 		8EC0038A2C3C3051001271DF /* FolderTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderTVCell.swift; sourceTree = "<group>"; };
+		8EC0038C2C3D6E00001271DF /* HashTagRepository.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HashTagRepository.swift; sourceTree = "<group>"; };
+		8EC0038F2C3D7200001271DF /* DeadlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineViewModel.swift; sourceTree = "<group>"; };
+		8EC003912C3D7677001271DF /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		8EC218782C38344800C1E548 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		BED548752C3D221700D8BDCA /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -199,11 +205,21 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		8EC0038E2C3D71F1001271DF /* Deadline */ = {
+			isa = PBXGroup;
+			children = (
+				8E0E58D32C357BAE008CA109 /* DeadlineViewController.swift */,
+				8EC0038F2C3D7200001271DF /* DeadlineViewModel.swift */,
+			);
+			path = Deadline;
+			sourceTree = "<group>";
+		};
 		8EC218752C3821C600C1E548 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
 				8EC218762C3821D400C1E548 /* TodoRepository.swift */,
 				8EC003862C3C2D33001271DF /* FolderRepository.swift */,
+				8EC0038C2C3D6E00001271DF /* HashTagRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -358,7 +374,8 @@
 			isa = PBXGroup;
 			children = (
 				BEF6E0C82C34099800FA435D /* AddViewController.swift */,
-				8E0E58D32C357BAE008CA109 /* DateViewController.swift */,
+				8EC003912C3D7677001271DF /* AddViewModel.swift */,
+				8EC0038E2C3D71F1001271DF /* Deadline */,
 				8E0E58DB2C358DCE008CA109 /* TagViewController.swift */,
 				8E0E58E12C35958C008CA109 /* PriorityViewController.swift */,
 				8E0E58E62C35A4D1008CA109 /* View */,
@@ -474,12 +491,13 @@
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,
 				8E0E58E42C359DFD008CA109 /* Date+.swift in Sources */,
 				8E5A43282C3461E20045D77A /* BaseTableViewCell.swift in Sources */,
-				8E0E58D42C357BAE008CA109 /* DateViewController.swift in Sources */,
+				8E0E58D42C357BAE008CA109 /* DeadlineViewController.swift in Sources */,
 				BED548782C3D231A00D8BDCA /* ViewModel.swift in Sources */,
 				BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */,
 				BEF6E0C42C34068000FA435D /* IntegerLiteralType+.swift in Sources */,
 				BEF6E0A72C33E8B800FA435D /* String+.swift in Sources */,
 				BEF6E0992C33E78F00FA435D /* BaseViewController.swift in Sources */,
+				8EC0038D2C3D6E00001271DF /* HashTagRepository.swift in Sources */,
 				8E0E58EC2C35ABBD008CA109 /* TodoDetailViewController.swift in Sources */,
 				BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */,
 				BED548762C3D221700D8BDCA /* Observable.swift in Sources */,
@@ -494,12 +512,14 @@
 				8E5A43372C3476870045D77A /* TodoTVHeaderView.swift in Sources */,
 				BEF6E0BD2C33EEB800FA435D /* HashTag.swift in Sources */,
 				BEF6E0C92C34099800FA435D /* AddViewController.swift in Sources */,
+				8EC003922C3D7677001271DF /* AddViewModel.swift in Sources */,
 				BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */,
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
 				8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
 				8EC003892C3C2F46001271DF /* FolderViewController.swift in Sources */,
 				8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */,
+				8EC003902C3D7200001271DF /* DeadlineViewModel.swift in Sources */,
 				8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */,
 				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,

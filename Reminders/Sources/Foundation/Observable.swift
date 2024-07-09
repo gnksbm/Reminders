@@ -27,6 +27,10 @@ final class Observable<Base> {
     func bind(onNext: @escaping (Base) -> Void) {
         handlers.append(ObservableHandler<Base>(onNext))
     }
+    
+    func value() -> Base {
+        base
+    }
 }
 
 final class ObservableHandler<Base> {

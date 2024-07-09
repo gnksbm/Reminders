@@ -12,14 +12,12 @@ import SnapKit
 import Neat
 
 final class AddViewController: BaseViewController {
-    private let folderRepository = FolderRepository.shared
-    private let todoRepository = TodoRepository.shared
+    private let viewModel = AddViewModel()
     
-    private var selectedDate: Date?
-    private var hashTagStr: String?
-    private var priority = TodoItem.Priority.none
-    private var selectedImage = [UIImage]()
-    private var selectedFolder: Folder?
+    private let titleInputEvent = Observable<String?>(nil)
+    private let memoInputEvent = Observable<String?>(nil)
+    private let saveButtonTapEvent = Observable<Void>(())
+    private let cancelButtonTapEvent = Observable<Void>(())
     
     private let textViewPlaceholder = NSAttributedString(
         string: "메모(선택)",
@@ -52,11 +50,6 @@ final class AddViewController: BaseViewController {
         title: "마감일"
     ).nt.configure {
         $0.perform { base in
-            let longGesture = UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(deadlineButtonLongPressed)
-            )
-            base.addGestureRecognizer(longGesture)
             base.addTarget(
                 self,
                 action: #selector(deadlineButtonTapped)
@@ -69,11 +62,6 @@ final class AddViewController: BaseViewController {
         infoColor: .tintColor
     ).nt.configure {
         $0.perform { base in
-            let longGesture = UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(hashTagButtonLongPressed)
-            )
-            base.addGestureRecognizer(longGesture)
             base.addTarget(
                 self,
                 action: #selector(hashTagButtonTapped)
@@ -85,16 +73,10 @@ final class AddViewController: BaseViewController {
         title: "우선순위"
     ).nt.configure {
         $0.perform { base in
-            let longGesture = UILongPressGestureRecognizer(
-                target: self,
-                action: #selector(priorityButtonLongPressed)
-            )
-            base.addGestureRecognizer(longGesture)
             base.addTarget(
                 self,
                 action: #selector(priorityButtonTapped)
             )
-            base.updateSubInfo(text: priority.title)
         }
     }
     
@@ -120,13 +102,9 @@ final class AddViewController: BaseViewController {
         }
     }
     
-    deinit {
-        removeObserver()
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        addObserver()
+        bind()
     }
     
     override func configureNavigation() {
@@ -215,36 +193,60 @@ final class AddViewController: BaseViewController {
         ]
     }
     
-    private func addObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(deadlineChanged),
-            name: .deadline,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(hashTagChanged),
-            name: .hashTag,
-            object: nil
-        )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(priorityChanged),
-            name: .priority,
-            object: nil
-        )
-    }
-    
-    private func removeObserver() {
-        NSNotification.Name.allTodoItems.forEach {
-            NotificationCenter.default.removeObserver(
-                self,
-                name: $0,
-                object: nil
+    private func bind() {
+        let output = viewModel.transform(
+            input: AddViewModel.Input(
+                titleInputEvent: titleInputEvent,
+                memoInputEvent: memoInputEvent,
+                saveButtonTapEvent: saveButtonTapEvent,
+                cancelButtonTapEvent: cancelButtonTapEvent
             )
+        )
+        output.priority.bind { [weak self] priority in
+            self?.priorityButton.updateSubInfo(text: priority.title)
+        }
+        output.selectedImages.bind { [weak self] selectedImage in
+            guard let self else { return }
+            addImageButton.updateSubInfo(
+                text: "선택된 이미지 \(selectedImage.count)개"
+            )
+            addImageButton.updateImage(images: selectedImage)
+        }
+        output.imageSelected.bind { [weak self] in
+            self?.dismiss(animated: true)
         }
     }
+    
+//    private func addObserver() {
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(deadlineChanged),
+//            name: .deadline,
+//            object: nil
+//        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(hashTagChanged),
+//            name: .hashTag,
+//            object: nil
+//        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(priorityChanged),
+//            name: .priority,
+//            object: nil
+//        )
+//    }
+//    
+//    private func removeObserver() {
+//        NSNotification.Name.allTodoItems.forEach {
+//            NotificationCenter.default.removeObserver(
+//                self,
+//                name: $0,
+//                object: nil
+//            )
+//        }
+//    }
     
     private func validateUserInput() {
         guard let title = titleTextField.text else {
@@ -271,30 +273,6 @@ final class AddViewController: BaseViewController {
         memo: String?
     ) {
         do {
-            var hashTag: HashTag?
-            if let hashTagStr {
-                hashTag = RealmStorage.shared.read(HashTag.self)
-                    .first { $0.name == hashTagStr } ??
-                HashTag(name: hashTagStr)
-            }
-            let todoItem = TodoItem(
-                title: title,
-                memo: memo,
-                deadline: selectedDate,
-                hashTag: hashTag,
-                priority: priority
-            )
-            if let selectedFolder {
-                try folderRepository.addTodoInFolder(
-                    todoItem,
-                    folder: selectedFolder
-                )
-            } else {
-                try todoRepository.addNewTodo(
-                    item: todoItem,
-                    images: selectedImage
-                )
-            }
             dismiss(animated: true)
             NotificationCenter.default.post(
                 name: .newTodoAdded,
@@ -306,193 +284,193 @@ final class AddViewController: BaseViewController {
         }
     }
     
-    private func updateDeadline(date: Date) {
-        selectedDate = date
-        deadlineButton.updateSubInfo(
-            text: date.formatted(dateFormat: .todoOutput)
-        )
-    }
-    
-    private func updateHashTag(name: String) {
-        hashTagStr = name.isNotEmpty ? name : nil
-        hashTagButton.updateSubInfo(
-            text: name.isNotEmpty ? "#\(name)" : ""
-        )
-    }
-    
-    private func updatePriority(index: Int) {
-        priority = TodoItem.Priority.allCases[index]
-        priorityButton.updateSubInfo(text: priority.title)
-    }
-    
-    private func loadSelectedImage(results: [PHPickerResult]) {
-        let group = DispatchGroup()
-        selectedImage.removeAll()
-        results.map(\.itemProvider)
-            .filter { $0.canLoadObject(ofClass: UIImage.self) }
-            .forEach {
-                group.enter()
-                $0.loadObject(
-                    ofClass: UIImage.self
-                ) { [weak self] item, error in
-                    if let error {
-                        Logger.error(error)
-                        return
-                    }
-                    if let image = item as? UIImage {
-                        self?.selectedImage.append(image)
-                    }
-                    group.leave()
-                }
-            }
-        group.notify(queue: .main) { [weak self] in
-            guard let self else { return }
-            addImageButton.updateSubInfo(
-                text: "선택된 이미지 \(selectedImage.count)개"
-            )
-            addImageButton.updateImage(images: selectedImage)
-        }
-    }
+//    private func updateDeadline(date: Date) {
+//        selectedDate = date
+//        deadlineButton.updateSubInfo(
+//            text: date.formatted(dateFormat: .todoOutput)
+//        )
+//    }
+//    
+//    private func updateHashTag(name: String) {
+//        hashTagStr = name.isNotEmpty ? name : nil
+//        hashTagButton.updateSubInfo(
+//            text: name.isNotEmpty ? "#\(name)" : ""
+//        )
+//    }
+//    
+//    private func updatePriority(index: Int) {
+//        priority = TodoItem.Priority.allCases[index]
+//        priorityButton.updateSubInfo(text: priority.title)
+//    }
+//    
+//    private func loadSelectedImage(results: [PHPickerResult]) {
+//        let group = DispatchGroup()
+//        selectedImage.removeAll()
+//        results.map(\.itemProvider)
+//            .filter { $0.canLoadObject(ofClass: UIImage.self) }
+//            .forEach {
+//                group.enter()
+//                $0.loadObject(
+//                    ofClass: UIImage.self
+//                ) { [weak self] item, error in
+//                    if let error {
+//                        Logger.error(error)
+//                        return
+//                    }
+//                    if let image = item as? UIImage {
+//                        self?.selectedImage.append(image)
+//                    }
+//                    group.leave()
+//                }
+//            }
+//        group.notify(queue: .main) { [weak self] in
+//            guard let self else { return }
+//            addImageButton.updateSubInfo(
+//                text: "선택된 이미지 \(selectedImage.count)개"
+//            )
+//            addImageButton.updateImage(images: selectedImage)
+//        }
+//    }
     
     @objc private func deadlineButtonTapped() {
         navigationController?.pushViewController(
-            DateViewController(selectedDate: selectedDate),
+            DeadlineViewController(vmDelegate: viewModel),
             animated: true
         )
     }
     
     @objc private func hashTagButtonTapped() {
-        navigationController?.pushViewController(
-            TagViewController(hashTag: hashTagStr),
-            animated: true
-        )
+//        navigationController?.pushViewController(
+//            TagViewController(hashTag: hashTagStr),
+//            animated: true
+//        )
     }
     
     @objc private func priorityButtonTapped() {
-        navigationController?.pushViewController(
-            PriorityViewController(index: priority.rawValue),
-            animated: true
-        )
+//        navigationController?.pushViewController(
+//            PriorityViewController(index: priority.rawValue),
+//            animated: true
+//        )
     }
     
     @objc private func addImageButtonTapped() {
         var config = PHPickerConfiguration()
         config.selectionLimit = 0
         let phPicker = PHPickerViewController(configuration: config)
-        phPicker.delegate = self
+        phPicker.delegate = viewModel
         present(phPicker, animated: true)
     }
     
     @objc private func selectFolderButtonTapped() {
-        let folderVC = FolderViewController(
-            viewType: .browse(
-                action: { [weak self] folder in
-                    guard let self else { return }
-                    selectedFolder = folder
-                    selectFolderButton.updateSubInfo(
-                        text: "경로: \(folder.name)"
-                    )
-                }
-            )
-        )
-        navigationController?.pushViewController(folderVC, animated: true)
+//        let folderVC = FolderViewController(
+//            viewType: .browse(
+//                action: { [weak self] folder in
+//                    guard let self else { return }
+//                    selectedFolder = folder
+//                    selectFolderButton.updateSubInfo(
+//                        text: "경로: \(folder.name)"
+//                    )
+//                }
+//            )
+//        )
+//        navigationController?.pushViewController(folderVC, animated: true)
     }
+//    
+//    @objc private func deadlineButtonLongPressed() {
+//        let datePicker = UIDatePicker().nt.configure {
+//            $0.preferredDatePickerStyle(.inline)
+//        }
+//        if let selectedDate {
+//            datePicker.date = selectedDate
+//        }
+//        showActionSheet(
+//            title: "마감일을 선택해주세요",
+//            view: datePicker,
+//            action: UIAlertAction(
+//                title: "설정하기",
+//                style: .default
+//            ) {
+//                [weak self] _ in
+//                guard let self else { return }
+//                updateDeadline(date: datePicker.date)
+//            }
+//        )
+//    }
+//    
+//    @objc private func hashTagButtonLongPressed() {
+//        let textField = UITextField().nt.configure {
+//            $0.borderStyle(.roundedRect)
+//                .backgroundColor(.secondarySystemBackground)
+//        }
+//        showActionSheet(
+//            title: "해시태그를 입력해주세요",
+//            view: textField,
+//            action: UIAlertAction(
+//                title: "설정하기",
+//                style: .default
+//            ) {
+//                [weak self] _ in
+//                guard let self else { return }
+//                guard let name = textField.text else {
+//                    Logger.nilObject(textField, keyPath: \.text)
+//                    return
+//                }
+//                updateHashTag(name: name)
+//            }
+//        )
+//    }
+//    
+//    @objc private func priorityButtonLongPressed() {
+//        lazy var segmentControl = UISegmentedControl(
+//            items: TodoItem.Priority.allCases.map { $0.title }
+//        ).nt.configure {
+//            $0.selectedSegmentIndex(priority.rawValue)
+//        }
+//        showActionSheet(
+//            title: "우선순위를 선택해주세요",
+//            view: segmentControl,
+//            action: UIAlertAction(
+//                title: "설정하기",
+//                style: .default
+//            ) { [weak self] _ in
+//                self?.updatePriority(index: segmentControl.selectedSegmentIndex)
+//            }
+//        )
+//    }
     
-    @objc private func deadlineButtonLongPressed() {
-        let datePicker = UIDatePicker().nt.configure {
-            $0.preferredDatePickerStyle(.inline)
-        }
-        if let selectedDate {
-            datePicker.date = selectedDate
-        }
-        showActionSheet(
-            title: "마감일을 선택해주세요",
-            view: datePicker,
-            action: UIAlertAction(
-                title: "설정하기",
-                style: .default
-            ) {
-                [weak self] _ in
-                guard let self else { return }
-                updateDeadline(date: datePicker.date)
-            }
-        )
-    }
-    
-    @objc private func hashTagButtonLongPressed() {
-        let textField = UITextField().nt.configure {
-            $0.borderStyle(.roundedRect)
-                .backgroundColor(.secondarySystemBackground)
-        }
-        showActionSheet(
-            title: "해시태그를 입력해주세요",
-            view: textField,
-            action: UIAlertAction(
-                title: "설정하기",
-                style: .default
-            ) {
-                [weak self] _ in
-                guard let self else { return }
-                guard let name = textField.text else {
-                    Logger.nilObject(textField, keyPath: \.text)
-                    return
-                }
-                updateHashTag(name: name)
-            }
-        )
-    }
-    
-    @objc private func priorityButtonLongPressed() {
-        lazy var segmentControl = UISegmentedControl(
-            items: TodoItem.Priority.allCases.map { $0.title }
-        ).nt.configure {
-            $0.selectedSegmentIndex(priority.rawValue)
-        }
-        showActionSheet(
-            title: "우선순위를 선택해주세요",
-            view: segmentControl,
-            action: UIAlertAction(
-                title: "설정하기",
-                style: .default
-            ) { [weak self] _ in
-                self?.updatePriority(index: segmentControl.selectedSegmentIndex)
-            }
-        )
-    }
-    
-    @objc private func deadlineChanged(_ notification: NSNotification) {
-        guard let date = notification.userInfo?["date"] as? Date else {
-            Logger.debug("""
-                Date 변환 실패
-                Value: \(String(describing: notification.userInfo?["date"]))
-            """)
-            return
-        }
-        updateDeadline(date: date)
-    }
-    
-    @objc private func hashTagChanged(_ notification: NSNotification) {
-        guard let hashTag = notification.userInfo?["hashTag"] as? String else {
-            Logger.debug("""
-                String 변환 실패
-                Value: \(String(describing: notification.userInfo?["date"]))
-            """)
-            return
-        }
-        updateHashTag(name: hashTag)
-    }
-    
-    @objc private func priorityChanged(_ notification: NSNotification) {
-        guard let priorityIndex =
-                notification.userInfo?["priorityIndex"] as? Int else {
-            Logger.debug("""
-                Int 변환 실패
-                Value: \(String(describing: notification.userInfo?["date"]))
-            """)
-            return
-        }
-        updatePriority(index: priorityIndex)
-    }
+//    @objc private func deadlineChanged(_ notification: NSNotification) {
+//        guard let date = notification.userInfo?["date"] as? Date else {
+//            Logger.debug("""
+//                Date 변환 실패
+//                Value: \(String(describing: notification.userInfo?["date"]))
+//            """)
+//            return
+//        }
+//        updateDeadline(date: date)
+//    }
+//    
+//    @objc private func hashTagChanged(_ notification: NSNotification) {
+//        guard let hashTag = notification.userInfo?["hashTag"] as? String else {
+//            Logger.debug("""
+//                String 변환 실패
+//                Value: \(String(describing: notification.userInfo?["date"]))
+//            """)
+//            return
+//        }
+//        updateHashTag(name: hashTag)
+//    }
+//    
+//    @objc private func priorityChanged(_ notification: NSNotification) {
+//        guard let priorityIndex =
+//                notification.userInfo?["priorityIndex"] as? Int else {
+//            Logger.debug("""
+//                Int 변환 실패
+//                Value: \(String(describing: notification.userInfo?["date"]))
+//            """)
+//            return
+//        }
+//        updatePriority(index: priorityIndex)
+//    }
 }
 
 extension AddViewController: UITextViewDelegate {
@@ -507,15 +485,5 @@ extension AddViewController: UITextViewDelegate {
         if textView.text.isEmpty {
             textView.attributedText = textViewPlaceholder
         }
-    }
-}
-
-extension AddViewController: PHPickerViewControllerDelegate {
-    func picker(
-        _ picker: PHPickerViewController,
-        didFinishPicking results: [PHPickerResult]
-    ) {
-        loadSelectedImage(results: results)
-        dismiss(animated: true)
     }
 }

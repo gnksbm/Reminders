@@ -10,12 +10,14 @@ import UIKit
 import RealmSwift
 
 final class FolderRepository {
-    private let realmStorage = RealmStorage.shared
     static let shared = FolderRepository()
+    
+    private let realmStorage = RealmStorage.shared
+    private let imageStorage = ImageStorage.shared
     
     private init() { }
     
-    func addNewFolder(folder: Folder) throws { 
+    func addNewFolder(folder: Folder) throws {
         try realmStorage.create(folder)
     }
     
@@ -23,8 +25,14 @@ final class FolderRepository {
         Array(realmStorage.read(Folder.self))
     }
     
-    func addTodoInFolder(_ item: TodoItem, folder: Folder) throws {
-        try realmStorage.update(folder) {
+    func addTodoInFolder(
+        _ item: TodoItem,
+        folder: Folder,
+        images: [UIImage]
+    ) throws {
+        let imageFileNames = try imageStorage.addImages(images)
+        item.imageFileName.append(objectsIn: imageFileNames)
+        try updateFolder(item: folder) {
             $0.items.append(item)
         }
     }
@@ -40,4 +48,3 @@ final class FolderRepository {
         try realmStorage.delete(folder)
     }
 }
-
