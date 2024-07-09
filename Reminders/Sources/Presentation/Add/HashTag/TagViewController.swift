@@ -10,6 +10,9 @@ import UIKit
 import Neat
 
 final class TagViewController: BaseViewController {
+    private let viewModel = TagViewModel()
+    private let textChangeEvent = Observable<String?>(nil)
+    
     private lazy var textField = UITextField().nt.configure {
         $0.borderStyle(.roundedRect)
             .placeholder("해시태그를 입력해주세요")
@@ -21,9 +24,22 @@ final class TagViewController: BaseViewController {
             )
     }
     
-    init(hashTag: String?) {
+    init(vmDelegate: TagViewModelDelegate? = nil) {
         super.init()
-        textField.text = hashTag
+        viewModel.delegate = vmDelegate
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bind()
+    }
+    
+    private func bind() {
+        _ = viewModel.transform(
+            input: TagViewModel.Input(
+                textChangeEvent: textChangeEvent
+            )
+        )
     }
     
     override func configureLayout() {
@@ -38,14 +54,6 @@ final class TagViewController: BaseViewController {
     }
     
     @objc private func textFieldDidChanged() {
-        guard let hashTag = textField.text else {
-            Logger.nilObject(textField, keyPath: \.text)
-            return
-        }
-        NotificationCenter.default.post(
-            name: .hashTag,
-            object: nil,
-            userInfo: ["hashTag": hashTag]
-        )
+        textChangeEvent.onNext(textField.text)
     }
 }

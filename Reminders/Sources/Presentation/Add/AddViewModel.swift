@@ -16,13 +16,14 @@ final class AddViewModel: ViewModel {
     var title: String?
     var memo: String?
     let date = Observable<Date?>(nil)
+    let hashTagStr = Observable<String?>(nil)
     let images = Observable<[UIImage]>([])
     let imageSelectedEvent = Observable<Void>(())
     
     func transform(input: Input) -> Output {
         let output = Output(
             selectedDate: date,
-            hashTagStr: Observable(nil),
+            hashTagStr: hashTagStr,
             priority: Observable(.none),
             selectedImages: images,
             imageSelected: imageSelectedEvent,
@@ -43,7 +44,11 @@ final class AddViewModel: ViewModel {
                 output.flowFinished.onNext(())
             } catch {
                 output.errorMessage.onNext(error.localizedDescription)
+                Logger.error(error)
             }
+        }
+        input.cancelButtonTapEvent.bind { _ in
+            output.flowFinished.onNext(())
         }
         return output
     }
@@ -88,30 +93,14 @@ enum AddViewModelError: LocalizedError {
 }
 
 extension AddViewModel: DeadlineViewModelDelegate {
-    var selectedDate: Date? { date.value() }
-    
     func deadlineDidSelected(date: Date) {
         self.date.onNext(date)
     }
 }
 
-extension AddViewModel {
-    struct Input {
-        let titleInputEvent: Observable<String?>
-        let memoInputEvent: Observable<String?>
-        let saveButtonTapEvent: Observable<Void>
-        let cancelButtonTapEvent: Observable<Void>
-    }
-    
-    struct Output {
-        let selectedDate: Observable<Date?>
-        let hashTagStr: Observable<String?>
-        let priority: Observable<TodoItem.Priority>
-        let selectedImages: Observable<[UIImage]>
-        let imageSelected: Observable<Void>
-        let folder: Observable<Folder?>
-        let errorMessage: Observable<String>
-        let flowFinished: Observable<Void>
+extension AddViewModel: TagViewModelDelegate {
+    func hashTagDidChanged(hashTag: String?) {
+        hashTagStr.onNext(hashTag)
     }
 }
 
@@ -145,5 +134,25 @@ extension AddViewModel: PHPickerViewControllerDelegate {
             images.onNext(selectedImages)
         }
         imageSelectedEvent.onNext(())
+    }
+}
+
+extension AddViewModel {
+    struct Input {
+        let titleInputEvent: Observable<String?>
+        let memoInputEvent: Observable<String?>
+        let saveButtonTapEvent: Observable<Void>
+        let cancelButtonTapEvent: Observable<Void>
+    }
+    
+    struct Output {
+        let selectedDate: Observable<Date?>
+        let hashTagStr: Observable<String?>
+        let priority: Observable<TodoItem.Priority>
+        let selectedImages: Observable<[UIImage]>
+        let imageSelected: Observable<Void>
+        let folder: Observable<Folder?>
+        let errorMessage: Observable<String>
+        let flowFinished: Observable<Void>
     }
 }

@@ -111,13 +111,13 @@ final class AddViewController: BaseViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             title: "취소",
             primaryAction: UIAction { [weak self] _ in
-                self?.dismiss(animated: true)
+                self?.cancelButtonTapEvent.onNext(())
             }
         )
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "추가",
             primaryAction: UIAction { [weak self] _ in
-                self?.validateUserInput()
+                self?.saveButtonTapEvent.onNext(())
             }
         )
     }
@@ -202,6 +202,18 @@ final class AddViewController: BaseViewController {
                 cancelButtonTapEvent: cancelButtonTapEvent
             )
         )
+        output.selectedDate.bind { [weak self] date in
+            if let date {
+                self?.deadlineButton.updateSubInfo(
+                    text: date.formatted(dateFormat: .todoOutput)
+                )
+            }
+        }
+        output.hashTagStr.bind { [weak self] hashTag in
+            if let hashTag {
+                self?.hashTagButton.updateSubInfo(text: "#\(hashTag)")
+            }
+        }
         output.priority.bind { [weak self] priority in
             self?.priorityButton.updateSubInfo(text: priority.title)
         }
@@ -213,6 +225,12 @@ final class AddViewController: BaseViewController {
             addImageButton.updateImage(images: selectedImage)
         }
         output.imageSelected.bind { [weak self] in
+            self?.dismiss(animated: true)
+        }
+        output.errorMessage.bind { [weak self] message in
+            self?.showToast(message: message)
+        }
+        output.flowFinished.bind { [weak self] _ in
             self?.dismiss(animated: true)
         }
     }
@@ -248,42 +266,6 @@ final class AddViewController: BaseViewController {
 //        }
 //    }
     
-    private func validateUserInput() {
-        guard let title = titleTextField.text else {
-            Logger.nilObject(titleTextField, keyPath: \.text)
-            return
-        }
-        guard let memoText = memoTextView.text else {
-            Logger.nilObject(memoTextView, keyPath: \.text)
-            return
-        }
-        guard title.isNotEmpty else {
-            showToast(message: "제목을 입력해주세요")
-            titleTextField.becomeFirstResponder()
-            return
-        }
-        let memo = memoText.isNotEmpty ?
-        memoText != textViewPlaceholder.string ? memoText : nil :
-        nil
-        addNewItem(title: title, memo: memo)
-    }
-    
-    private func addNewItem(
-        title: String,
-        memo: String?
-    ) {
-        do {
-            dismiss(animated: true)
-            NotificationCenter.default.post(
-                name: .newTodoAdded,
-                object: nil
-            )
-        } catch {
-            showToast(message: "잠시후 다시 시도해주세요")
-            Logger.error(error)
-        }
-    }
-    
 //    private func updateDeadline(date: Date) {
 //        selectedDate = date
 //        deadlineButton.updateSubInfo(
@@ -302,36 +284,7 @@ final class AddViewController: BaseViewController {
 //        priority = TodoItem.Priority.allCases[index]
 //        priorityButton.updateSubInfo(text: priority.title)
 //    }
-//    
-//    private func loadSelectedImage(results: [PHPickerResult]) {
-//        let group = DispatchGroup()
-//        selectedImage.removeAll()
-//        results.map(\.itemProvider)
-//            .filter { $0.canLoadObject(ofClass: UIImage.self) }
-//            .forEach {
-//                group.enter()
-//                $0.loadObject(
-//                    ofClass: UIImage.self
-//                ) { [weak self] item, error in
-//                    if let error {
-//                        Logger.error(error)
-//                        return
-//                    }
-//                    if let image = item as? UIImage {
-//                        self?.selectedImage.append(image)
-//                    }
-//                    group.leave()
-//                }
-//            }
-//        group.notify(queue: .main) { [weak self] in
-//            guard let self else { return }
-//            addImageButton.updateSubInfo(
-//                text: "선택된 이미지 \(selectedImage.count)개"
-//            )
-//            addImageButton.updateImage(images: selectedImage)
-//        }
-//    }
-    
+//
     @objc private func deadlineButtonTapped() {
         navigationController?.pushViewController(
             DeadlineViewController(vmDelegate: viewModel),
@@ -340,10 +293,10 @@ final class AddViewController: BaseViewController {
     }
     
     @objc private func hashTagButtonTapped() {
-//        navigationController?.pushViewController(
-//            TagViewController(hashTag: hashTagStr),
-//            animated: true
-//        )
+        navigationController?.pushViewController(
+            TagViewController(vmDelegate: viewModel),
+            animated: true
+        )
     }
     
     @objc private func priorityButtonTapped() {

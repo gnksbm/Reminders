@@ -16,10 +16,6 @@ final class DeadlineViewModel: ViewModel {
             guard let self else { return }
             delegate?.deadlineDidSelected(date: selectedDate)
         }
-        
-        if let selectedDate = delegate?.selectedDate {
-            input.dateButtonTapEvent.onNext(selectedDate)
-        }
         return output
     }
 }
@@ -33,7 +29,5 @@ extension DeadlineViewModel {
 }
 
 protocol DeadlineViewModelDelegate: AnyObject {
-    var selectedDate: Date? { get }
-    
     func deadlineDidSelected(date: Date)
 }
