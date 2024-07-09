@@ -300,10 +300,10 @@ final class AddViewController: BaseViewController {
     }
     
     @objc private func priorityButtonTapped() {
-//        navigationController?.pushViewController(
-//            PriorityViewController(index: priority.rawValue),
-//            animated: true
-//        )
+        navigationController?.pushViewController(
+            PriorityViewController(vmDelegate: viewModel),
+            animated: true
+        )
     }
     
     @objc private func addImageButtonTapped() {

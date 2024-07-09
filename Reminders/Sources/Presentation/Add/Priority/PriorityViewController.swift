@@ -10,6 +10,10 @@ import UIKit
 import Neat
 
 final class PriorityViewController: BaseViewController {
+    private let viewModel = PriorityViewModel()
+    private lazy var segmentControlChangeEvent =
+    Observable<Int>(segmentControl.selectedSegmentIndex)
+    
     private lazy var segmentControl = UISegmentedControl(
         items: TodoItem.Priority.allCases.map { $0.title }
     ).nt.configure {
@@ -20,9 +24,22 @@ final class PriorityViewController: BaseViewController {
         )
     }
     
-    init(index: Int) {
+    init(vmDelegate: PriorityViewModelDelegate? = nil) {
         super.init()
-        segmentControl.selectedSegmentIndex = index
+        viewModel.delegate = vmDelegate
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        bind()
+    }
+    
+    private func bind() {
+        _ = viewModel.transform(
+            input: PriorityViewModel.Input(
+                segmentControlChangeEvent: segmentControlChangeEvent
+            )
+        )
     }
     
     override func configureLayout() {
@@ -32,15 +49,10 @@ final class PriorityViewController: BaseViewController {
         
         segmentControl.snp.makeConstraints { make in
             make.top.horizontalEdges.equalTo(safeArea).inset(20)
-//            make.height.equalTo(segmentControl.snp.width).multipliedBy(0.15)
         }
     }
     
     @objc private func segmentDidChanged() {
-        NotificationCenter.default.post(
-            name: .priority,
-            object: nil,
-            userInfo: ["priorityIndex": segmentControl.selectedSegmentIndex]
-        )
+        segmentControlChangeEvent.onNext(segmentControl.selectedSegmentIndex)
     }
 }

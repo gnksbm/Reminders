@@ -17,6 +17,7 @@ final class AddViewModel: ViewModel {
     var memo: String?
     let date = Observable<Date?>(nil)
     let hashTagStr = Observable<String?>(nil)
+    let priority = Observable<TodoItem.Priority>(.none)
     let images = Observable<[UIImage]>([])
     let imageSelectedEvent = Observable<Void>(())
     
@@ -24,7 +25,7 @@ final class AddViewModel: ViewModel {
         let output = Output(
             selectedDate: date,
             hashTagStr: hashTagStr,
-            priority: Observable(.none),
+            priority: priority,
             selectedImages: images,
             imageSelected: imageSelectedEvent,
             folder: Observable(nil),
@@ -101,6 +102,12 @@ extension AddViewModel: DeadlineViewModelDelegate {
 extension AddViewModel: TagViewModelDelegate {
     func hashTagDidChanged(hashTag: String?) {
         hashTagStr.onNext(hashTag)
+    }
+}
+
+extension AddViewModel: PriorityViewModelDelegate {
+    func priorityDidChanged(index: Int) {
+        priority.onNext(TodoItem.Priority.allCases[index])
     }
 }
 

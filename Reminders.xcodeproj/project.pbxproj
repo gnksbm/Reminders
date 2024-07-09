@@ -33,6 +33,7 @@
 		8EC003902C3D7200001271DF /* DeadlineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC0038F2C3D7200001271DF /* DeadlineViewModel.swift */; };
 		8EC003922C3D7677001271DF /* AddViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003912C3D7677001271DF /* AddViewModel.swift */; };
 		8EC003952C3D7E47001271DF /* TagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003942C3D7E47001271DF /* TagViewModel.swift */; };
+		8EC003982C3D81F0001271DF /* PriorityViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003972C3D81F0001271DF /* PriorityViewModel.swift */; };
 		8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218762C3821D400C1E548 /* TodoRepository.swift */; };
 		8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218782C38344800C1E548 /* ImageStorage.swift */; };
 		8EC2187E2C39134300C1E548 /* Neat in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC2187D2C39134300C1E548 /* Neat */; };
@@ -104,6 +105,7 @@
 		8EC0038F2C3D7200001271DF /* DeadlineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineViewModel.swift; sourceTree = "<group>"; };
 		8EC003912C3D7677001271DF /* AddViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewModel.swift; sourceTree = "<group>"; };
 		8EC003942C3D7E47001271DF /* TagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewModel.swift; sourceTree = "<group>"; };
+		8EC003972C3D81F0001271DF /* PriorityViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewModel.swift; sourceTree = "<group>"; };
 		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		8EC218782C38344800C1E548 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		BED548752C3D221700D8BDCA /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -223,6 +225,15 @@
 				8EC003942C3D7E47001271DF /* TagViewModel.swift */,
 			);
 			path = HashTag;
+			sourceTree = "<group>";
+		};
+		8EC003962C3D81E6001271DF /* Priority */ = {
+			isa = PBXGroup;
+			children = (
+				8E0E58E12C35958C008CA109 /* PriorityViewController.swift */,
+				8EC003972C3D81F0001271DF /* PriorityViewModel.swift */,
+			);
+			path = Priority;
 			sourceTree = "<group>";
 		};
 		8EC218752C3821C600C1E548 /* Repository */ = {
@@ -388,7 +399,7 @@
 				8EC003912C3D7677001271DF /* AddViewModel.swift */,
 				8EC0038E2C3D71F1001271DF /* Deadline */,
 				8EC003932C3D7E3D001271DF /* HashTag */,
-				8E0E58E12C35958C008CA109 /* PriorityViewController.swift */,
+				8EC003962C3D81E6001271DF /* Priority */,
 				8E0E58E62C35A4D1008CA109 /* View */,
 			);
 			path = Add;
@@ -493,6 +504,7 @@
 				8EC0038B2C3C3051001271DF /* FolderTVCell.swift in Sources */,
 				8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */,
 				8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */,
+				8EC003982C3D81F0001271DF /* PriorityViewModel.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8EC003952C3D7E47001271DF /* TagViewModel.swift in Sources */,
 				8EC003832C3A9CC1001271DF /* MultipleImageView.swift in Sources */,
