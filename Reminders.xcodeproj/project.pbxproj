@@ -38,7 +38,11 @@
 		8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC218782C38344800C1E548 /* ImageStorage.swift */; };
 		8EC2187E2C39134300C1E548 /* Neat in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC2187D2C39134300C1E548 /* Neat */; };
 		BED548762C3D221700D8BDCA /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548752C3D221700D8BDCA /* Observable.swift */; };
-		BED548782C3D231A00D8BDCA /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548772C3D231900D8BDCA /* ViewModel.swift */; };
+		BED5487F2C3E62E700D8BDCA /* View.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5487B2C3E62E600D8BDCA /* View.swift */; };
+		BED548802C3E62E700D8BDCA /* ViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5487C2C3E62E600D8BDCA /* ViewModel.swift */; };
+		BED548812C3E62E700D8BDCA /* ViewModelStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5487D2C3E62E600D8BDCA /* ViewModelStorage.swift */; };
+		BED548832C3E62F400D8BDCA /* Weak.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548822C3E62F400D8BDCA /* Weak.swift */; };
+		BED548862C3E630100D8BDCA /* WeakStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548842C3E630100D8BDCA /* WeakStorage.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -109,7 +113,11 @@
 		8EC218762C3821D400C1E548 /* TodoRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoRepository.swift; sourceTree = "<group>"; };
 		8EC218782C38344800C1E548 /* ImageStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStorage.swift; sourceTree = "<group>"; };
 		BED548752C3D221700D8BDCA /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
-		BED548772C3D231900D8BDCA /* ViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		BED5487B2C3E62E600D8BDCA /* View.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = View.swift; sourceTree = "<group>"; };
+		BED5487C2C3E62E600D8BDCA /* ViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModel.swift; sourceTree = "<group>"; };
+		BED5487D2C3E62E600D8BDCA /* ViewModelStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelStorage.swift; sourceTree = "<group>"; };
+		BED548822C3E62F400D8BDCA /* Weak.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Weak.swift; sourceTree = "<group>"; };
+		BED548842C3E630100D8BDCA /* WeakStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakStorage.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -246,6 +254,25 @@
 			path = Repository;
 			sourceTree = "<group>";
 		};
+		BED5487E2C3E62E600D8BDCA /* Architecture */ = {
+			isa = PBXGroup;
+			children = (
+				BED5487B2C3E62E600D8BDCA /* View.swift */,
+				BED5487C2C3E62E600D8BDCA /* ViewModel.swift */,
+				BED5487D2C3E62E600D8BDCA /* ViewModelStorage.swift */,
+			);
+			path = Architecture;
+			sourceTree = "<group>";
+		};
+		BED548852C3E630100D8BDCA /* Storage */ = {
+			isa = PBXGroup;
+			children = (
+				BED548822C3E62F400D8BDCA /* Weak.swift */,
+				BED548842C3E630100D8BDCA /* WeakStorage.swift */,
+			);
+			path = Storage;
+			sourceTree = "<group>";
+		};
 		BEF6E0692C33E4D100FA435D = {
 			isa = PBXGroup;
 			children = (
@@ -320,7 +347,8 @@
 				BEF6E0A92C33E92D00FA435D /* DateFormat.swift */,
 				BEF6E0AB2C33E9AE00FA435D /* ReuseIdentifiable.swift */,
 				BED548752C3D221700D8BDCA /* Observable.swift */,
-				BED548772C3D231900D8BDCA /* ViewModel.swift */,
+				BED548852C3E630100D8BDCA /* Storage */,
+				BED5487E2C3E62E600D8BDCA /* Architecture */,
 				BEF6E0AD2C33EA0A00FA435D /* Debug */,
 				BEF6E0A82C33E8BA00FA435D /* Extension */,
 				BEF6E09A2C33E7E000FA435D /* Base */,
@@ -514,14 +542,16 @@
 				8E5A432B2C34624B0045D77A /* TodoListViewController.swift in Sources */,
 				BEF6E0B12C33EA5E00FA435D /* UIViewController+.swift in Sources */,
 				8E0E58E42C359DFD008CA109 /* Date+.swift in Sources */,
+				BED548812C3E62E700D8BDCA /* ViewModelStorage.swift in Sources */,
 				8E5A43282C3461E20045D77A /* BaseTableViewCell.swift in Sources */,
 				8E0E58D42C357BAE008CA109 /* DeadlineViewController.swift in Sources */,
-				BED548782C3D231A00D8BDCA /* ViewModel.swift in Sources */,
 				BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */,
 				BEF6E0C42C34068000FA435D /* IntegerLiteralType+.swift in Sources */,
 				BEF6E0A72C33E8B800FA435D /* String+.swift in Sources */,
+				BED548862C3E630100D8BDCA /* WeakStorage.swift in Sources */,
 				BEF6E0992C33E78F00FA435D /* BaseViewController.swift in Sources */,
 				8EC0038D2C3D6E00001271DF /* HashTagRepository.swift in Sources */,
+				BED5487F2C3E62E700D8BDCA /* View.swift in Sources */,
 				8E0E58EC2C35ABBD008CA109 /* TodoDetailViewController.swift in Sources */,
 				BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */,
 				BED548762C3D221700D8BDCA /* Observable.swift in Sources */,
@@ -539,12 +569,14 @@
 				8EC003922C3D7677001271DF /* AddViewModel.swift in Sources */,
 				BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */,
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
+				BED548802C3E62E700D8BDCA /* ViewModel.swift in Sources */,
 				8EC218772C3821D400C1E548 /* TodoRepository.swift in Sources */,
 				BEF6E0B62C33EA8B00FA435D /* BaseView.swift in Sources */,
 				8EC003892C3C2F46001271DF /* FolderViewController.swift in Sources */,
 				8E5A432E2C3466220045D77A /* TodoListTVCell.swift in Sources */,
 				8EC003902C3D7200001271DF /* DeadlineViewModel.swift in Sources */,
 				8EC218792C38344800C1E548 /* ImageStorage.swift in Sources */,
+				BED548832C3E62F400D8BDCA /* Weak.swift in Sources */,
 				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,
 				BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */,

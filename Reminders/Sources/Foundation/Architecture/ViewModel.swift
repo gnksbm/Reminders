@@ -1,13 +1,13 @@
 //
 //  ViewModel.swift
-//  Reminders
+//  SeSAC5MVVMBasic
 //
 //  Created by gnksbm on 7/9/24.
 //
 
 import Foundation
 
-protocol ViewModel {
+protocol ViewModel: AnyObject {
     associatedtype Input
     associatedtype Output
     
