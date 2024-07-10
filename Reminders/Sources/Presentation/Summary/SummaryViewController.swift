@@ -9,8 +9,14 @@ import UIKit
 
 import Neat
 
-final class SummaryViewController: BaseViewController {
+final class SummaryViewController: BaseViewController, View {
     private var dataSource: DataSource!
+    
+    private let viewDidLoadEvent = Observable<Void>(())
+    private let calendarButtonTapEvent = Observable<Void>(())
+    private let folderButtonTapEvent = Observable<Void>(())
+    private let itemSelectEvent = Observable<CollectionViewItem?>(nil)
+    private let addButtonTapEvent = Observable<Void>(())
     
     private var todoItems = [TodoItem]()
     
@@ -40,14 +46,9 @@ final class SummaryViewController: BaseViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        todoItems = TodoRepository.shared.fetchItems()
         configureDataSource()
         updateSnapshot(items: CollectionViewItem.allCases)
-        addObserver()
-    }
-    
-    deinit {
-        removeObserver()
+        viewDidLoadEvent.onNext(())
     }
     
     override func configureNavigation() {
@@ -55,19 +56,13 @@ final class SummaryViewController: BaseViewController {
             UIBarButtonItem(
                 image: UIImage(systemName: "calendar"),
                 primaryAction: UIAction { [weak self] _ in
-                    self?.navigationController?.pushViewController(
-                        CalendarViewController(),
-                        animated: true
-                    )
+                    self?.calendarButtonTapEvent.onNext(())
                 }
             ),
             UIBarButtonItem(
                 image: UIImage(systemName: "folder"),
                 primaryAction: UIAction { [weak self] _ in
-                    self?.navigationController?.pushViewController(
-                        FolderViewController(viewType: .overview),
-                        animated: true
-                    )
+                    self?.folderButtonTapEvent.onNext(())
                 }
             )
         ]
@@ -87,50 +82,58 @@ final class SummaryViewController: BaseViewController {
         }
     }
     
-    private func addObserver() {
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(newTodoAdded),
-            name: .newTodoAdded,
-            object: nil
+    func bind(viewModel: SummaryViewModel) {
+        let output = viewModel.transform(
+            input: SummaryViewModel.Input(
+                viewDidLoadEvent: viewDidLoadEvent,
+                calendarButtonTapEvent: calendarButtonTapEvent,
+                folderButtonTapEvent: folderButtonTapEvent,
+                itemSelectEvent: itemSelectEvent,
+                addButtonTapEvent: addButtonTapEvent
+            )
         )
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(todoChanged),
-            name: .todoChanged,
-            object: nil
-        )
-    }
-    
-    private func removeObserver() {
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .newTodoAdded,
-            object: nil
-        )
-        NotificationCenter.default.removeObserver(
-            self,
-            name: .todoChanged,
-            object: nil
-        )
+        
+        output.todoItems.bind { [weak self] items in
+            guard let self else { return }
+            todoItems = items
+            dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+        }
+        
+        output.startCalendarFlow.bind { [weak self] _ in
+            self?.navigationController?.pushViewController(
+                CalendarViewController(),
+                animated: true
+            )
+        }
+        
+        output.startFolderFlow.bind { [weak self] _ in
+            self?.navigationController?.pushViewController(
+                FolderViewController(viewType: .overview),
+                animated: true
+            )
+        }
+        
+        output.startDetailFlow.bind { [weak self] item in
+            guard let self,
+                  let item else { return }
+            navigationController?.pushViewController(
+                TodoListViewController(filter: item.filter),
+                animated: true
+            )
+        }
+        
+        output.startAddFlow.bind { [weak self] _ in
+            self?.present(
+                UINavigationController(
+                    rootViewController: AddViewController()
+                ),
+                animated: true
+            )
+        }
     }
     
     @objc private func addTodoButtonTapped() {
-        present(
-            UINavigationController(
-                rootViewController: AddViewController()
-            ),
-            animated: true
-        )
-    }
-    
-    @objc private func newTodoAdded() {
-        todoItems = TodoRepository.shared.fetchItems()
-        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
-    }
-    
-    @objc private func todoChanged(_ notification: Notification) {
-        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+        addButtonTapEvent.onNext(())
     }
 }
 
@@ -308,10 +311,6 @@ extension SummaryViewController: UICollectionViewDelegate {
         _ collectionView: UICollectionView,
         didSelectItemAt indexPath: IndexPath
     ) {
-        let filter = CollectionViewItem.allCases[indexPath.row].filter
-        navigationController?.pushViewController(
-            TodoListViewController(filter: filter),
-            animated: true
-        )
+        itemSelectEvent.onNext(CollectionViewItem.allCases[indexPath.row])
     }
 }
