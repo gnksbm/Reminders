@@ -23,7 +23,6 @@ final class TodoRepository {
         let imageFileNames = try imageStorage.addImages(images)
         item.imageFileName.append(objectsIn: imageFileNames)
         try realmStorage.create(item)
-        dataChangeEvent.onNext(())
     }
     
     func fetchItems() -> [TodoItem] {
@@ -35,12 +34,10 @@ final class TodoRepository {
         _ block: (TodoItem) -> Void
     ) throws {
         try realmStorage.update(item, block)
-        dataChangeEvent.onNext(())
     }
     
     func removeTodo(item: TodoItem) throws {
         try imageStorage.removeImages(fileNames: Array(item.imageFileName))
         try realmStorage.delete(item)
-        dataChangeEvent.onNext(())
     }
 }

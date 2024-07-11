@@ -33,7 +33,7 @@ final class Observable<Base> {
     }
 }
 
-final class ObservableHandler<Base> {
+fileprivate final class ObservableHandler<Base> {
     private var handler: ((Base) -> Void)?
     
     init(_ handler: @escaping (Base) -> Void) {
@@ -44,3 +44,7 @@ final class ObservableHandler<Base> {
         handler?(value)
     }
 }
+
+// Observable 선언 -> Observable bind로 구독 ->
+// Observable의 completionHandler 배열에 bind 로직 추가 ->
+// Observable의 value 업데이트 -> Observable의 completionHandler 배열들 모두()

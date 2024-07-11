@@ -228,14 +228,16 @@ final class AddViewController: BaseViewController {
                 phPicker.delegate = viewModel
                 present(phPicker, animated: true)
             case .folder:
+                let folderVC = FolderViewController(
+                    viewType: .browse(
+                        action: { [weak self] folder in
+                            self?.viewModel.folderSelected(folder: folder)
+                        }
+                    )
+                )
+                folderVC.viewModel = FolderViewModel()
                 navigationController?.pushViewController(
-                    FolderViewController(
-                        viewType: .browse(
-                            action: { [weak self] folder in
-                                self?.viewModel.folderSelected(folder: folder)
-                            }
-                        )
-                    ), 
+                    folderVC,
                     animated: true
                 )
             }

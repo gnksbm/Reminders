@@ -88,6 +88,7 @@ final class AddViewModel: ViewModel {
                 images: output.images.value()
             )
         }
+        todoRepository.dataChangeEvent.onNext(())
     }
 }
 

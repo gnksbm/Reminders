@@ -99,6 +99,12 @@ final class SummaryViewController: BaseViewController, View {
             dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
         }
         
+        output.todoItems.bind { [weak self] items in
+            guard let self else { return }
+            todoItems = items
+            dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+        }
+        
         output.startCalendarFlow.bind { [weak self] _ in
             let calendarVC = CalendarViewController()
             calendarVC.viewModel = CalendarViewModel()
@@ -109,8 +115,12 @@ final class SummaryViewController: BaseViewController, View {
         }
         
         output.startFolderFlow.bind { [weak self] _ in
+            let folderVC = FolderViewController(
+                viewType: .overview
+            )
+            folderVC.viewModel = FolderViewModel()
             self?.navigationController?.pushViewController(
-                FolderViewController(viewType: .overview),
+                folderVC,
                 animated: true
             )
         }

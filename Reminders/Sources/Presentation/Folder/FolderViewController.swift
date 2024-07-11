@@ -9,9 +9,13 @@ import UIKit
 
 import SnapKit
 
-final class FolderViewController: BaseViewController {
+final class FolderViewController: BaseViewController, View {
     private let viewType: ViewType
-    private let folderRepository = FolderRepository.shared
+    
+    private let viewDidLoadEvent = Observable<Void>(())
+    private let plusButtonTapEvent = Observable<Void>(())
+    private let addFolderButtonTapEvent = Observable<String?>(nil)
+    private let folderSelectEvent = Observable<Folder?>(nil)
     
     private var dataSource: DataSource!
     
@@ -28,11 +32,65 @@ final class FolderViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
+        viewDidLoadEvent.onNext(())
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchFolders()
+    func bind(viewModel: FolderViewModel) {
+        let output = viewModel.transform(
+            input: FolderViewModel.Input(
+                viewDidLoadEvent: viewDidLoadEvent,
+                plusButtonTapEvent: plusButtonTapEvent,
+                addFolderButtonTapEvent: addFolderButtonTapEvent,
+                folderSelectEvent: folderSelectEvent
+            )
+        )
+        
+        output.folderList.bind { [weak self] folderList in
+            self?.updateSnapshot(items: folderList)
+        }
+        
+        output.startAddFlow.bind { [weak self] _ in
+            let textField = UITextField().nt.configure {
+                $0.borderStyle(.roundedRect)
+                    .backgroundColor(.secondarySystemBackground)
+            }
+            self?.showActionSheet(
+                title: "폴더명을 입력해주세요",
+                view: textField,
+                action: UIAlertAction(
+                    title: "완료",
+                    style: .default
+                ) { _ in
+                    guard let name = textField.text else {
+                        Logger.nilObject(textField, keyPath: \.text)
+                        return
+                    }
+                    self?.addFolderButtonTapEvent.onNext(name)
+                }
+            )
+        }
+        
+        output.updateFailure.bind { [weak self] _ in
+            self?.showToast(message: "잠시후 다시 시도해주세요")
+        }
+        
+        output.startFolderFlow.bind { [weak self] folder in
+            guard let self,
+                  let folder else { return }
+            switch viewType {
+            case .overview:
+                let todoListVC = TodoListViewController { todo in
+                    todo.parentFolder.contains(folder)
+                }
+                navigationController?.pushViewController(
+                    todoListVC,
+                    animated: true
+                )
+            case .browse(let action):
+                action(folder)
+                navigationController?.popViewController(animated: true)
+            }
+        }
     }
     
     override func configureNavigation() {
@@ -43,8 +101,7 @@ final class FolderViewController: BaseViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             systemItem: .add,
             primaryAction: UIAction { [weak self] _ in
-                guard let self else { return }
-                showActionSheet(
+                self?.showActionSheet(
                     title: "폴더명을 입력해주세요",
                     view: textField,
                     action: UIAlertAction(
@@ -55,8 +112,7 @@ final class FolderViewController: BaseViewController {
                             Logger.nilObject(textField, keyPath: \.text)
                             return
                         }
-                        self.addNewFolder(name: name)
-                        self.fetchFolders()
+                        self?.addFolderButtonTapEvent.onNext(name)
                     }
                 )
             }
@@ -70,19 +126,6 @@ final class FolderViewController: BaseViewController {
         
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
-        }
-    }
-    
-    private func fetchFolders() {
-        let folderResults = folderRepository.fetchFolders()
-        updateSnapshot(items: Array(folderResults))
-    }
-    
-    private func addNewFolder(name: String) {
-        do {
-            try folderRepository.addNewFolder(folder: Folder(name: name))
-        } catch {
-            showToast(message: "잠시후 다시 시도해주세요")
         }
     }
 }
@@ -136,21 +179,8 @@ extension FolderViewController: UITableViewDelegate {
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
     ) {
-        
         let folder = dataSource.snapshot().itemIdentifiers[indexPath.row]
-        switch viewType {
-        case .overview:
-            let todoListVC = TodoListViewController { todo in
-                todo.parentFolder.contains(folder)
-            }
-            navigationController?.pushViewController(
-                todoListVC,
-                animated: true
-            )
-        case .browse(let action):
-            action(folder)
-            navigationController?.popViewController(animated: true)
-        }
+        folderSelectEvent.onNext(folder)
     }
 }
 

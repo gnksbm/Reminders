@@ -45,6 +45,7 @@
 		BED548862C3E630100D8BDCA /* WeakStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548842C3E630100D8BDCA /* WeakStorage.swift */; };
 		BED548882C3E9D8700D8BDCA /* SummaryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548872C3E9D8700D8BDCA /* SummaryViewModel.swift */; };
 		BED5488B2C3EA61400D8BDCA /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5488A2C3EA61400D8BDCA /* CalendarViewModel.swift */; };
+		BED5489F2C3FCF7900D8BDCA /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -122,6 +123,7 @@
 		BED548842C3E630100D8BDCA /* WeakStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WeakStorage.swift; sourceTree = "<group>"; };
 		BED548872C3E9D8700D8BDCA /* SummaryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SummaryViewModel.swift; sourceTree = "<group>"; };
 		BED5488A2C3EA61400D8BDCA /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
+		BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -198,7 +200,6 @@
 			children = (
 				BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */,
 				BED548872C3E9D8700D8BDCA /* SummaryViewModel.swift */,
-				8EC003882C3C2F46001271DF /* FolderViewController.swift */,
 				8E5A43302C346A360045D77A /* Cell */,
 			);
 			path = Summary;
@@ -286,6 +287,15 @@
 			path = Calendar;
 			sourceTree = "<group>";
 		};
+		BED5489D2C3FCF7400D8BDCA /* Folder */ = {
+			isa = PBXGroup;
+			children = (
+				8EC003882C3C2F46001271DF /* FolderViewController.swift */,
+				BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */,
+			);
+			path = Folder;
+			sourceTree = "<group>";
+		};
 		BEF6E0692C33E4D100FA435D = {
 			isa = PBXGroup;
 			children = (
@@ -347,6 +357,7 @@
 			isa = PBXGroup;
 			children = (
 				8E5A432F2C346A320045D77A /* Summary */,
+				BED5489D2C3FCF7400D8BDCA /* Folder */,
 				BED548892C3EA5FD00D8BDCA /* Calendar */,
 				BEF6E0C72C34098200FA435D /* Add */,
 				8E5A43292C3462330045D77A /* TodoList */,
@@ -582,6 +593,7 @@
 				BEF6E0BD2C33EEB800FA435D /* HashTag.swift in Sources */,
 				BEF6E0C92C34099800FA435D /* AddViewController.swift in Sources */,
 				8EC003922C3D7677001271DF /* AddViewModel.swift in Sources */,
+				BED5489F2C3FCF7900D8BDCA /* FolderViewModel.swift in Sources */,
 				BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */,
 				BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */,
 				BED548802C3E62E700D8BDCA /* ViewModel.swift in Sources */,
