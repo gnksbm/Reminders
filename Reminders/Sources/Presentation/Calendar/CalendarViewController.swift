@@ -10,7 +10,9 @@ import UIKit
 import FSCalendar
 import SnapKit
 
-final class CalendarViewController: BaseViewController {
+final class CalendarViewController: BaseViewController, View {
+    private lazy var dateSelectEvent = Observable<Date?>(nil)
+    
     private lazy var calendarView = FSCalendar().nt.configure {
         $0.delegate(self)
             .scrollDirection(.vertical)
@@ -27,6 +29,24 @@ final class CalendarViewController: BaseViewController {
             make.edges.equalTo(safeArea).inset(20)
         }
     }
+    
+    func bind(viewModel: CalendarViewModel) {
+        let output = viewModel.transform(
+            input: CalendarViewModel.Input(
+                dateSelectEvent: dateSelectEvent
+            )
+        )
+        output.startListFlow.bind { [weak self] date in
+            if let date {
+                self?.navigationController?.pushViewController(
+                    TodoListViewController { item in
+                        item.deadline?.isSameDate(equalTo: date) ?? false
+                    },
+                    animated: true
+                )
+            }
+        }
+    }
 }
 
 extension CalendarViewController: FSCalendarDelegate {
@@ -35,11 +55,6 @@ extension CalendarViewController: FSCalendarDelegate {
         didSelect date: Date,
         at monthPosition: FSCalendarMonthPosition
     ) {
-        navigationController?.pushViewController(
-            TodoListViewController { item in
-                item.deadline?.isSameDate(equalTo: date) ?? false
-            },
-            animated: true
-        )
+        dateSelectEvent.onNext(date)
     }
 }

@@ -100,8 +100,10 @@ final class SummaryViewController: BaseViewController, View {
         }
         
         output.startCalendarFlow.bind { [weak self] _ in
+            let calendarVC = CalendarViewController()
+            calendarVC.viewModel = CalendarViewModel()
             self?.navigationController?.pushViewController(
-                CalendarViewController(),
+                calendarVC,
                 animated: true
             )
         }
