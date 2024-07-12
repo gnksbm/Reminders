@@ -38,8 +38,13 @@ final class AddViewController: BaseViewController {
         $0.backgroundColor(.tertiarySystemBackground)
     }
     
-    private let titleTextField = UITextField().nt.configure {
+    private lazy var titleTextField = UITextField().nt.configure {
         $0.placeholder("제목")
+            .addTarget(
+                self,
+                action: #selector(titleDidChanged),
+                for: .editingChanged
+            )
     }
     
     private lazy var memoTextView = UITextView().nt.configure {
@@ -251,6 +256,10 @@ final class AddViewController: BaseViewController {
         navigationButtonTapEvent.onNext(
             NavigationEventType.allCases[tag]
         )
+    }
+    
+    @objc private func titleDidChanged(_ sender: UITextField) {
+        titleInputEvent.onNext(sender.text)
     }
 }
 

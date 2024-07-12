@@ -14,7 +14,8 @@ final class Folder: Object {
     @Persisted(primaryKey: true) var id: ObjectId
     /// RealmVersion.folderNameAdded 버전에서 추가
     @Persisted var name: String
-    @Persisted var items: List<TodoItem>
+    @Persisted(originProperty: "parentFolder")
+    var todoItems: LinkingObjects<TodoItem>
     
     convenience init(name: String) {
         self.init()

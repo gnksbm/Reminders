@@ -18,8 +18,7 @@ final class TodoItem: Object, Identifiable {
     @Persisted var priority: Priority
     @Persisted var imageFileName: List<String>
     @Persisted var isDone: Bool
-    @Persisted(originProperty: "items")
-    var parentFolder: LinkingObjects<Folder>
+    @Persisted var parentFolder: Folder?
     /// RealmVersion.todoFlagAdded 버전에서 추가
     @Persisted var isFlag: Bool
     
@@ -38,6 +37,7 @@ final class TodoItem: Object, Identifiable {
         self.deadline = deadline
         self.hashTag = hashTag
         self.priority = priority
+        self.parentFolder = folder
         self.isDone = false
     }
 }

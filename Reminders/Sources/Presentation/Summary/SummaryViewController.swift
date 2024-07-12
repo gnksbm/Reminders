@@ -128,8 +128,10 @@ final class SummaryViewController: BaseViewController, View {
         output.startDetailFlow.bind { [weak self] item in
             guard let self,
                   let item else { return }
+            let todoVC = TodoListViewController()
+            todoVC.viewModel = TodoListViewModel(filter: item.filter)
             navigationController?.pushViewController(
-                TodoListViewController(filter: item.filter),
+                todoVC,
                 animated: true
             )
         }

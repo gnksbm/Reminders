@@ -34,12 +34,15 @@ final class AddViewModel: ViewModel {
             startFlow: Observable(nil),
             flowFinished: Observable(())
         )
+        
         input.titleInputEvent.bind { [weak self] title in
             self?.title = title
         }
+        
         input.memoInputEvent.bind { [weak self] memo in
             self?.memo = memo
         }
+        
         input.saveButtonTapEvent.bind { [weak self] _ in
             guard let self else { return }
             do {
@@ -50,12 +53,15 @@ final class AddViewModel: ViewModel {
                 Logger.error(error)
             }
         }
+        
         input.cancelButtonTapEvent.bind { _ in
             output.flowFinished.onNext(())
         }
+        
         input.navigationButtonTapEvent.bind { eventTpye in
             output.startFlow.onNext(eventTpye)
         }
+        
         return output
     }
     
@@ -74,21 +80,13 @@ final class AddViewModel: ViewModel {
             memo: memo,
             deadline: output.deadline.value(),
             hashTag: hashTag,
-            priority: output.priority.value()
+            priority: output.priority.value(),
+            folder: output.folder.value()
         )
-        if let folder = output.folder.value() {
-            try folderRepository.addTodoInFolder(
-                todoItem,
-                folder: folder,
-                images: output.images.value()
-            )
-        } else {
-            try todoRepository.addNewTodo(
-                item: todoItem,
-                images: output.images.value()
-            )
-        }
-        todoRepository.dataChangeEvent.onNext(())
+        try todoRepository.addNewTodo(
+            item: todoItem,
+            images: output.images.value()
+        )
     }
 }
 

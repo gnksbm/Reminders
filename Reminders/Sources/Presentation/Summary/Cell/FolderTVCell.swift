@@ -17,7 +17,7 @@ final class FolderTVCell: BaseTableViewCell {
     
     func configureCell(item: Folder) { 
         nameLabel.text = item.name
-        itemCountLabel.text = item.items.count.formatted() + "개의 할 일"
+        itemCountLabel.text = item.todoItems.count.formatted() + "개의 할 일"
     }
     
     override func configureLayout() {

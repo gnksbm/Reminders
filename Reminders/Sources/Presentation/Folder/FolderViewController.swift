@@ -79,11 +79,12 @@ final class FolderViewController: BaseViewController, View {
                   let folder else { return }
             switch viewType {
             case .overview:
-                let todoListVC = TodoListViewController { todo in
-                    todo.parentFolder.contains(folder)
+                let todoVC = TodoListViewController()
+                todoVC.viewModel = TodoListViewModel { todo in
+                    todo.parentFolder == folder
                 }
                 navigationController?.pushViewController(
-                    todoListVC,
+                    todoVC,
                     animated: true
                 )
             case .browse(let action):

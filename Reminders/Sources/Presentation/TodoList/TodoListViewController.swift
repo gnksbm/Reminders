@@ -6,66 +6,79 @@
 //
 
 import UIKit
+
 import Neat
 
-final class TodoListViewController: BaseViewController {
-    private var todoRepository = TodoRepository.shared
-    
-    private var filter: (TodoItem) -> Bool
+final class TodoListViewController: BaseViewController, View {
     private var dataSource: DataSource!
+    
+    private let viewDidLoadEvent = Observable<Void>(())
+    private let sortButtonTapEvent = Observable<TodoSortOption?>(nil)
+    private let itemSelectEvent = Observable<TodoItem?>(nil)
+    private let doneButtonTapEvent = Observable<TodoItem?>(nil)
+    private let starButtonTapEvent = Observable<TodoItem?>(nil)
+    private let flagButtonTapEvent = Observable<TodoItem?>(nil)
+    private let removeButtonTapEvent = Observable<TodoItem?>(nil)
     
     private lazy var tableView = UITableView().nt.configure { 
         $0.register(TodoListTVCell.self)
             .delegate(self)
     }
     
-    init(filter: @escaping (TodoItem) -> Bool) {
-        self.filter = filter
-        super.init()
+    func bind(viewModel: TodoListViewModel) {
+        let output = viewModel.transform(
+            input: TodoListViewModel.Input(
+                viewDidLoadEvent: viewDidLoadEvent,
+                sortButtonTapEvent: sortButtonTapEvent,
+                itemSelectEvent: itemSelectEvent,
+                doneButtonTapEvent: doneButtonTapEvent,
+                starButtonTapEvent: starButtonTapEvent,
+                flagButtonTapEvent: flagButtonTapEvent,
+                removeButtonTapEvent: removeButtonTapEvent
+            )
+        )
+        
+        output.todoList.bind { [weak self] todoList in
+            self?.updateSnapshot(items: todoList)
+        }
+        
+        output.startDetailFlow.bind { [weak self] item in
+            if let item {
+                self?.navigationController?.pushViewController(
+                    TodoDetailViewController(item: item),
+                    animated: true
+                )
+            }
+        }
+        
+        output.updateSuccess.bind { [weak self] _ in
+            guard let self else { return }
+            dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
+        }
+        
+        output.updateFailure.bind { [weak self] error in
+            guard let self,
+                  let error else { return }
+            showToast(message: error.localizedDescription)
+        }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         configureDataSource()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        fetchItems()
+        viewDidLoadEvent.onNext(())
     }
     
     override func configureNavigation() {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "ellipsis.circle"),
-            menu: UIMenu(children: [
-                UIAction(title: "마감일 순으로 보기") { [weak self] _ in
-                    guard let self else { return }
-                    fetchItems()
-                    let sortedItems = dataSource.snapshot().itemIdentifiers
-                        .sorted { lhs, rhs in
-                            guard let lhs = lhs.deadline,
-                                  let rhs = rhs.deadline else { return false }
-                            return lhs < rhs
+            menu: UIMenu(
+                children: TodoSortOption.allCases.map { option in
+                    UIAction(title: option.title) { [weak self] _ in
+                        self?.sortButtonTapEvent.onNext(option)
                     }
-                    updateSnapshot(items: sortedItems)
-                },
-                UIAction(title: "제목 순으로 보기") { [weak self] _ in
-                    guard let self else { return }
-                    fetchItems()
-                    let sortedItems = dataSource.snapshot().itemIdentifiers
-                        .sorted { lhs, rhs in
-                            return lhs.title < rhs.title
-                    }
-                    updateSnapshot(items: sortedItems)
-                },
-                UIAction(title: "우선순위 낮음 만 보기") { [weak self] _ in
-                    guard let self else { return }
-                    fetchItems()
-                    let filteredItems = dataSource.snapshot().itemIdentifiers
-                        .filter { $0.priority == .low }
-                    updateSnapshot(items: filteredItems)
                 }
-            ])
+            )
         )
     }
     
@@ -77,30 +90,6 @@ final class TodoListViewController: BaseViewController {
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(safeArea)
         }
-    }
-    
-    private func fetchItems() {
-        let savedItems: [TodoItem] = 
-        Array(RealmStorage.shared.read(TodoItem.self).filter(filter))
-        updateSnapshot(items: savedItems)
-    }
-    
-    private func starItem(item: TodoItem) throws { }
-    
-    private func flagItem(item: TodoItem) throws {
-        try todoRepository.update(item: item) {
-            $0.isFlag.toggle()
-        }
-        NotificationCenter.default.post(
-            name: .todoChanged,
-            object: nil
-        )
-        fetchItems()
-    }
-    
-    private func removeItem(item: TodoItem) throws {
-        try todoRepository.removeTodo(item: item)
-        fetchItems()
     }
     
     private func makeContextualAction(
@@ -142,20 +131,7 @@ extension TodoListViewController {
                 ).nt.configure {
                     $0.checkButtonHandler(
                         { [weak self] in
-                            guard let self else { return }
-                            do {
-                                try todoRepository.update(item: item) {
-                                    $0.isDone.toggle()
-                                }
-                                NotificationCenter.default.post(
-                                    name: .todoChanged,
-                                    object: nil
-                                )
-                                reloadTableView()
-                            } catch {
-                                showToast(message: "잠시후 다시 시도해주세요")
-                                Logger.error(error)
-                            }
+                            self?.doneButtonTapEvent.onNext(item)
                         }
                     )
                     .perform { base in
@@ -219,10 +195,7 @@ extension TodoListViewController: UITableViewDelegate {
         didSelectRowAt indexPath: IndexPath
     ) {
         let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
-        navigationController?.pushViewController(
-            TodoDetailViewController(item: item),
-            animated: true
-        )
+        itemSelectEvent.onNext(item)
     }
     
     func tableView(
@@ -235,21 +208,21 @@ extension TodoListViewController: UITableViewDelegate {
             color: .secondaryLabel,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.starItem(item: item)
+            self?.starButtonTapEvent.onNext(item)
         }
         let flagAction = makeContextualAction(
             image: UIImage(systemName: "flag"),
             color: .orange,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.flagItem(item: item)
+            self?.flagButtonTapEvent.onNext(item)
         }
         let removeAction = makeContextualAction(
             image: UIImage(systemName: "trash"),
             color: .red,
             indexPath: indexPath
         ) { [weak self] in
-            try self?.removeItem(item: item)
+            self?.removeButtonTapEvent.onNext(item)
         }
         
         return UISwipeActionsConfiguration(

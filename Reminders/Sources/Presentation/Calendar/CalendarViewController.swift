@@ -38,10 +38,12 @@ final class CalendarViewController: BaseViewController, View {
         )
         output.startListFlow.bind { [weak self] date in
             if let date {
+                let todoVC = TodoListViewController()
+                todoVC.viewModel = TodoListViewModel { item in
+                    item.deadline?.isSameDate(equalTo: date) ?? false
+                }
                 self?.navigationController?.pushViewController(
-                    TodoListViewController { item in
-                        item.deadline?.isSameDate(equalTo: date) ?? false
-                    },
+                    todoVC,
                     animated: true
                 )
             }
