@@ -13,14 +13,14 @@ final class AddViewModel: ViewModel {
     private let folderRepository = FolderRepository.shared
     private let todoRepository = TodoRepository.shared
     
-    var title: String?
-    var memo: String?
-    let date = Observable<Date?>(nil)
-    let hashTagStr = Observable<String?>(nil)
-    let priority = Observable<TodoItem.Priority>(.none)
-    let images = Observable<[UIImage]>([])
-    let folder = Observable<Folder?>(nil)
-    let imageSelectedEvent = Observable<Void>(())
+    private var title: String?
+    private var memo: String?
+    private let date = Observable<Date?>(nil)
+    private let hashTagStr = Observable<String?>(nil)
+    private let priority = Observable<TodoItem.Priority>(.none)
+    private let images = Observable<[UIImage]>([])
+    private let folder = Observable<Folder?>(nil)
+    private let imageSelectedEvent = Observable<Void>(())
     
     func transform(input: Input) -> Output {
         let output = Output(

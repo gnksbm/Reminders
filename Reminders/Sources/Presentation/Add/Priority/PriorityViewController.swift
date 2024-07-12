@@ -9,8 +9,7 @@ import UIKit
 
 import Neat
 
-final class PriorityViewController: BaseViewController {
-    private let viewModel = PriorityViewModel()
+final class PriorityViewController: BaseViewController, View {
     private lazy var segmentControlChangeEvent =
     Observable<Int>(segmentControl.selectedSegmentIndex)
     
@@ -24,17 +23,7 @@ final class PriorityViewController: BaseViewController {
         )
     }
     
-    init(vmDelegate: PriorityViewModelDelegate? = nil) {
-        super.init()
-        viewModel.delegate = vmDelegate
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
-    
-    private func bind() {
+    func bind(viewModel: PriorityViewModel) {
         _ = viewModel.transform(
             input: PriorityViewModel.Input(
                 segmentControlChangeEvent: segmentControlChangeEvent

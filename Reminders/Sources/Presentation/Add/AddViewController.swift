@@ -11,9 +11,7 @@ import PhotosUI
 import SnapKit
 import Neat
 
-final class AddViewController: BaseViewController {
-    private let viewModel = AddViewModel()
-    
+final class AddViewController: BaseViewController, View {
     private let titleInputEvent = Observable<String?>(nil)
     private let memoInputEvent = Observable<String?>(nil)
     private let saveButtonTapEvent = Observable<Void>(())
@@ -53,20 +51,18 @@ final class AddViewController: BaseViewController {
             .attributedText(textViewPlaceholder)
     }
     
-    private lazy var navigationButtons = NavigationEventType.allCases
-        .map { eventType in
-            AddSelectButton(
-                title: eventType.title
-            ).nt.configure {
-                $0.tag(eventType.rawValue)
-                    .perform { base in
-                        base.addTarget(
-                            self,
-                            action: #selector(navigationButtonTapped)
-                        )
-                    }
-            }
+    private lazy var navigationButtons = 
+    NavigationEventType.allCases.map { eventType in
+        AddSelectButton(title: eventType.title).nt.configure {
+            $0.tag(eventType.rawValue)
+                .perform { base in
+                    base.addTarget(
+                        self,
+                        action: #selector(navigationButtonTapped)
+                    )
+                }
         }
+    }
     
     private lazy var buttonStackView = UIStackView(
         arrangedSubviews: navigationButtons
@@ -75,74 +71,7 @@ final class AddViewController: BaseViewController {
             .spacing(20)
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
-    
-    override func configureNavigation() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            title: "취소",
-            primaryAction: UIAction { [weak self] _ in
-                self?.cancelButtonTapEvent.onNext(())
-            }
-        )
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "추가",
-            primaryAction: UIAction { [weak self] _ in
-                self?.saveButtonTapEvent.onNext(())
-            }
-        )
-    }
-    
-    override func configureLayout() {
-        [
-            textBackgroundView,
-            dividerView,
-            titleTextField,
-            memoTextView,
-            buttonStackView
-        ].forEach { view.addSubview($0) }
-        
-        let safeArea = view.safeAreaLayoutGuide
-        
-        let inset = 20.f
-        
-        textBackgroundView.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(safeArea).inset(inset)
-            make.height.equalTo(textBackgroundView.snp.width).multipliedBy(0.5)
-        }
-        
-        titleTextField.snp.makeConstraints { make in
-            make.top.horizontalEdges.equalTo(textBackgroundView).inset(inset)
-        }
-        
-        dividerView.snp.makeConstraints { make in
-            make.top.equalTo(titleTextField.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(titleTextField)
-            make.height.equalTo(1)
-        }
-        
-        memoTextView.snp.makeConstraints { make in
-            make.top.equalTo(dividerView.snp.bottom)
-            make.horizontalEdges.bottom.equalTo(textBackgroundView)
-                .inset(inset * 0.75)
-        }
-        
-        buttonStackView.snp.makeConstraints { make in
-            make.top.equalTo(textBackgroundView.snp.bottom).offset(inset)
-            make.horizontalEdges.equalTo(textBackgroundView)
-        }
-    }
-    
-    override func configureNavigationTitle() {
-        navigationItem.title = "새로운 할 일"
-        navigationController?.navigationBar.titleTextAttributes = [
-            .font: UIFont.systemFont(ofSize: 18, weight: .black)
-        ]
-    }
-    
-    private func bind() {
+    func bind(viewModel: AddViewModel) {
         let output = viewModel.transform(
             input: AddViewModel.Input(
                 titleInputEvent: titleInputEvent,
@@ -212,18 +141,30 @@ final class AddViewController: BaseViewController {
                   let eventType else { return }
             switch eventType {
             case .deadline:
+                let deadlineVC = DeadlineViewController()
+                let deadlineVM = DeadlineViewModel()
+                deadlineVM.delegate = viewModel
+                deadlineVC.viewModel = deadlineVM
                 navigationController?.pushViewController(
-                    DeadlineViewController(vmDelegate: viewModel),
+                    deadlineVC,
                     animated: true
                 )
             case .hashTag:
+                let tagVC = TagViewController()
+                let tagVM = TagViewModel()
+                tagVM.delegate = viewModel
+                tagVC.viewModel = tagVM
                 navigationController?.pushViewController(
-                    TagViewController(vmDelegate: viewModel),
+                    tagVC,
                     animated: true
                 )
             case .priority:
+                let priorityVC = PriorityViewController()
+                let priorityVM = PriorityViewModel()
+                priorityVM.delegate = viewModel
+                priorityVC.viewModel = priorityVM
                 navigationController?.pushViewController(
-                    PriorityViewController(vmDelegate: viewModel),
+                    priorityVC,
                     animated: true
                 )
             case .image:
@@ -235,8 +176,8 @@ final class AddViewController: BaseViewController {
             case .folder:
                 let folderVC = FolderViewController(
                     viewType: .browse(
-                        action: { [weak self] folder in
-                            self?.viewModel.folderSelected(folder: folder)
+                        action: { folder in
+                            self.viewModel?.folderSelected(folder: folder)
                         }
                     )
                 )
@@ -249,13 +190,73 @@ final class AddViewController: BaseViewController {
         }
     }
     
+    override func configureNavigation() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            title: "취소",
+            primaryAction: UIAction { [weak self] _ in
+                self?.cancelButtonTapEvent.onNext(())
+            }
+        )
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "추가",
+            primaryAction: UIAction { [weak self] _ in
+                self?.saveButtonTapEvent.onNext(())
+            }
+        )
+    }
+    
+    override func configureLayout() {
+        [
+            textBackgroundView,
+            dividerView,
+            titleTextField,
+            memoTextView,
+            buttonStackView
+        ].forEach { view.addSubview($0) }
+        
+        let safeArea = view.safeAreaLayoutGuide
+        
+        let inset = 20.f
+        
+        textBackgroundView.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(safeArea).inset(inset)
+            make.height.equalTo(textBackgroundView.snp.width).multipliedBy(0.5)
+        }
+        
+        titleTextField.snp.makeConstraints { make in
+            make.top.horizontalEdges.equalTo(textBackgroundView).inset(inset)
+        }
+        
+        dividerView.snp.makeConstraints { make in
+            make.top.equalTo(titleTextField.snp.bottom).offset(inset)
+            make.horizontalEdges.equalTo(titleTextField)
+            make.height.equalTo(1)
+        }
+        
+        memoTextView.snp.makeConstraints { make in
+            make.top.equalTo(dividerView.snp.bottom)
+            make.horizontalEdges.bottom.equalTo(textBackgroundView)
+                .inset(inset * 0.75)
+        }
+        
+        buttonStackView.snp.makeConstraints { make in
+            make.top.equalTo(textBackgroundView.snp.bottom).offset(inset)
+            make.horizontalEdges.equalTo(textBackgroundView)
+        }
+    }
+    
+    override func configureNavigationTitle() {
+        navigationItem.title = "새로운 할 일"
+        navigationController?.navigationBar.titleTextAttributes = [
+            .font: UIFont.systemFont(ofSize: 18, weight: .black)
+        ]
+    }
+    
     @objc private func navigationButtonTapped(
         _ sender: UITapGestureRecognizer
     ) {
         guard let tag = sender.view?.tag else { return }
-        navigationButtonTapEvent.onNext(
-            NavigationEventType.allCases[tag]
-        )
+        navigationButtonTapEvent.onNext(NavigationEventType.allCases[tag])
     }
     
     @objc private func titleDidChanged(_ sender: UITextField) {

@@ -9,7 +9,7 @@ import UIKit
 
 import Neat
 
-final class DeadlineViewController: BaseViewController {
+final class DeadlineViewController: BaseViewController, View {
     private let viewModel = DeadlineViewModel()
     
     private lazy var dateButtonTapEvent = Observable(datePicker.date)
@@ -23,22 +23,12 @@ final class DeadlineViewController: BaseViewController {
             )
     }
     
-    init(vmDelegate: DeadlineViewModelDelegate? = nil) {
-        super.init()
-        viewModel.delegate = vmDelegate
-    }
-    
     override func loadView() {
         super.loadView()
         view = datePicker
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
-    
-    private func bind() {
+    func bind(viewModel: DeadlineViewModel) {
         _ = viewModel.transform(
             input: DeadlineViewModel.Input(
                 dateButtonTapEvent: dateButtonTapEvent

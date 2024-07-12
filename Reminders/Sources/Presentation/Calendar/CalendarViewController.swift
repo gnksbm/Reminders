@@ -20,16 +20,6 @@ final class CalendarViewController: BaseViewController, View {
             .appearance.titleDefaultColor(.label)
     }
     
-    override func configureLayout() {
-        [calendarView].forEach { view.addSubview($0) }
-        
-        let safeArea = view.safeAreaLayoutGuide
-        
-        calendarView.snp.makeConstraints { make in
-            make.edges.equalTo(safeArea).inset(20)
-        }
-    }
-    
     func bind(viewModel: CalendarViewModel) {
         let output = viewModel.transform(
             input: CalendarViewModel.Input(
@@ -49,6 +39,16 @@ final class CalendarViewController: BaseViewController, View {
             }
         }
     }
+    
+    override func configureLayout() {
+        [calendarView].forEach { view.addSubview($0) }
+        
+        let safeArea = view.safeAreaLayoutGuide
+        
+        calendarView.snp.makeConstraints { make in
+            make.edges.equalTo(safeArea).inset(20)
+        }
+    }   
 }
 
 extension CalendarViewController: FSCalendarDelegate {

@@ -116,10 +116,6 @@ final class TodoListViewController: BaseViewController, View {
         removeAction.backgroundColor = color
         return removeAction
     }
-    
-    private func reloadTableView() {
-        dataSource.applySnapshotUsingReloadData(dataSource.snapshot())
-    }
 }
 
 extension TodoListViewController {
@@ -205,6 +201,7 @@ extension TodoListViewController: UITableViewDelegate {
         trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath
     ) -> UISwipeActionsConfiguration? {
         let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
+        
         let starAction = makeContextualAction(
             image: UIImage(systemName: "star"),
             color: .secondaryLabel,

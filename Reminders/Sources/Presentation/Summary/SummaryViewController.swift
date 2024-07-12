@@ -137,10 +137,10 @@ final class SummaryViewController: BaseViewController, View {
         }
         
         output.startAddFlow.bind { [weak self] _ in
+            let addVC = AddViewController()
+            addVC.viewModel = AddViewModel()
             self?.present(
-                UINavigationController(
-                    rootViewController: AddViewController()
-                ),
+                UINavigationController(rootViewController: addVC),
                 animated: true
             )
         }

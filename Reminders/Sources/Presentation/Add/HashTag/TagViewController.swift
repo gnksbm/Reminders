@@ -9,8 +9,7 @@ import UIKit
 
 import Neat
 
-final class TagViewController: BaseViewController {
-    private let viewModel = TagViewModel()
+final class TagViewController: BaseViewController, View {
     private let textChangeEvent = Observable<String?>(nil)
     
     private lazy var textField = UITextField().nt.configure {
@@ -24,17 +23,7 @@ final class TagViewController: BaseViewController {
             )
     }
     
-    init(vmDelegate: TagViewModelDelegate? = nil) {
-        super.init()
-        viewModel.delegate = vmDelegate
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        bind()
-    }
-    
-    private func bind() {
+    func bind(viewModel: TagViewModel) {
         _ = viewModel.transform(
             input: TagViewModel.Input(
                 textChangeEvent: textChangeEvent
