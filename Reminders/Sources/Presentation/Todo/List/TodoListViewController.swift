@@ -122,16 +122,14 @@ extension TodoListViewController {
     private func configureDataSource() {
         dataSource = DataSource(
             tableView: tableView,
-            cellProvider: { tableView, indexPath, item in
+            cellProvider: { [weak self] tableView, indexPath, item in
                 tableView.dequeueReusableCell(
                     cellType: TodoListTVCell.self,
                     for: indexPath
                 ).nt.configure {
-                    $0.checkButtonHandler(
-                        { [weak self] in
-                            self?.doneButtonTapEvent.onNext(item)
-                        }
-                    )
+                    $0.checkButtonHandler({
+                        self?.doneButtonTapEvent.onNext(item)
+                    })
                     .perform { base in
                         base.configureCell(item: item)
                     }
@@ -191,7 +189,7 @@ extension TodoListViewController: UITableViewDelegate {
     func tableView(
         _ tableView: UITableView,
         didSelectRowAt indexPath: IndexPath
-    ) {
+    ) { 
         let item = dataSource.snapshot().itemIdentifiers[indexPath.row]
         itemSelectEvent.onNext(item)
     }

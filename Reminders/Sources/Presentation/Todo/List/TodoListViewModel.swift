@@ -48,7 +48,6 @@ final class TodoListViewModel: ViewModel {
                 try todoRepository.update(item: item) {
                     $0.isDone.toggle()
                 }
-                let todoList = fetchNewList()
                 output.updateSuccess.onNext(())
             } catch {
                 output.updateFailure.onNext(.doneUpdate)
@@ -66,7 +65,6 @@ final class TodoListViewModel: ViewModel {
                 try todoRepository.update(item: item) {
                     $0.isFlag.toggle()
                 }
-                let todoList = fetchNewList()
                 output.updateSuccess.onNext(())
             } catch {
                 output.updateFailure.onNext(.flagUpdate)
