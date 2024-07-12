@@ -57,7 +57,8 @@ extension SummaryViewModel {
         let viewDidLoadEvent: Observable<Void>
         let calendarButtonTapEvent: Observable<Void>
         let folderButtonTapEvent: Observable<Void>
-        let itemSelectEvent: Observable<SummaryViewController.CollectionViewItem?>
+        let itemSelectEvent: 
+        Observable<SummaryViewController.CollectionViewItem?>
         let addButtonTapEvent: Observable<Void>
     }
     

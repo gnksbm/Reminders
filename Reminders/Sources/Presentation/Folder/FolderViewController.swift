@@ -50,24 +50,28 @@ final class FolderViewController: BaseViewController, View {
         }
         
         output.startAddFlow.bind { [weak self] _ in
-            let textField = UITextField().nt.configure {
-                $0.borderStyle(.roundedRect)
-                    .backgroundColor(.secondarySystemBackground)
-            }
-            self?.showActionSheet(
-                title: "폴더명을 입력해주세요",
-                view: textField,
-                action: UIAlertAction(
-                    title: "완료",
-                    style: .default
-                ) { _ in
-                    guard let name = textField.text else {
-                        Logger.nilObject(textField, keyPath: \.text)
-                        return
-                    }
-                    self?.addFolderButtonTapEvent.onNext(name)
-                }
+            guard let self else { return }
+            let alertVC = UIAlertController(
+                title: "폴더 생성",
+                message: nil,
+                preferredStyle: .alert
             )
+            let completionAction = UIAlertAction(
+                title: "완료",
+                style: .default
+            ) { _ in
+                guard let name = alertVC.textFields?.first?.text
+                else { return }
+                self.addFolderButtonTapEvent.onNext(name)
+            }
+            alertVC.addTextField { textField in
+                textField.placeholder = "폴더명을 입력해주세요"
+            }
+            alertVC.addAction(completionAction)
+            alertVC.addAction(
+                UIAlertAction(title: "취소", style: .cancel)
+            )
+            present(alertVC, animated: true)
         }
         
         output.updateFailure.bind { [weak self] _ in
@@ -95,27 +99,10 @@ final class FolderViewController: BaseViewController, View {
     }
     
     override func configureNavigation() {
-        let textField = UITextField().nt.configure {
-            $0.borderStyle(.roundedRect)
-                .backgroundColor(.secondarySystemBackground)
-        }
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             systemItem: .add,
             primaryAction: UIAction { [weak self] _ in
-                self?.showActionSheet(
-                    title: "폴더명을 입력해주세요",
-                    view: textField,
-                    action: UIAlertAction(
-                        title: "완료",
-                        style: .default
-                    ) { _ in
-                        guard let name = textField.text else {
-                            Logger.nilObject(textField, keyPath: \.text)
-                            return
-                        }
-                        self?.addFolderButtonTapEvent.onNext(name)
-                    }
-                )
+                self?.plusButtonTapEvent.onNext(())
             }
         )
     }
