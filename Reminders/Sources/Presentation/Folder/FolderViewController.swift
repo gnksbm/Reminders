@@ -59,10 +59,10 @@ final class FolderViewController: BaseViewController, View {
             let completionAction = UIAlertAction(
                 title: "완료",
                 style: .default
-            ) { _ in
+            ) { [weak self] _ in
                 guard let name = alertVC.textFields?.first?.text
                 else { return }
-                self.addFolderButtonTapEvent.onNext(name)
+                self?.addFolderButtonTapEvent.onNext(name)
             }
             alertVC.addTextField { textField in
                 textField.placeholder = "폴더명을 입력해주세요"
