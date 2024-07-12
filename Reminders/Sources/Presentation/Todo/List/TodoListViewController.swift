@@ -44,8 +44,10 @@ final class TodoListViewController: BaseViewController, View {
         
         output.startDetailFlow.bind { [weak self] item in
             if let item {
+                let detailVC = TodoDetailViewController()
+                detailVC.viewModel = TodoDetailViewModel(item: item)
                 self?.navigationController?.pushViewController(
-                    TodoDetailViewController(item: item),
+                    detailVC,
                     animated: true
                 )
             }

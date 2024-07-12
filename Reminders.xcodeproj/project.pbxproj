@@ -47,6 +47,7 @@
 		BED5488B2C3EA61400D8BDCA /* CalendarViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5488A2C3EA61400D8BDCA /* CalendarViewModel.swift */; };
 		BED5489F2C3FCF7900D8BDCA /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */; };
 		BED548A12C3FE2F800D8BDCA /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */; };
+		BED548A52C40FB9600D8BDCA /* TodoDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A42C40FB9600D8BDCA /* TodoDetailViewModel.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -126,6 +127,7 @@
 		BED5488A2C3EA61400D8BDCA /* CalendarViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewModel.swift; sourceTree = "<group>"; };
 		BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
+		BED548A42C40FB9600D8BDCA /* TodoDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDetailViewModel.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -178,16 +180,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		8E5A43292C3462330045D77A /* TodoList */ = {
+		8E5A43292C3462330045D77A /* Todo */ = {
 			isa = PBXGroup;
 			children = (
-				8E5A432A2C34624B0045D77A /* TodoListViewController.swift */,
-				BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */,
-				8E0E58EB2C35ABBD008CA109 /* TodoDetailViewController.swift */,
+				BED548A32C40FB8C00D8BDCA /* List */,
+				BED548A22C40FB8500D8BDCA /* Detail */,
 				8E5A43352C34767D0045D77A /* View */,
 				8E5A432C2C34661E0045D77A /* Cell */,
 			);
-			path = TodoList;
+			path = Todo;
 			sourceTree = "<group>";
 		};
 		8E5A432C2C34661E0045D77A /* Cell */ = {
@@ -299,6 +300,24 @@
 			path = Folder;
 			sourceTree = "<group>";
 		};
+		BED548A22C40FB8500D8BDCA /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				8E0E58EB2C35ABBD008CA109 /* TodoDetailViewController.swift */,
+				BED548A42C40FB9600D8BDCA /* TodoDetailViewModel.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		BED548A32C40FB8C00D8BDCA /* List */ = {
+			isa = PBXGroup;
+			children = (
+				8E5A432A2C34624B0045D77A /* TodoListViewController.swift */,
+				BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */,
+			);
+			path = List;
+			sourceTree = "<group>";
+		};
 		BEF6E0692C33E4D100FA435D = {
 			isa = PBXGroup;
 			children = (
@@ -363,7 +382,7 @@
 				BED5489D2C3FCF7400D8BDCA /* Folder */,
 				BED548892C3EA5FD00D8BDCA /* Calendar */,
 				BEF6E0C72C34098200FA435D /* Add */,
-				8E5A43292C3462330045D77A /* TodoList */,
+				8E5A43292C3462330045D77A /* Todo */,
 				BEF6E0B22C33EA6900FA435D /* Common */,
 			);
 			path = Presentation;
@@ -613,6 +632,7 @@
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,
 				BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */,
 				BEF6E0C02C33F53300FA435D /* PersistenceStorage.swift in Sources */,
+				BED548A52C40FB9600D8BDCA /* TodoDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

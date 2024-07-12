@@ -9,11 +9,30 @@ import UIKit
 
 import SnapKit
 
-final class TodoDetailViewController: BaseViewController {
+final class TodoDetailViewController: BaseViewController, View {
+    private let viewDidLoadEvent = Observable<Void>(())
+    
     private let textView = UITextView()
     
-    init(item: TodoItem) {
-        super.init()
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
+    }
+    
+    func bind(viewModel: TodoDetailViewModel) {
+        let output = viewModel.transform(
+            input: TodoDetailViewModel.Input(
+                viewDidLoadEvent: viewDidLoadEvent
+            )
+        )
+        output.todoItem.bind { [weak self] item in
+            if let item {
+                self?.updateView(item: item)
+            }
+        }
+    }
+    
+    private func updateView(item: TodoItem) {
         let maString = NSMutableAttributedString()
         let title = NSAttributedString(
             string: item.title,
