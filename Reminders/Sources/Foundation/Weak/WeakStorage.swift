@@ -7,7 +7,7 @@
 
 import Foundation
 
-class WeakStorage<Key: AnyObject, Value: AnyObject> {
+final class WeakStorage<Key: AnyObject, Value: AnyObject> {
     private var storage = [Weak<Key>: Value]()
     
     func value(key: Key) -> Value? {
@@ -30,17 +30,5 @@ class WeakStorage<Key: AnyObject, Value: AnyObject> {
         } else {
             storage.removeValue(forKey: Weak(key))
         }
-    }
-}
-
-class DeinitHandler {
-    private let action: () -> Void
-    
-    init(action: @escaping () -> Void) {
-        self.action = action
-    }
-    
-    deinit {
-        action()
     }
 }

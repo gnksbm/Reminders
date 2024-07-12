@@ -1,5 +1,5 @@
 //
-//  MultipleImageView.swift
+//  MultiImageScrollView.swift
 //  Reminders
 //
 //  Created by gnksbm on 7/7/24.
@@ -9,7 +9,7 @@ import UIKit
 
 import SnapKit
 
-final class MultipleImageView: BaseView {
+final class MultiImageScrollView: BaseView {
     var axis = NSLayoutConstraint.Axis.horizontal {
         didSet {
             stackView.axis = axis

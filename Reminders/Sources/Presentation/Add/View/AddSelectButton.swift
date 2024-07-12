@@ -28,7 +28,7 @@ final class AddSelectButton: BaseView {
                  
     }
     
-    private let multipleImageView = MultipleImageView()
+    private let multipleImageView = MultiImageScrollView()
     
     init(title: String, infoColor: UIColor = .label) {
         super.init()

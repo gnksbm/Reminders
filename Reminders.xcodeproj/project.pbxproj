@@ -23,7 +23,7 @@
 		8E5A43372C3476870045D77A /* TodoTVHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */; };
 		8EC0037F2C3A8949001271DF /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 8EC0037E2C3A8949001271DF /* FSCalendar */; };
 		8EC003812C3A8A1D001271DF /* CalendarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003802C3A8A1D001271DF /* CalendarViewController.swift */; };
-		8EC003832C3A9CC1001271DF /* MultipleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003822C3A9CC1001271DF /* MultipleImageView.swift */; };
+		8EC003832C3A9CC1001271DF /* MultiImageScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003822C3A9CC1001271DF /* MultiImageScrollView.swift */; };
 		8EC003852C3C29FA001271DF /* Folder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003842C3C29FA001271DF /* Folder.swift */; };
 		8EC003872C3C2D33001271DF /* FolderRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003862C3C2D33001271DF /* FolderRepository.swift */; };
 		8EC003892C3C2F46001271DF /* FolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8EC003882C3C2F46001271DF /* FolderViewController.swift */; };
@@ -47,6 +47,8 @@
 		BED5489F2C3FCF7900D8BDCA /* FolderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */; };
 		BED548A12C3FE2F800D8BDCA /* TodoListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */; };
 		BED548A52C40FB9600D8BDCA /* TodoDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A42C40FB9600D8BDCA /* TodoDetailViewModel.swift */; };
+		BED548A72C412FA700D8BDCA /* RealmStorage+migration.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A62C412FA700D8BDCA /* RealmStorage+migration.swift */; };
+		BED548AA2C4131CE00D8BDCA /* DeinitHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = BED548A92C4131CE00D8BDCA /* DeinitHandler.swift */; };
 		BEF6E0762C33E4D100FA435D /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0752C33E4D100FA435D /* AppDelegate.swift */; };
 		BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */; };
 		BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0792C33E4D100FA435D /* SummaryViewController.swift */; };
@@ -101,7 +103,7 @@
 		8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+.swift"; sourceTree = "<group>"; };
 		8E5A43362C3476870045D77A /* TodoTVHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoTVHeaderView.swift; sourceTree = "<group>"; };
 		8EC003802C3A8A1D001271DF /* CalendarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalendarViewController.swift; sourceTree = "<group>"; };
-		8EC003822C3A9CC1001271DF /* MultipleImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultipleImageView.swift; sourceTree = "<group>"; };
+		8EC003822C3A9CC1001271DF /* MultiImageScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultiImageScrollView.swift; sourceTree = "<group>"; };
 		8EC003842C3C29FA001271DF /* Folder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Folder.swift; sourceTree = "<group>"; };
 		8EC003862C3C2D33001271DF /* FolderRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderRepository.swift; sourceTree = "<group>"; };
 		8EC003882C3C2F46001271DF /* FolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewController.swift; sourceTree = "<group>"; };
@@ -124,6 +126,8 @@
 		BED5489E2C3FCF7900D8BDCA /* FolderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderViewModel.swift; sourceTree = "<group>"; };
 		BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListViewModel.swift; sourceTree = "<group>"; };
 		BED548A42C40FB9600D8BDCA /* TodoDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDetailViewModel.swift; sourceTree = "<group>"; };
+		BED548A62C412FA700D8BDCA /* RealmStorage+migration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "RealmStorage+migration.swift"; sourceTree = "<group>"; };
+		BED548A92C4131CE00D8BDCA /* DeinitHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeinitHandler.swift; sourceTree = "<group>"; };
 		BEF6E0722C33E4D100FA435D /* Reminders.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reminders.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BEF6E0752C33E4D100FA435D /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BEF6E0772C33E4D100FA435D /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -251,8 +255,8 @@
 			isa = PBXGroup;
 			children = (
 				8EC218762C3821D400C1E548 /* TodoRepository.swift */,
-				8EC003862C3C2D33001271DF /* FolderRepository.swift */,
 				8EC0038C2C3D6E00001271DF /* HashTagRepository.swift */,
+				8EC003862C3C2D33001271DF /* FolderRepository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -265,15 +269,6 @@
 				BED5487D2C3E62E600D8BDCA /* ViewModelStorage.swift */,
 			);
 			path = Architecture;
-			sourceTree = "<group>";
-		};
-		BED548852C3E630100D8BDCA /* Storage */ = {
-			isa = PBXGroup;
-			children = (
-				BED548822C3E62F400D8BDCA /* Weak.swift */,
-				BED548842C3E630100D8BDCA /* WeakStorage.swift */,
-			);
-			path = Storage;
 			sourceTree = "<group>";
 		};
 		BED548892C3EA5FD00D8BDCA /* Calendar */ = {
@@ -310,6 +305,16 @@
 				BED548A02C3FE2F800D8BDCA /* TodoListViewModel.swift */,
 			);
 			path = List;
+			sourceTree = "<group>";
+		};
+		BED548A82C4131C600D8BDCA /* Weak */ = {
+			isa = PBXGroup;
+			children = (
+				BED548822C3E62F400D8BDCA /* Weak.swift */,
+				BED548842C3E630100D8BDCA /* WeakStorage.swift */,
+				BED548A92C4131CE00D8BDCA /* DeinitHandler.swift */,
+			);
+			path = Weak;
 			sourceTree = "<group>";
 		};
 		BEF6E0692C33E4D100FA435D = {
@@ -388,7 +393,7 @@
 				BEF6E0A92C33E92D00FA435D /* DateFormat.swift */,
 				BEF6E0AB2C33E9AE00FA435D /* ReuseIdentifiable.swift */,
 				BED548752C3D221700D8BDCA /* Observable.swift */,
-				BED548852C3E630100D8BDCA /* Storage */,
+				BED548A82C4131C600D8BDCA /* Weak */,
 				BED5487E2C3E62E600D8BDCA /* Architecture */,
 				BEF6E0AD2C33EA0A00FA435D /* Debug */,
 				BEF6E0A82C33E8BA00FA435D /* Extension */,
@@ -434,7 +439,7 @@
 			isa = PBXGroup;
 			children = (
 				BEF6E0B32C33EA6F00FA435D /* ToastView.swift */,
-				8EC003822C3A9CC1001271DF /* MultipleImageView.swift */,
+				8EC003822C3A9CC1001271DF /* MultiImageScrollView.swift */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -453,6 +458,7 @@
 			isa = PBXGroup;
 			children = (
 				BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */,
+				BED548A62C412FA700D8BDCA /* RealmStorage+migration.swift */,
 				8EC218782C38344800C1E548 /* ImageStorage.swift */,
 			);
 			path = Storage;
@@ -568,11 +574,12 @@
 			files = (
 				8E0E58E22C35958C008CA109 /* PriorityViewController.swift in Sources */,
 				8EC0038B2C3C3051001271DF /* FolderTVCell.swift in Sources */,
+				BED548AA2C4131CE00D8BDCA /* DeinitHandler.swift in Sources */,
 				8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */,
 				8EC003982C3D81F0001271DF /* PriorityViewModel.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8EC003952C3D7E47001271DF /* TagViewModel.swift in Sources */,
-				8EC003832C3A9CC1001271DF /* MultipleImageView.swift in Sources */,
+				8EC003832C3A9CC1001271DF /* MultiImageScrollView.swift in Sources */,
 				8EC003872C3C2D33001271DF /* FolderRepository.swift in Sources */,
 				BED5488B2C3EA61400D8BDCA /* CalendarViewModel.swift in Sources */,
 				8EC003852C3C29FA001271DF /* Folder.swift in Sources */,
@@ -584,6 +591,7 @@
 				8E5A43282C3461E20045D77A /* BaseTableViewCell.swift in Sources */,
 				8E0E58D42C357BAE008CA109 /* DeadlineViewController.swift in Sources */,
 				BEF6E07A2C33E4D100FA435D /* SummaryViewController.swift in Sources */,
+				BED548A72C412FA700D8BDCA /* RealmStorage+migration.swift in Sources */,
 				BEF6E0C42C34068000FA435D /* IntegerLiteralType+.swift in Sources */,
 				BEF6E0A72C33E8B800FA435D /* String+.swift in Sources */,
 				BED548862C3E630100D8BDCA /* WeakStorage.swift in Sources */,

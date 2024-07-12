@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Weak<Base: AnyObject> {
+final class Weak<Base: AnyObject> {
     weak var base: Base?
     
     private let baseHashValue: Int
