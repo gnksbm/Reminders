@@ -117,9 +117,3 @@ extension RealmStorage {
 extension RealmStorage {
     static let shared = RealmStorage()
 }
-
-extension RealmStorage: PersistenceStorage {
-    typealias StorableObject = Object
-    typealias FetchResult = Results<Object>
-}
-

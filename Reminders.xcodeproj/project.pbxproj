@@ -11,7 +11,6 @@
 		8E013E132C34476300557FC0 /* RealmSwift in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 8E013E112C34475B00557FC0 /* RealmSwift */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		8E0E58D42C357BAE008CA109 /* DeadlineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58D32C357BAE008CA109 /* DeadlineViewController.swift */; };
 		8E0E58DC2C358DCE008CA109 /* TagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DB2C358DCE008CA109 /* TagViewController.swift */; };
-		8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */; };
 		8E0E58E22C35958C008CA109 /* PriorityViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E12C35958C008CA109 /* PriorityViewController.swift */; };
 		8E0E58E42C359DFD008CA109 /* Date+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E32C359DFD008CA109 /* Date+.swift */; };
 		8E0E58E82C35A4E9008CA109 /* AddSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8E0E58E72C35A4E9008CA109 /* AddSelectButton.swift */; };
@@ -68,12 +67,10 @@
 		BEF6E0B82C33EC0900FA435D /* Collection+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0B72C33EC0900FA435D /* Collection+.swift */; };
 		BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */; };
 		BEF6E0BD2C33EEB800FA435D /* HashTag.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BC2C33EEB800FA435D /* HashTag.swift */; };
-		BEF6E0C02C33F53300FA435D /* PersistenceStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */; };
 		BEF6E0C22C33F57B00FA435D /* RealmStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */; };
 		BEF6E0C42C34068000FA435D /* IntegerLiteralType+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C32C34068000FA435D /* IntegerLiteralType+.swift */; };
 		BEF6E0C62C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */; };
 		BEF6E0C92C34099800FA435D /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0C82C34099800FA435D /* AddViewController.swift */; };
-		BEF6E0CC2C340A9900FA435D /* UIButton+.swift in Sources */ = {isa = PBXBuildFile; fileRef = BEF6E0CB2C340A9900FA435D /* UIButton+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -93,7 +90,6 @@
 /* Begin PBXFileReference section */
 		8E0E58D32C357BAE008CA109 /* DeadlineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeadlineViewController.swift; sourceTree = "<group>"; };
 		8E0E58DB2C358DCE008CA109 /* TagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagViewController.swift; sourceTree = "<group>"; };
-		8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSNotification+.swift"; sourceTree = "<group>"; };
 		8E0E58E12C35958C008CA109 /* PriorityViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PriorityViewController.swift; sourceTree = "<group>"; };
 		8E0E58E32C359DFD008CA109 /* Date+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+.swift"; sourceTree = "<group>"; };
 		8E0E58E72C35A4E9008CA109 /* AddSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddSelectButton.swift; sourceTree = "<group>"; };
@@ -149,12 +145,10 @@
 		BEF6E0B72C33EC0900FA435D /* Collection+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Collection+.swift"; sourceTree = "<group>"; };
 		BEF6E0BA2C33EE4B00FA435D /* TodoItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoItem.swift; sourceTree = "<group>"; };
 		BEF6E0BC2C33EEB800FA435D /* HashTag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HashTag.swift; sourceTree = "<group>"; };
-		BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PersistenceStorage.swift; sourceTree = "<group>"; };
 		BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmStorage.swift; sourceTree = "<group>"; };
 		BEF6E0C32C34068000FA435D /* IntegerLiteralType+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "IntegerLiteralType+.swift"; sourceTree = "<group>"; };
 		BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSDirectionalEdgeInsets+.swift"; sourceTree = "<group>"; };
 		BEF6E0C82C34099800FA435D /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
-		BEF6E0CB2C340A9900FA435D /* UIButton+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -423,8 +417,6 @@
 				BEF6E0C32C34068000FA435D /* IntegerLiteralType+.swift */,
 				BEF6E0C52C3406AA00FA435D /* NSDirectionalEdgeInsets+.swift */,
 				8E5A43332C3470EC0045D77A /* UIEdgeInsets+.swift */,
-				BEF6E0CB2C340A9900FA435D /* UIButton+.swift */,
-				8E0E58DF2C358EA5008CA109 /* NSNotification+.swift */,
 				8E0E58E32C359DFD008CA109 /* Date+.swift */,
 			);
 			path = Extension;
@@ -460,7 +452,6 @@
 		BEF6E0BE2C33F50F00FA435D /* Storage */ = {
 			isa = PBXGroup;
 			children = (
-				BEF6E0BF2C33F53300FA435D /* PersistenceStorage.swift */,
 				BEF6E0C12C33F57B00FA435D /* RealmStorage.swift */,
 				8EC218782C38344800C1E548 /* ImageStorage.swift */,
 			);
@@ -578,7 +569,6 @@
 				8E0E58E22C35958C008CA109 /* PriorityViewController.swift in Sources */,
 				8EC0038B2C3C3051001271DF /* FolderTVCell.swift in Sources */,
 				8E5A43342C3470EC0045D77A /* UIEdgeInsets+.swift in Sources */,
-				8E0E58E02C358EA5008CA109 /* NSNotification+.swift in Sources */,
 				8EC003982C3D81F0001271DF /* PriorityViewModel.swift in Sources */,
 				BEF6E0AF2C33EA0E00FA435D /* Logger.swift in Sources */,
 				8EC003952C3D7E47001271DF /* TagViewModel.swift in Sources */,
@@ -609,7 +599,6 @@
 				BEF6E0A02C33E80F00FA435D /* BaseCollectionViewCell.swift in Sources */,
 				BEF6E0AC2C33E9AE00FA435D /* ReuseIdentifiable.swift in Sources */,
 				BEF6E0C22C33F57B00FA435D /* RealmStorage.swift in Sources */,
-				BEF6E0CC2C340A9900FA435D /* UIButton+.swift in Sources */,
 				BEF6E0782C33E4D100FA435D /* SceneDelegate.swift in Sources */,
 				8EC003812C3A8A1D001271DF /* CalendarViewController.swift in Sources */,
 				8E5A43372C3476870045D77A /* TodoTVHeaderView.swift in Sources */,
@@ -631,7 +620,6 @@
 				BEF6E0BB2C33EE4B00FA435D /* TodoItem.swift in Sources */,
 				8E5A43322C346A3F0045D77A /* SummaryCVCell.swift in Sources */,
 				BEF6E0AA2C33E92D00FA435D /* DateFormat.swift in Sources */,
-				BEF6E0C02C33F53300FA435D /* PersistenceStorage.swift in Sources */,
 				BED548A52C40FB9600D8BDCA /* TodoDetailViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
