@@ -11,41 +11,7 @@ import RealmSwift
 
 extension RealmStorage {
     enum RealmVersion: Int, CaseIterable {
-        static let latestVersion = RealmVersion.allCases.count - 1
-        
         case origin, todoFlagAdded, folderNameAdded, folderIDAdded
-        
-        static func migrate(migration: Migration, version: Int) {
-            (version..<latestVersion).forEach { versionNum in
-                switch allCases[versionNum] {
-                case .origin:
-                    migration.enumerateObjects(
-                        ofType: TodoItem.className()
-                    ) { oldObject, newObject in
-                        guard let newObject else { return }
-                        newObject["isFlag"] = false
-                    }
-                case .todoFlagAdded:
-                    migration.enumerateObjects(
-                        ofType: Folder.className()
-                    ) { oldObject, newObject in
-                        guard let newObject else { return }
-                        newObject["name"] = "이름 없음"
-                    }
-                case .folderNameAdded:
-                    migration.enumerateObjects(
-                        ofType: Folder.className()
-                    ) {
-                        oldObject,
-                        newObject in
-                        guard let newObject else { return }
-                        newObject["id"] = ObjectId.generate()
-                    }
-                case .folderIDAdded:
-                    break
-                }
-            }
-        }
     }
     
     static func migrateIfNeeded() {
@@ -75,5 +41,41 @@ extension RealmStorage {
             )
         }
         Realm.Configuration.defaultConfiguration = config
+    }
+}
+
+extension RealmStorage.RealmVersion {
+    static let latestVersion = allCases.count - 1
+        
+    fileprivate static func migrate(migration: Migration, version: Int) {
+        (version..<latestVersion).forEach { versionNum in
+            switch allCases[versionNum] {
+            case .origin:
+                migration.enumerateObjects(
+                    ofType: TodoItem.className()
+                ) { oldObject, newObject in
+                    guard let newObject else { return }
+                    newObject["isFlag"] = false
+                }
+            case .todoFlagAdded:
+                migration.enumerateObjects(
+                    ofType: Folder.className()
+                ) { oldObject, newObject in
+                    guard let newObject else { return }
+                    newObject["name"] = "이름 없음"
+                }
+            case .folderNameAdded:
+                migration.enumerateObjects(
+                    ofType: Folder.className()
+                ) {
+                    oldObject,
+                    newObject in
+                    guard let newObject else { return }
+                    newObject["id"] = ObjectId.generate()
+                }
+            case .folderIDAdded:
+                break
+            }
+        }
     }
 }
